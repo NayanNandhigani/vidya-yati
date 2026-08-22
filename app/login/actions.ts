@@ -18,7 +18,15 @@ export async function loginAction(_prevState: LoginState, formData: FormData): P
     await signIn("credentials", { email, password, redirect: false });
   } catch (error) {
     if (error instanceof AuthError) {
-      return { error: "Incorrect email or password." };
+      // Only a real "authorize() returned null" means bad credentials.
+      // Anything else (DB unreachable, missing AUTH_SECRET, etc.) is a
+      // server misconfiguration — log the real cause instead of masking
+      // it as "wrong password", which makes that class of bug undebuggable.
+      if (error.type === "CredentialsSignin") {
+        return { error: "Incorrect email or password." };
+      }
+      console.error("Sign-in failed with a non-credentials auth error:", error);
+      return { error: "Sign-in is temporarily unavailable. Please try again shortly." };
     }
     throw error;
   }
