@@ -17,7 +17,7 @@ export default function LoginPage() {
           Vidya Yati
         </h1>
         <p style={{ margin: "0 0 24px", fontSize: 13.5, color: "var(--muted)" }}>
-          Sign in to your school's admin, staff, or parent portal.
+          Sign in — school Admin, Staff, and Parent accounts, and Vidya Yati platform admins, all use this page.
         </p>
         <LoginForm />
       </div>
