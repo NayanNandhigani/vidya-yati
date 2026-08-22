@@ -1,0 +1,375 @@
+<section class="view" id="view-Accounts" data-view="Accounts">
+  <!-- MAIN -->
+  <div style="flex:1;overflow:hidden;padding:26px 34px;display:flex;flex-direction:column;gap:16px;">
+
+    <!-- HEADER -->
+    <div style="display:flex;align-items:center;justify-content:space-between;">
+      <div>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div class="disp" style="font-size:21px;">Accounts</div>
+          <span style="font-size:11px;font-weight:700;color:var(--muted);background:var(--line);padding:3px 9px;border-radius:100px;">Illustrative data</span>
+        </div>
+        <div style="font-size:13px;color:var(--muted);margin-top:2px;">Simple cash flow — income and expenses in one place, no double-entry bookkeeping · Friday, 21 August 2026</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:12px;">
+        <span id="acc-open-panel-btn" style="background:var(--marigold);color:#fff;border-radius:8px;padding:8px 16px;font-size:13px;font-weight:700;cursor:pointer;">+ Add transaction</span>
+        <div style="width:32px;height:32px;border-radius:50%;background:var(--ink2);color:#fff;display:flex;align-items:center;justify-content:center;font-size:12.5px;font-weight:700;">SK</div>
+      </div>
+    </div>
+
+    <!-- STAT TILES -->
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:13px;">
+      <div class="card" style="padding:15px 17px;">
+        <div style="font-size:11.5px;color:var(--muted);margin-bottom:7px;">Income this month</div>
+        <div id="acc-stat-income" class="mono" style="font-size:23px;font-weight:600;color:var(--teal);">₹8.8L</div>
+      </div>
+      <div class="card" style="padding:15px 17px;">
+        <div style="font-size:11.5px;color:var(--muted);margin-bottom:7px;">Expense this month</div>
+        <div id="acc-stat-expense" class="mono" style="font-size:23px;font-weight:600;color:var(--clay);">₹7.8L</div>
+      </div>
+      <div class="card" style="padding:15px 17px;">
+        <div style="font-size:11.5px;color:var(--muted);margin-bottom:7px;">Net this month</div>
+        <div id="acc-stat-net" class="mono" style="font-size:23px;font-weight:600;color:var(--good);">+₹0.9L</div>
+      </div>
+      <div class="card" style="padding:15px 17px;">
+        <div style="font-size:11.5px;color:var(--muted);margin-bottom:7px;">Cash balance</div>
+        <div id="acc-stat-balance" class="mono" style="font-size:23px;font-weight:600;">₹18.7L</div>
+      </div>
+    </div>
+
+    <!-- CONTENT -->
+    <div style="display:grid;grid-template-columns:1.9fr 0.9fr;gap:16px;flex:1;min-height:0;">
+
+      <!-- LEFT: CHART + LEDGER -->
+      <div style="display:flex;flex-direction:column;gap:14px;min-height:0;">
+
+        <!-- CASH FLOW CHART -->
+        <div class="card" style="padding:20px;flex:none;">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:2px;">
+            <div style="font-size:14px;font-weight:700;">Income vs. expense</div>
+            <div style="display:flex;gap:14px;font-size:11.5px;color:var(--muted);">
+              <span><span style="display:inline-block;width:8px;height:8px;border-radius:2px;background:var(--teal);margin-right:5px;"></span>Income</span>
+              <span><span style="display:inline-block;width:8px;height:8px;border-radius:2px;background:var(--clay);margin-right:5px;"></span>Expense</span>
+            </div>
+          </div>
+          <div style="font-size:12px;color:var(--muted);margin-bottom:14px;">Last 6 months, ₹ lakhs · net this month <span style="color:var(--good);font-weight:700;">+₹0.9L*</span></div>
+          <div style="display:flex;align-items:flex-end;gap:26px;height:170px;border-bottom:1px solid var(--line);padding-bottom:2px;">
+            <div style="flex:1;display:flex;align-items:flex-end;gap:5px;height:100%;">
+              <div style="flex:1;height:76%;background:var(--teal);border-radius:3px 3px 0 0;"></div>
+              <div style="flex:1;height:59%;background:var(--clay);border-radius:3px 3px 0 0;"></div>
+            </div>
+            <div style="flex:1;display:flex;align-items:flex-end;gap:5px;height:100%;">
+              <div style="flex:1;height:80%;background:var(--teal);border-radius:3px 3px 0 0;"></div>
+              <div style="flex:1;height:60%;background:var(--clay);border-radius:3px 3px 0 0;"></div>
+            </div>
+            <div style="flex:1;display:flex;align-items:flex-end;gap:5px;height:100%;">
+              <div style="flex:1;height:73%;background:var(--teal);border-radius:3px 3px 0 0;"></div>
+              <div style="flex:1;height:62%;background:var(--clay);border-radius:3px 3px 0 0;"></div>
+            </div>
+            <div style="flex:1;display:flex;align-items:flex-end;gap:5px;height:100%;">
+              <div style="flex:1;height:91%;background:var(--teal);border-radius:3px 3px 0 0;"></div>
+              <div style="flex:1;height:63%;background:var(--clay);border-radius:3px 3px 0 0;"></div>
+            </div>
+            <div style="flex:1;display:flex;align-items:flex-end;gap:5px;height:100%;">
+              <div style="flex:1;height:85%;background:var(--teal);border-radius:3px 3px 0 0;"></div>
+              <div style="flex:1;height:66%;background:var(--clay);border-radius:3px 3px 0 0;"></div>
+            </div>
+            <div style="flex:1;display:flex;align-items:flex-end;gap:5px;height:100%;">
+              <div style="flex:1;height:92%;background:var(--teal);border-radius:3px 3px 0 0;position:relative;"></div>
+              <div style="flex:1;height:83%;background:var(--clay);border-radius:3px 3px 0 0;"></div>
+            </div>
+          </div>
+          <div style="display:flex;margin-top:8px;font-size:10.5px;color:var(--faint);">
+            <span style="flex:1;text-align:center;">Mar</span><span style="flex:1;text-align:center;">Apr</span><span style="flex:1;text-align:center;">May</span><span style="flex:1;text-align:center;">Jun</span><span style="flex:1;text-align:center;">Jul</span><span style="flex:1;text-align:center;font-weight:700;color:var(--ink2);">Aug*</span>
+          </div>
+          <div style="font-size:10.5px;color:var(--faint);margin-top:6px;">*August figures are month-to-date, through 21 Aug — payroll for the month has already run.</div>
+        </div>
+
+        <!-- LEDGER -->
+        <div class="card" style="padding:0;display:flex;flex-direction:column;overflow:hidden;flex:1;min-height:0;">
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 20px 10px;">
+            <div style="font-size:14px;font-weight:700;">Transaction ledger</div>
+            <div style="font-size:11.5px;color:var(--faint);">Auto-synced rows are locked — edit them from Fees or Payroll</div>
+          </div>
+          <div class="acc-row" style="border-top:1px solid var(--line);font-size:10.5px;color:var(--faint);text-transform:uppercase;letter-spacing:.05em;padding-top:10px;padding-bottom:10px;">
+            <div>Date</div><div>Description</div><div>Category</div><div>Source</div><div style="text-align:right;">Amount</div><div style="text-align:right;">Balance</div>
+          </div>
+          <div id="acc-ledger-body" data-balance="1870700" style="overflow-y:auto;">
+
+            <div class="acc-row">
+              <div class="mono" style="color:var(--faint);">21 Aug</div>
+              <div>Fee payment — Ishaan Rao (5-A)</div>
+              <div style="color:var(--muted);">Fees</div>
+              <div><span class="acc-srctag"><svg width="9" height="9" viewBox="0 0 20 20"><rect x="4.5" y="9" width="11" height="8" rx="1.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M6.5 9V6.5a3.5 3.5 0 0 1 7 0V9" fill="none" stroke="currentColor" stroke-width="2"/></svg>Auto: Fee payment</span></div>
+              <div class="mono" style="text-align:right;color:var(--teal);font-weight:600;">+₹22,000</div>
+              <div class="mono" style="text-align:right;font-weight:600;">₹18,70,700</div>
+            </div>
+
+            <div class="acc-row">
+              <div class="mono" style="color:var(--faint);">19 Aug</div>
+              <div>Annual Day event expenses</div>
+              <div style="color:var(--muted);">Events</div>
+              <div style="color:var(--faint);font-weight:600;font-size:11.5px;">Manual</div>
+              <div class="mono" style="text-align:right;color:var(--clay);font-weight:600;">−₹1,05,000</div>
+              <div class="mono" style="text-align:right;font-weight:600;">₹18,48,700</div>
+            </div>
+
+            <div class="acc-row">
+              <div class="mono" style="color:var(--faint);">17 Aug</div>
+              <div>Facility maintenance — plumbing</div>
+              <div style="color:var(--muted);">Maintenance</div>
+              <div style="color:var(--faint);font-weight:600;font-size:11.5px;">Manual</div>
+              <div class="mono" style="text-align:right;color:var(--clay);font-weight:600;">−₹18,600</div>
+              <div class="mono" style="text-align:right;font-weight:600;">₹19,53,700</div>
+            </div>
+
+            <div class="acc-row">
+              <div class="mono" style="color:var(--faint);">15 Aug</div>
+              <div>Canteen concession fee</div>
+              <div style="color:var(--muted);">Facilities</div>
+              <div style="color:var(--faint);font-weight:600;font-size:11.5px;">Manual</div>
+              <div class="mono" style="text-align:right;color:var(--teal);font-weight:600;">+₹15,000</div>
+              <div class="mono" style="text-align:right;font-weight:600;">₹19,72,300</div>
+            </div>
+
+            <div class="acc-row">
+              <div class="mono" style="color:var(--faint);">12 Aug</div>
+              <div>Bulk fee collections (142 pmts)</div>
+              <div style="color:var(--muted);">Fees</div>
+              <div><span class="acc-srctag"><svg width="9" height="9" viewBox="0 0 20 20"><rect x="4.5" y="9" width="11" height="8" rx="1.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M6.5 9V6.5a3.5 3.5 0 0 1 7 0V9" fill="none" stroke="currentColor" stroke-width="2"/></svg>Auto: Fee payment</span></div>
+              <div class="mono" style="text-align:right;color:var(--teal);font-weight:600;">+₹7,42,000</div>
+              <div class="mono" style="text-align:right;font-weight:600;">₹19,57,300</div>
+            </div>
+
+            <div class="acc-row">
+              <div class="mono" style="color:var(--faint);">10 Aug</div>
+              <div>Staff salary — August payroll</div>
+              <div style="color:var(--muted);">Payroll</div>
+              <div><span class="acc-srctag"><svg width="9" height="9" viewBox="0 0 20 20"><rect x="4.5" y="9" width="11" height="8" rx="1.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M6.5 9V6.5a3.5 3.5 0 0 1 7 0V9" fill="none" stroke="currentColor" stroke-width="2"/></svg>Auto: Payroll</span></div>
+              <div class="mono" style="text-align:right;color:var(--clay);font-weight:600;">−₹6,10,000</div>
+              <div class="mono" style="text-align:right;font-weight:600;">₹12,15,300</div>
+            </div>
+
+            <div class="acc-row">
+              <div class="mono" style="color:var(--faint);">09 Aug</div>
+              <div>Stationery &amp; printing supplies</div>
+              <div style="color:var(--muted);">Supplies</div>
+              <div style="color:var(--faint);font-weight:600;font-size:11.5px;">Manual</div>
+              <div class="mono" style="text-align:right;color:var(--clay);font-weight:600;">−₹8,200</div>
+              <div class="mono" style="text-align:right;font-weight:600;">₹18,25,300</div>
+            </div>
+
+            <div class="acc-row">
+              <div class="mono" style="color:var(--faint);">07 Aug</div>
+              <div>Fee payment — S. Kulkarni (3-A)</div>
+              <div style="color:var(--muted);">Fees</div>
+              <div><span class="acc-srctag"><svg width="9" height="9" viewBox="0 0 20 20"><rect x="4.5" y="9" width="11" height="8" rx="1.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M6.5 9V6.5a3.5 3.5 0 0 1 7 0V9" fill="none" stroke="currentColor" stroke-width="2"/></svg>Auto: Fee payment</span></div>
+              <div class="mono" style="text-align:right;color:var(--teal);font-weight:600;">+₹48,000</div>
+              <div class="mono" style="text-align:right;font-weight:600;">₹18,33,500</div>
+            </div>
+
+            <div class="acc-row">
+              <div class="mono" style="color:var(--faint);">05 Aug</div>
+              <div>Electricity bill — August</div>
+              <div style="color:var(--muted);">Utilities</div>
+              <div style="color:var(--faint);font-weight:600;font-size:11.5px;">Manual</div>
+              <div class="mono" style="text-align:right;color:var(--clay);font-weight:600;">−₹42,500</div>
+              <div class="mono" style="text-align:right;font-weight:600;">₹17,85,500</div>
+            </div>
+
+            <div class="acc-row">
+              <div class="mono" style="color:var(--faint);">03 Aug</div>
+              <div>Fee payment — Rohan Nair (4-B)</div>
+              <div style="color:var(--muted);">Fees</div>
+              <div><span class="acc-srctag"><svg width="9" height="9" viewBox="0 0 20 20"><rect x="4.5" y="9" width="11" height="8" rx="1.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M6.5 9V6.5a3.5 3.5 0 0 1 7 0V9" fill="none" stroke="currentColor" stroke-width="2"/></svg>Auto: Fee payment</span></div>
+              <div class="mono" style="text-align:right;color:var(--teal);font-weight:600;">+₹48,000</div>
+              <div class="mono" style="text-align:right;font-weight:600;">₹18,28,000</div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT: ADD TRANSACTION -->
+      <div class="card acc-panel" id="acc-panel" style="padding:22px;display:flex;flex-direction:column;gap:15px;position:relative;">
+        <span class="acc-panel-close" id="acc-panel-close" title="Close">&times;</span>
+        <div>
+          <div style="font-size:13.5px;font-weight:700;margin-bottom:2px;">Add transaction</div>
+          <div style="font-size:12px;color:var(--muted);">Manual entries only — fee payments and payroll sync in automatically</div>
+        </div>
+
+        <div style="display:flex;background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:3px;">
+          <span class="acc-toggle-btn" id="acc-toggle-income" data-type="income" style="flex:1;text-align:center;padding:7px;border-radius:6px;font-size:12.5px;font-weight:700;cursor:pointer;">Income</span>
+          <span class="acc-toggle-btn active" id="acc-toggle-expense" data-type="expense" style="flex:1;text-align:center;padding:7px;border-radius:6px;font-size:12.5px;font-weight:700;cursor:pointer;">Expense</span>
+        </div>
+
+        <div class="field"><label>Date</label><input class="in mono" id="acc-date" type="text" value="21 Aug 2026" /></div>
+        <div class="field"><label>Description</label><input class="in" id="acc-desc" type="text" value="Generator fuel — August" /></div>
+        <div class="field"><label>Category</label>
+          <select class="in" id="acc-category">
+            <option>Maintenance</option>
+            <option>Utilities</option>
+            <option>Supplies</option>
+            <option>Events</option>
+            <option>Facilities</option>
+            <option>Transport</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="field"><label>Amount</label><input class="in mono" id="acc-amount" type="number" min="0" step="1" value="6400" /></div>
+
+        <span id="acc-save-btn" class="acc-save-btn" style="background:var(--marigold);color:#fff;border-radius:8px;padding:10px;text-align:center;font-size:13.5px;font-weight:700;cursor:pointer;">Add Transaction</span>
+
+        <div style="border-top:1px solid var(--line);padding-top:14px;margin-top:2px;">
+          <div style="font-size:11.5px;color:var(--faint);text-transform:uppercase;letter-spacing:.05em;margin-bottom:10px;">Recent manual entries</div>
+          <div id="acc-recent-list">
+            <div style="display:flex;justify-content:space-between;font-size:12.5px;margin-bottom:8px;"><span style="color:var(--muted);">17 Aug · Facility maintenance</span><span class="mono" style="font-weight:600;color:var(--clay);">−₹18,600</span></div>
+            <div style="display:flex;justify-content:space-between;font-size:12.5px;margin-bottom:8px;"><span style="color:var(--muted);">15 Aug · Canteen concession</span><span class="mono" style="font-weight:600;color:var(--teal);">+₹15,000</span></div>
+            <div style="display:flex;justify-content:space-between;font-size:12.5px;"><span style="color:var(--muted);">05 Aug · Electricity bill</span><span class="mono" style="font-weight:600;color:var(--clay);">−₹42,500</span></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+<script>
+(function(){
+  var root = document.getElementById('view-Accounts');
+  if (!root) return;
+
+  var openBtn = root.querySelector('#acc-open-panel-btn');
+  var panel = root.querySelector('#acc-panel');
+  var closeBtn = root.querySelector('#acc-panel-close');
+
+  var toggleIncome = root.querySelector('#acc-toggle-income');
+  var toggleExpense = root.querySelector('#acc-toggle-expense');
+
+  var dateInput = root.querySelector('#acc-date');
+  var descInput = root.querySelector('#acc-desc');
+  var categorySelect = root.querySelector('#acc-category');
+  var amountInput = root.querySelector('#acc-amount');
+  var saveBtn = root.querySelector('#acc-save-btn');
+
+  var ledgerBody = root.querySelector('#acc-ledger-body');
+  var recentList = root.querySelector('#acc-recent-list');
+
+  var statIncome = root.querySelector('#acc-stat-income');
+  var statExpense = root.querySelector('#acc-stat-expense');
+  var statNet = root.querySelector('#acc-stat-net');
+  var statBalance = root.querySelector('#acc-stat-balance');
+
+  // running totals, in rupees — seeded from the authored stat-tile values
+  var incomeMonth = 880000;   // ₹8.8L
+  var expenseMonth = 780000;  // ₹7.8L
+  var balance = parseFloat(ledgerBody.getAttribute('data-balance')) || 1870700; // ₹18.7L, matches top ledger row
+
+  var txnType = 'expense'; // matches the authored default toggle state
+
+  function formatINR(n) {
+    n = Math.round(n);
+    var neg = n < 0;
+    n = Math.abs(n);
+    var s = n.toString();
+    var lastThree = s.substring(s.length - 3);
+    var other = s.substring(0, s.length - 3);
+    if (other !== '') lastThree = ',' + lastThree;
+    var otherFormatted = other.replace(/\B(?=(\d{2})+(?!\d))/g, ',');
+    return (neg ? '−' : '') + '₹' + otherFormatted + lastThree;
+  }
+
+  function formatLakh(n) {
+    return (n / 100000).toFixed(1) + 'L';
+  }
+
+  function openPanel() { panel.style.display = 'flex'; }
+  function closePanel() { panel.style.display = 'none'; }
+
+  function resetForm() {
+    dateInput.value = '21 Aug 2026';
+    descInput.value = '';
+    categorySelect.selectedIndex = 0;
+    amountInput.value = '';
+    setToggle('expense');
+  }
+
+  function setToggle(type) {
+    txnType = type;
+    if (type === 'income') {
+      toggleIncome.classList.add('active');
+      toggleExpense.classList.remove('active');
+    } else {
+      toggleExpense.classList.add('active');
+      toggleIncome.classList.remove('active');
+    }
+  }
+
+  openBtn.addEventListener('click', openPanel);
+  closeBtn.addEventListener('click', function (e) {
+    e.stopPropagation();
+    closePanel();
+  });
+
+  toggleIncome.addEventListener('click', function () { setToggle('income'); });
+  toggleExpense.addEventListener('click', function () { setToggle('expense'); });
+
+  function updateStatTiles() {
+    statIncome.textContent = '₹' + formatLakh(incomeMonth);
+    statExpense.textContent = '₹' + formatLakh(expenseMonth);
+
+    var net = incomeMonth - expenseMonth;
+    statNet.textContent = (net >= 0 ? '+₹' : '−₹') + formatLakh(Math.abs(net));
+    statNet.style.color = net >= 0 ? 'var(--good)' : 'var(--clay)';
+
+    statBalance.textContent = '₹' + formatLakh(balance);
+  }
+
+  saveBtn.addEventListener('click', function () {
+    var amount = parseFloat(amountInput.value);
+    if (!amount || amount <= 0) {
+      amountInput.focus();
+      return;
+    }
+    var desc = (descInput.value || '').trim() || (txnType === 'income' ? 'Manual income entry' : 'Manual expense entry');
+    var category = categorySelect.value;
+    var dateVal = (dateInput.value || '').trim() || '21 Aug 2026';
+    var shortDate = dateVal.split(' ').slice(0, 2).join(' ');
+
+    // running-balance math: income increases the balance, expense decreases it
+    if (txnType === 'income') {
+      balance += amount;
+      incomeMonth += amount;
+    } else {
+      balance -= amount;
+      expenseMonth += amount;
+    }
+
+    var amountColor = txnType === 'income' ? 'var(--teal)' : 'var(--clay)';
+    var amountSign = txnType === 'income' ? '+' : '−';
+
+    var row = document.createElement('div');
+    row.className = 'acc-row acc-flash';
+    row.innerHTML =
+      '<div class="mono" style="color:var(--faint);">' + shortDate + '</div>' +
+      '<div>' + desc + '</div>' +
+      '<div style="color:var(--muted);">' + category + '</div>' +
+      '<div style="color:var(--faint);font-weight:600;font-size:11.5px;">Manual</div>' +
+      '<div class="mono" style="text-align:right;color:' + amountColor + ';font-weight:600;">' + amountSign + formatINR(amount) + '</div>' +
+      '<div class="mono" style="text-align:right;font-weight:600;">' + formatINR(balance) + '</div>';
+    ledgerBody.insertBefore(row, ledgerBody.firstChild);
+    ledgerBody.setAttribute('data-balance', String(balance));
+    setTimeout(function () { row.classList.remove('acc-flash'); }, 1200);
+
+    var recentEntry = document.createElement('div');
+    recentEntry.style.cssText = 'display:flex;justify-content:space-between;font-size:12.5px;margin-bottom:8px;';
+    recentEntry.innerHTML =
+      '<span style="color:var(--muted);">' + shortDate + ' · ' + desc + '</span>' +
+      '<span class="mono" style="font-weight:600;color:' + amountColor + ';">' + amountSign + formatINR(amount) + '</span>';
+    recentList.insertBefore(recentEntry, recentList.firstChild);
+
+    updateStatTiles();
+    resetForm();
+    closePanel();
+  });
+})();
+</script>

@@ -1,0 +1,1 @@
+/* no extra rules needed — SchoolAdmin.dc.html's <style> block only defined :root tokens, .mono, .disp, .navgroup, .navitem, .navitem.active, .icon, and .card, all of which are already part of the shared shell's common CSS set. */

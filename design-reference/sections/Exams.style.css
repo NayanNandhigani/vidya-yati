@@ -1,0 +1,19 @@
+/* Bespoke rules from Exams.dc.html, renamed with the exam- module prefix
+   to avoid colliding with same-named-but-different classes in other modules
+   (e.g. Attendance also defines a differently-sized .avatar). Shared common
+   classes (tokens, .mono, .disp, .card, .pill, .navitem/.navitem.active/
+   .icon/.navgroup) already live in the shared shell and are not repeated here. */
+
+.exam-avatar{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;flex:none;}
+.exam-mcell{text-align:center;}
+.exam-fail{background:var(--bad-tint);color:var(--bad);border-radius:5px;font-weight:700;}
+
+/* Exam-strip card selection state (was previously baked into the Unit Test 1
+   card's inline style; now toggled by JS between the three cards). */
+.exam-card{cursor:pointer;}
+.exam-card.exam-selected{border:2px solid var(--marigold);background:var(--marigold-tint);}
+
+/* Inline-editable marks cells */
+.exam-mark{cursor:text;border-radius:4px;outline:none;}
+.exam-mark:hover{background:var(--line);}
+.exam-mark:focus{background:#fff;box-shadow:0 0 0 2px var(--marigold);}

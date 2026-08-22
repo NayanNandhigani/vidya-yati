@@ -1,0 +1,94 @@
+/* Accounts screen — bespoke rules beyond the shared common set */
+
+.acc-row {
+  display: grid;
+  grid-template-columns: 56px 226px 78px 168px 92px 108px;
+  align-items: center;
+  padding: 8px 20px;
+  border-bottom: 1px solid var(--line);
+  font-size: 12.5px;
+}
+.acc-row:last-child {
+  border-bottom: none;
+}
+
+.acc-srctag {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 10.5px;
+  font-weight: 700;
+  padding: 3px 8px 3px 7px;
+  border-radius: 100px;
+  background: #EDEFF4;
+  color: var(--ink2);
+  white-space: nowrap;
+}
+
+.acc-panel-close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  line-height: 1;
+  color: var(--muted);
+  cursor: pointer;
+  transition: background .12s ease, color .12s ease;
+}
+.acc-panel-close:hover {
+  background: var(--paper);
+  color: var(--ink);
+}
+
+.acc-toggle-btn {
+  color: var(--faint);
+  transition: background .12s ease, color .12s ease;
+  user-select: none;
+}
+.acc-toggle-btn[data-type="income"].active {
+  background: var(--teal);
+  color: #fff;
+}
+.acc-toggle-btn[data-type="expense"].active {
+  background: var(--clay);
+  color: #fff;
+}
+
+.acc-save-btn {
+  transition: filter .12s ease;
+}
+.acc-save-btn:hover {
+  filter: brightness(1.06);
+}
+.acc-save-btn:active {
+  filter: brightness(.94);
+}
+
+/* real <select>/<input> elements dropped into the shared .field/.in pattern
+   need a couple of resets so they still read as the same "fake input" look */
+.field select.in {
+  appearance: none;
+  -webkit-appearance: none;
+  cursor: pointer;
+}
+.field input.in {
+  outline: none;
+}
+.field input.in:focus,
+.field select.in:focus {
+  border-color: var(--marigold);
+}
+
+@keyframes acc-flash-anim {
+  0%   { background: var(--good-tint); }
+  100% { background: transparent; }
+}
+.acc-flash {
+  animation: acc-flash-anim 1.2s ease;
+}

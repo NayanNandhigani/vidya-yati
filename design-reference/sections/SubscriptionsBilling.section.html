@@ -1,0 +1,331 @@
+<section class="view" id="view-SubscriptionsBilling" data-view="SubscriptionsBilling">
+  <!-- MAIN -->
+  <div style="flex:1;overflow:hidden;padding:28px 36px;display:flex;flex-direction:column;gap:18px;">
+
+    <div style="display:flex;align-items:center;justify-content:space-between;">
+      <div>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div class="disp" style="font-size:22px;">Subscriptions &amp; Billing</div>
+          <span style="font-size:11px;font-weight:700;color:var(--muted);background:var(--line);padding:3px 9px;border-radius:100px;">Illustrative data</span>
+        </div>
+        <div style="font-size:13.5px;color:var(--muted);margin-top:2px;">FY 2025–26 · Schools' subscription payments to Vidya Yati</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:12px;">
+        <span id="sub-btn-create-invoice" style="background:var(--card);border:1px solid var(--line);border-radius:8px;padding:9px 16px;font-size:13.5px;font-weight:600;cursor:pointer;" onclick="console.log('subscriptions: create invoice clicked')">+ Create invoice</span>
+        <div style="width:34px;height:34px;border-radius:50%;background:var(--ink2);color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;">VY</div>
+      </div>
+    </div>
+
+    <!-- STAT TILES -->
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;">
+      <div class="card" style="padding:16px 18px;">
+        <div style="font-size:12px;color:var(--muted);margin-bottom:8px;">Revenue collected — FY26</div>
+        <div class="mono" style="font-size:25px;font-weight:600;color:var(--marigold-deep);">₹1.24Cr</div>
+      </div>
+      <div class="card" style="padding:16px 18px;border-color:var(--bad-border);background:var(--bad-tint);">
+        <div style="font-size:12px;color:var(--bad);margin-bottom:8px;font-weight:600;">Outstanding / overdue</div>
+        <div class="mono" style="font-size:25px;font-weight:600;color:var(--bad);">₹2.52L</div>
+      </div>
+      <div class="card" style="padding:16px 18px;">
+        <div style="font-size:12px;color:var(--muted);margin-bottom:8px;">Active subscriptions</div>
+        <div class="mono" style="font-size:25px;font-weight:600;color:var(--good);">16</div>
+      </div>
+      <div class="card" style="padding:16px 18px;">
+        <div style="font-size:12px;color:var(--muted);margin-bottom:8px;">Annual recurring total</div>
+        <div class="mono" style="font-size:25px;font-weight:600;color:var(--teal);">₹1.58Cr</div>
+      </div>
+    </div>
+
+    <!-- OVERDUE ALERT -->
+    <div style="background:var(--bad-tint);border:1px solid var(--bad-border);border-radius:10px;padding:13px 18px;display:flex;align-items:center;justify-content:space-between;">
+      <div style="font-size:13.5px;color:var(--bad);"><b>2 schools</b> are overdue on payment — Foothill Academy (₹1.80L, 12 days overdue), Northstar Public School (₹0.72L, 5 days overdue).</div>
+      <span id="sub-btn-send-reminders" style="font-size:13px;font-weight:700;color:var(--bad);white-space:nowrap;cursor:pointer;" onclick="console.log('subscriptions: send reminders clicked')">Send reminders →</span>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 340px;gap:18px;flex:1;min-height:0;">
+
+      <!-- LEDGER TABLE -->
+      <div class="card" style="padding:22px;display:flex;flex-direction:column;overflow:hidden;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+          <div style="font-size:14px;font-weight:700;">Subscription ledger</div>
+          <div style="font-size:12.5px;color:var(--muted);">Showing 8 of 18 · <span id="sub-btn-view-all" style="color:var(--marigold-deep);font-weight:600;cursor:pointer;" onclick="console.log('subscriptions: view all clicked')">View all</span></div>
+        </div>
+        <div style="display:grid;grid-template-columns:2fr 0.7fr 1fr 1.05fr 0.95fr 0.95fr 0.95fr;font-size:11px;color:var(--faint);text-transform:uppercase;letter-spacing:.04em;padding-bottom:10px;border-bottom:1px solid var(--line);">
+          <div>School</div><div>Plan</div><div>Amount / yr</div><div>Status</div><div>Last invoice</div><div>Last payment</div><div>Next renewal</div>
+        </div>
+
+        <div class="sub-ledger-row" id="sub-row-sunrise" data-school="Sunrise Public School" data-invoice="INV-2027-0091" data-due-date="12 Mar 2027" data-amount-due="₹1,85,000" data-status="active" style="display:grid;grid-template-columns:2fr 0.7fr 1fr 1.05fr 0.95fr 0.95fr 0.95fr;align-items:center;padding:12px 0;border-bottom:1px solid var(--line);font-size:13px;cursor:pointer;">
+          <div style="font-weight:600;">Sunrise Public School</div><div style="color:var(--muted);">Standard</div><div class="mono">₹1,85,000</div>
+          <div><span class="pill" id="sub-row-sunrise-pill" style="background:var(--good-tint);color:var(--good);">Active</span></div>
+          <div class="mono" style="color:var(--muted);">28 Feb 2026</div><div class="mono" id="sub-row-sunrise-lastpay" style="color:var(--muted);">05 Mar 2026</div><div class="mono" style="color:var(--muted);">12 Mar 2027</div>
+        </div>
+        <div class="sub-ledger-row" id="sub-row-littlesparrows" data-school="Little Sparrows Kindergarten" data-invoice="INV-2027-0034" data-due-date="04 Feb 2027" data-amount-due="₹45,000" data-status="active" style="display:grid;grid-template-columns:2fr 0.7fr 1fr 1.05fr 0.95fr 0.95fr 0.95fr;align-items:center;padding:12px 0;border-bottom:1px solid var(--line);font-size:13px;cursor:pointer;">
+          <div style="font-weight:600;">Little Sparrows Kindergarten</div><div style="color:var(--muted);">Standard</div><div class="mono">₹45,000</div>
+          <div><span class="pill" id="sub-row-littlesparrows-pill" style="background:var(--good-tint);color:var(--good);">Active</span></div>
+          <div class="mono" style="color:var(--muted);">20 Jan 2026</div><div class="mono" id="sub-row-littlesparrows-lastpay" style="color:var(--muted);">25 Jan 2026</div><div class="mono" style="color:var(--muted);">04 Feb 2027</div>
+        </div>
+        <div class="sub-ledger-row" id="sub-row-greenvalley" data-school="Green Valley International" data-invoice="INV-2026-0212" data-due-date="30 Sep 2026" data-amount-due="₹6,20,000" data-status="expiring" style="display:grid;grid-template-columns:2fr 0.7fr 1fr 1.05fr 0.95fr 0.95fr 0.95fr;align-items:center;padding:12px 0;border-bottom:1px solid var(--line);font-size:13px;cursor:pointer;">
+          <div style="font-weight:600;">Green Valley International</div><div style="color:var(--muted);">Premium</div><div class="mono">₹6,20,000</div>
+          <div><span class="pill" id="sub-row-greenvalley-pill" style="background:var(--warn-tint);color:var(--warn);">Expiring soon</span></div>
+          <div class="mono" style="color:var(--muted);">15 Sep 2025</div><div class="mono" id="sub-row-greenvalley-lastpay" style="color:var(--muted);">22 Sep 2025</div><div class="mono" style="color:var(--muted);">30 Sep 2026</div>
+        </div>
+        <div class="sub-ledger-row" id="sub-row-brightminds" data-school="Bright Minds Academy" data-invoice="INV-2026-0198" data-due-date="14 Sep 2026" data-amount-due="₹1,10,000" data-status="expiring" style="display:grid;grid-template-columns:2fr 0.7fr 1fr 1.05fr 0.95fr 0.95fr 0.95fr;align-items:center;padding:12px 0;border-bottom:1px solid var(--line);font-size:13px;cursor:pointer;">
+          <div style="font-weight:600;">Bright Minds Academy</div><div style="color:var(--muted);">Standard</div><div class="mono">₹1,10,000</div>
+          <div><span class="pill" id="sub-row-brightminds-pill" style="background:var(--warn-tint);color:var(--warn);">Expiring soon</span></div>
+          <div class="mono" style="color:var(--muted);">01 Sep 2025</div><div class="mono" id="sub-row-brightminds-lastpay" style="color:var(--muted);">08 Sep 2025</div><div class="mono" style="color:var(--muted);">14 Sep 2026</div>
+        </div>
+        <div class="sub-ledger-row" id="sub-row-silveroak" data-school="Silver Oak Convent School" data-invoice="INV-2026-0205" data-due-date="20 Sep 2026" data-amount-due="₹85,000" data-status="expiring" style="display:grid;grid-template-columns:2fr 0.7fr 1fr 1.05fr 0.95fr 0.95fr 0.95fr;align-items:center;padding:12px 0;border-bottom:1px solid var(--line);font-size:13px;cursor:pointer;">
+          <div style="font-weight:600;">Silver Oak Convent School</div><div style="color:var(--muted);">Standard</div><div class="mono">₹85,000</div>
+          <div><span class="pill" id="sub-row-silveroak-pill" style="background:var(--warn-tint);color:var(--warn);">Expiring soon</span></div>
+          <div class="mono" style="color:var(--muted);">10 Sep 2025</div><div class="mono" id="sub-row-silveroak-lastpay" style="color:var(--muted);">18 Sep 2025</div><div class="mono" style="color:var(--muted);">20 Sep 2026</div>
+        </div>
+        <div class="sub-ledger-row" id="sub-row-rosewood" data-school="Rosewood Public School" data-invoice="—" data-due-date="Ends 02 Sep 2026" data-amount-due="—" data-status="trial" style="display:grid;grid-template-columns:2fr 0.7fr 1fr 1.05fr 0.95fr 0.95fr 0.95fr;align-items:center;padding:12px 0;border-bottom:1px solid var(--line);font-size:13px;cursor:pointer;">
+          <div style="font-weight:600;">Rosewood Public School</div><div style="color:var(--muted);">Standard</div><div class="mono">₹28,000</div>
+          <div><span class="pill" id="sub-row-rosewood-pill" style="background:var(--info-tint);color:var(--info);">Trial</span></div>
+          <div class="mono" style="color:var(--faint);">—</div><div class="mono" id="sub-row-rosewood-lastpay" style="color:var(--faint);">—</div><div class="mono" style="color:var(--muted);">Ends 02 Sep 2026</div>
+        </div>
+        <div class="sub-ledger-row" id="sub-row-foothill" data-school="Foothill Academy" data-invoice="INV-2026-0143" data-due-date="09 Aug 2026" data-amount-due="₹1,80,000" data-status="overdue" data-overdue-days="12" style="display:grid;grid-template-columns:2fr 0.7fr 1fr 1.05fr 0.95fr 0.95fr 0.95fr;align-items:center;padding:12px 0;border-bottom:1px solid var(--line);font-size:13px;background:var(--bad-tint);margin:0 -22px;padding-left:22px;padding-right:22px;width:calc(100% + 44px);cursor:pointer;">
+          <div style="font-weight:600;">Foothill Academy</div><div style="color:var(--muted);">Standard</div><div class="mono" id="sub-row-foothill-amount" style="color:var(--bad);font-weight:600;">₹1,80,000</div>
+          <div><span class="pill" id="sub-row-foothill-pill" style="background:var(--bad-tint);color:var(--bad);">Overdue</span></div>
+          <div class="mono" style="color:var(--muted);">28 Jul 2026</div><div class="mono" id="sub-row-foothill-lastpay" style="color:var(--muted);">14 Jul 2025</div><div class="mono" id="sub-row-foothill-renewal" style="color:var(--bad);font-weight:600;">09 Aug 2026</div>
+        </div>
+        <div class="sub-ledger-row" id="sub-row-northstar" data-school="Northstar Public School" data-invoice="INV-2026-0158" data-due-date="16 Aug 2026" data-amount-due="₹72,000" data-status="overdue" data-overdue-days="5" style="display:grid;grid-template-columns:2fr 0.7fr 1fr 1.05fr 0.95fr 0.95fr 0.95fr;align-items:center;padding:12px 0;font-size:13px;background:var(--bad-tint);margin:0 -22px;padding-left:22px;padding-right:22px;width:calc(100% + 44px);cursor:pointer;">
+          <div style="font-weight:600;">Northstar Public School</div><div style="color:var(--muted);">Standard</div><div class="mono" id="sub-row-northstar-amount" style="color:var(--bad);font-weight:600;">₹72,000</div>
+          <div><span class="pill" id="sub-row-northstar-pill" style="background:var(--bad-tint);color:var(--bad);">Overdue</span></div>
+          <div class="mono" style="color:var(--muted);">02 Aug 2026</div><div class="mono" id="sub-row-northstar-lastpay" style="color:var(--muted);">30 Jul 2025</div><div class="mono" id="sub-row-northstar-renewal" style="color:var(--bad);font-weight:600;">16 Aug 2026</div>
+        </div>
+      </div>
+
+      <!-- RIGHT COLUMN -->
+      <div style="display:flex;flex-direction:column;gap:14px;min-height:0;">
+
+        <!-- PLAN TIER BREAKDOWN -->
+        <div class="card" style="padding:18px 20px;flex:none;">
+          <div style="font-size:13px;font-weight:700;margin-bottom:12px;">Revenue by plan tier</div>
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--line);">
+            <div style="display:flex;align-items:center;gap:8px;font-size:13px;"><span style="width:8px;height:8px;border-radius:50%;background:var(--marigold);display:inline-block;"></span>Standard · 14 schools</div>
+            <div class="mono" style="font-size:13px;font-weight:600;">₹0.98Cr</div>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 0 0;">
+            <div style="display:flex;align-items:center;gap:8px;font-size:13px;"><span style="width:8px;height:8px;border-radius:50%;background:var(--teal);display:inline-block;"></span>Premium · 4 schools</div>
+            <div class="mono" style="font-size:13px;font-weight:600;">₹0.60Cr</div>
+          </div>
+        </div>
+
+        <!-- RECORD A PAYMENT -->
+        <div class="card" id="sub-panel-record" style="padding:20px;display:flex;flex-direction:column;flex:1;min-height:0;overflow:hidden;">
+          <div style="display:flex;align-items:center;justify-content:space-between;">
+            <div style="font-size:14px;font-weight:700;">Record a payment</div>
+            <span id="sub-panel-close" style="cursor:pointer;color:var(--muted);font-size:17px;line-height:1;font-weight:700;" title="Close">&times;</span>
+          </div>
+          <div style="font-size:12px;color:var(--muted);margin-bottom:14px;">Apply a payment against an outstanding invoice.</div>
+
+          <div id="sub-panel-empty" style="display:none;flex:1;align-items:center;justify-content:center;text-align:center;color:var(--muted);font-size:13px;padding:20px;">
+            Select a school from the ledger to record a payment.
+          </div>
+
+          <div id="sub-panel-body" style="display:flex;flex-direction:column;flex:1;min-height:0;overflow:hidden;">
+
+            <div style="background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:12px 14px;margin-bottom:14px;flex:none;">
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+                <div id="sub-panel-school" style="font-size:13.5px;font-weight:700;">Foothill Academy</div>
+                <span id="sub-panel-pill" class="pill" style="background:var(--bad-tint);color:var(--bad);">12 days overdue</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--muted);padding:3px 0;">
+                <span>Invoice</span><span id="sub-panel-invoice" class="mono" style="color:var(--ink);">INV-2026-0143</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--muted);padding:3px 0;">
+                <span>Amount due</span><span id="sub-panel-amount-due" class="mono" style="color:var(--bad);font-weight:600;">₹1,80,000</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--muted);padding:3px 0;">
+                <span>Due date</span><span id="sub-panel-duedate" class="mono" style="color:var(--ink);">09 Aug 2026</span>
+              </div>
+            </div>
+
+            <div style="display:flex;flex-direction:column;gap:11px;overflow-y:auto;flex:1;min-height:0;">
+              <div>
+                <label class="sub-field-label">Amount received (₹)</label>
+                <input class="sub-field-input" id="sub-input-amount" type="text" value="1,80,000">
+              </div>
+              <div>
+                <label class="sub-field-label">Payment method</label>
+                <select class="sub-field-input" id="sub-input-method">
+                  <option>Bank transfer</option>
+                  <option>UPI</option>
+                  <option>Cheque</option>
+                  <option>Cash</option>
+                  <option>Card</option>
+                </select>
+              </div>
+              <div>
+                <label class="sub-field-label">Payment date</label>
+                <input class="sub-field-input" id="sub-input-date" type="date">
+              </div>
+              <div>
+                <label class="sub-field-label">Reference / UTR number</label>
+                <input class="sub-field-input" id="sub-input-reference" type="text" placeholder="e.g. UTR2216480091">
+              </div>
+              <div>
+                <label class="sub-field-label">Notes (optional)</label>
+                <textarea class="sub-field-input" id="sub-input-notes" rows="2" style="resize:none;" placeholder="Add a note about this payment"></textarea>
+              </div>
+            </div>
+
+            <div id="sub-panel-success" style="display:none;background:var(--good-tint);color:var(--good);border-radius:8px;padding:9px 12px;font-size:12.5px;font-weight:700;text-align:center;margin-top:12px;flex:none;">Payment recorded ✓</div>
+
+            <div style="display:flex;gap:10px;margin-top:14px;flex:none;">
+              <span id="sub-btn-record" style="flex:1;text-align:center;background:var(--marigold);color:#fff;border-radius:8px;padding:10px 0;font-size:13.5px;font-weight:700;cursor:pointer;">Record payment</span>
+              <span id="sub-btn-cancel" style="background:var(--card);border:1px solid var(--line);border-radius:8px;padding:10px 16px;font-size:13.5px;font-weight:600;color:var(--ink);cursor:pointer;">Cancel</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</section>
+<script>
+(function(){
+  var root = document.getElementById('view-SubscriptionsBilling');
+  if (!root) return;
+
+  var rows = root.querySelectorAll('.sub-ledger-row');
+  var panelBody = root.querySelector('#sub-panel-body');
+  var panelEmpty = root.querySelector('#sub-panel-empty');
+  var panelSuccess = root.querySelector('#sub-panel-success');
+
+  var elSchool = root.querySelector('#sub-panel-school');
+  var elPill = root.querySelector('#sub-panel-pill');
+  var elInvoice = root.querySelector('#sub-panel-invoice');
+  var elAmountDue = root.querySelector('#sub-panel-amount-due');
+  var elDueDate = root.querySelector('#sub-panel-duedate');
+  var inputAmount = root.querySelector('#sub-input-amount');
+  var inputDate = root.querySelector('#sub-input-date');
+  var inputReference = root.querySelector('#sub-input-reference');
+  var inputNotes = root.querySelector('#sub-input-notes');
+
+  var STATUS_STYLE = {
+    active:   { bg: 'var(--good-tint)', color: 'var(--good)' },
+    expiring: { bg: 'var(--warn-tint)', color: 'var(--warn)' },
+    trial:    { bg: 'var(--info-tint)', color: 'var(--info)' },
+    overdue:  { bg: 'var(--bad-tint)',  color: 'var(--bad)' }
+  };
+
+  var selectedRow = null;
+
+  function todayISO(){
+    var d = new Date();
+    var m = String(d.getMonth() + 1).padStart(2, '0');
+    var day = String(d.getDate()).padStart(2, '0');
+    return d.getFullYear() + '-' + m + '-' + day;
+  }
+
+  function todayDisplay(){
+    var d = new Date();
+    var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    var day = String(d.getDate()).padStart(2, '0');
+    return day + ' ' + months[d.getMonth()] + ' ' + d.getFullYear();
+  }
+
+  function clearSelection(){
+    rows.forEach(function(r){ r.classList.remove('sub-row-selected'); });
+  }
+
+  function openPanel(row){
+    selectedRow = row;
+    clearSelection();
+    row.classList.add('sub-row-selected');
+
+    var status = row.getAttribute('data-status');
+    var style = STATUS_STYLE[status] || STATUS_STYLE.active;
+
+    elSchool.textContent = row.getAttribute('data-school');
+    elPill.style.background = style.bg;
+    elPill.style.color = style.color;
+    elPill.textContent = status === 'overdue'
+      ? (row.getAttribute('data-overdue-days') + ' days overdue')
+      : (status === 'expiring' ? 'Expiring soon' : (status === 'trial' ? 'Trial' : 'Active'));
+
+    elInvoice.textContent = row.getAttribute('data-invoice');
+    elAmountDue.textContent = row.getAttribute('data-amount-due');
+    elAmountDue.style.color = status === 'overdue' ? 'var(--bad)' : 'var(--ink)';
+    elDueDate.textContent = row.getAttribute('data-due-date');
+
+    var amt = row.getAttribute('data-amount-due');
+    inputAmount.value = (amt && amt !== '—') ? amt.replace('₹', '') : '';
+    inputDate.value = todayISO();
+    inputReference.value = '';
+    inputNotes.value = '';
+
+    panelSuccess.style.display = 'none';
+    panelEmpty.style.display = 'none';
+    panelBody.style.display = 'flex';
+  }
+
+  function closePanel(){
+    clearSelection();
+    selectedRow = null;
+    panelBody.style.display = 'none';
+    panelEmpty.style.display = 'flex';
+  }
+
+  rows.forEach(function(row){
+    row.addEventListener('click', function(){ openPanel(row); });
+  });
+
+  root.querySelector('#sub-panel-close').addEventListener('click', closePanel);
+  root.querySelector('#sub-btn-cancel').addEventListener('click', closePanel);
+
+  root.querySelector('#sub-btn-record').addEventListener('click', function(){
+    if (!selectedRow) return;
+    var row = selectedRow;
+    var status = row.getAttribute('data-status');
+    var id = row.id;
+
+    // Update ledger row's "last payment" date to today.
+    var lastPayEl = root.querySelector('#' + id + '-lastpay');
+    if (lastPayEl) {
+      lastPayEl.textContent = todayDisplay();
+      lastPayEl.style.color = 'var(--muted)';
+    }
+
+    // If the account was overdue or expiring, mark it Active now.
+    if (status === 'overdue' || status === 'expiring') {
+      var pillEl = root.querySelector('#' + id + '-pill');
+      if (pillEl) {
+        pillEl.textContent = 'Active';
+        pillEl.style.background = 'var(--good-tint)';
+        pillEl.style.color = 'var(--good)';
+      }
+      row.setAttribute('data-status', 'active');
+
+      if (status === 'overdue') {
+        // Overdue rows carry full-row highlight + bold red cells — clear it.
+        row.style.background = '';
+        row.style.margin = '';
+        row.style.paddingLeft = '';
+        row.style.paddingRight = '';
+        row.style.width = '';
+        var amountEl = root.querySelector('#' + id + '-amount');
+        if (amountEl) { amountEl.style.color = ''; amountEl.style.fontWeight = ''; }
+        var renewalEl = root.querySelector('#' + id + '-renewal');
+        if (renewalEl) { renewalEl.style.color = 'var(--muted)'; renewalEl.style.fontWeight = ''; }
+      }
+    }
+
+    // Brief success highlight on the row.
+    row.classList.add('sub-row-flash');
+    setTimeout(function(){ row.classList.remove('sub-row-flash'); }, 1300);
+
+    // Confirm, then reset & close the panel.
+    panelSuccess.style.display = 'block';
+    setTimeout(function(){
+      closePanel();
+    }, 1000);
+  });
+
+  // Open with Foothill Academy pre-selected, matching the static mockup's default state.
+  openPanel(root.querySelector('#sub-row-foothill'));
+})();
+</script>

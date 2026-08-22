@@ -1,0 +1,278 @@
+<section class="view" id="view-Employees" data-view="Employees" style="flex:1;overflow:hidden;padding:26px 34px;display:flex;flex-direction:column;gap:16px;">
+
+  <div style="display:flex;align-items:center;justify-content:space-between;">
+    <div style="display:flex;align-items:center;gap:10px;">
+      <div class="disp" style="font-size:21px;">Employees <span class="mono" style="font-family:'IBM Plex Mono';font-size:14px;font-weight:500;color:var(--faint);">· 46</span></div>
+      <span style="font-size:11px;font-weight:700;color:var(--muted);background:var(--line);padding:3px 9px;border-radius:100px;">Illustrative data</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:10px;">
+      <span style="background:var(--card);border:1px solid var(--line);border-radius:8px;padding:8px 15px;font-size:13px;color:var(--faint);width:200px;">🔍  Search staff…</span>
+      <span style="background:var(--card);border:1px solid var(--line);border-radius:8px;padding:8px 14px;font-size:13px;font-weight:600;">Department ▾</span>
+      <span style="background:var(--marigold);color:#fff;border-radius:8px;padding:8px 16px;font-size:13px;font-weight:600;">+ Add Staff</span>
+      <div style="width:32px;height:32px;border-radius:50%;background:var(--ink2);color:#fff;display:flex;align-items:center;justify-content:center;font-size:12.5px;font-weight:700;">SK</div>
+    </div>
+  </div>
+
+  <!-- STAT TILES -->
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:13px;">
+    <div class="card" style="padding:14px 17px;"><div style="font-size:11.5px;color:var(--muted);margin-bottom:6px;">Total staff</div><div class="mono" style="font-size:21px;font-weight:700;">46</div></div>
+    <div class="card" style="padding:14px 17px;"><div style="font-size:11.5px;color:var(--muted);margin-bottom:6px;">Teaching staff</div><div class="mono" style="font-size:21px;font-weight:700;color:var(--teal);">31</div></div>
+    <div class="card" style="padding:14px 17px;"><div style="font-size:11.5px;color:var(--muted);margin-bottom:6px;">Non-teaching staff</div><div class="mono" style="font-size:21px;font-weight:700;">15</div></div>
+    <div class="card" style="padding:14px 17px;"><div style="font-size:11.5px;color:var(--muted);margin-bottom:6px;">On leave today</div><div class="mono" style="font-size:21px;font-weight:700;color:var(--warn);">2</div></div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1.6fr 1fr;gap:16px;flex:1;min-height:0;">
+
+    <!-- STAFF LIST -->
+    <div class="card" id="emp-list" style="padding:0;display:flex;flex-direction:column;overflow:hidden;">
+      <div style="display:grid;grid-template-columns:1.9fr 1.6fr 1.1fr 1.3fr 0.9fr;padding:13px 20px;border-bottom:1px solid var(--line);font-size:10.5px;color:var(--faint);text-transform:uppercase;letter-spacing:.05em;">
+        <div>Staff</div><div>Designation</div><div>Department</div><div>Contact</div><div>Status</div>
+      </div>
+
+      <div class="emp-row emp-row-selected" id="emp-row-1" data-name="Priya Kapoor" data-initials="PK" data-color="var(--marigold)" style="display:grid;grid-template-columns:1.9fr 1.6fr 1.1fr 1.3fr 0.9fr;align-items:center;padding:12px 20px;border-bottom:1px solid var(--line);">
+        <div style="display:flex;align-items:center;gap:10px;"><div class="avatar" style="background:var(--marigold);">PK</div><div style="font-weight:700;font-size:13.5px;">Priya Kapoor</div></div>
+        <div style="font-size:12.5px;">Class Teacher — 6B</div>
+        <div style="font-size:12.5px;color:var(--muted);">Academics</div>
+        <div class="mono" style="font-size:12px;color:var(--muted);">+91 98XXX XX112</div>
+        <div><span class="pill" style="background:var(--good-tint);color:var(--good);">Active</span></div>
+      </div>
+      <div class="emp-row" id="emp-row-2" data-name="Arjun Nair" data-initials="AN" data-color="var(--teal)" style="display:grid;grid-template-columns:1.9fr 1.6fr 1.1fr 1.3fr 0.9fr;align-items:center;padding:12px 20px;border-bottom:1px solid var(--line);">
+        <div style="display:flex;align-items:center;gap:10px;"><div class="avatar" style="background:var(--teal);">AN</div><div style="font-weight:600;font-size:13.5px;">Arjun Nair</div></div>
+        <div style="font-size:12.5px;">Subject Teacher — Maths</div>
+        <div style="font-size:12.5px;color:var(--muted);">Academics</div>
+        <div class="mono" style="font-size:12px;color:var(--muted);">+91 98XXX XX234</div>
+        <div><span class="pill" style="background:var(--good-tint);color:var(--good);">Active</span></div>
+      </div>
+      <div class="emp-row" id="emp-row-3" data-name="Fatima Sheikh" data-initials="FS" data-color="#8A6FD1" style="display:grid;grid-template-columns:1.9fr 1.6fr 1.1fr 1.3fr 0.9fr;align-items:center;padding:12px 20px;border-bottom:1px solid var(--line);">
+        <div style="display:flex;align-items:center;gap:10px;"><div class="avatar" style="background:#8A6FD1;">FS</div><div style="font-weight:600;font-size:13.5px;">Fatima Sheikh</div></div>
+        <div style="font-size:12.5px;">Subject Teacher — English</div>
+        <div style="font-size:12.5px;color:var(--muted);">Academics</div>
+        <div class="mono" style="font-size:12px;color:var(--muted);">+91 98XXX XX356</div>
+        <div><span class="pill" style="background:var(--good-tint);color:var(--good);">Active</span></div>
+      </div>
+      <div class="emp-row" id="emp-row-4" data-name="Suresh Iyer" data-initials="SI" data-color="#4C8FBF" style="display:grid;grid-template-columns:1.9fr 1.6fr 1.1fr 1.3fr 0.9fr;align-items:center;padding:12px 20px;border-bottom:1px solid var(--line);">
+        <div style="display:flex;align-items:center;gap:10px;"><div class="avatar" style="background:#4C8FBF;">SI</div><div style="font-weight:600;font-size:13.5px;">Suresh Iyer</div></div>
+        <div style="font-size:12.5px;">Accountant</div>
+        <div style="font-size:12.5px;color:var(--muted);">Finance</div>
+        <div class="mono" style="font-size:12px;color:var(--muted);">+91 98XXX XX478</div>
+        <div><span class="pill" style="background:var(--good-tint);color:var(--good);">Active</span></div>
+      </div>
+      <div class="emp-row" id="emp-row-5" data-name="Lakshmi Menon" data-initials="LM" data-color="#D16F8A" style="display:grid;grid-template-columns:1.9fr 1.6fr 1.1fr 1.3fr 0.9fr;align-items:center;padding:12px 20px;border-bottom:1px solid var(--line);">
+        <div style="display:flex;align-items:center;gap:10px;"><div class="avatar" style="background:#D16F8A;">LM</div><div style="font-weight:600;font-size:13.5px;">Lakshmi Menon</div></div>
+        <div style="font-size:12.5px;">Librarian</div>
+        <div style="font-size:12.5px;color:var(--muted);">Library</div>
+        <div class="mono" style="font-size:12px;color:var(--muted);">+91 98XXX XX590</div>
+        <div><span class="pill" style="background:var(--good-tint);color:var(--good);">Active</span></div>
+      </div>
+      <div class="emp-row" id="emp-row-6" data-name="Vikram Chauhan" data-initials="VC" data-color="#C2884A" style="display:grid;grid-template-columns:1.9fr 1.6fr 1.1fr 1.3fr 0.9fr;align-items:center;padding:12px 20px;border-bottom:1px solid var(--line);">
+        <div style="display:flex;align-items:center;gap:10px;"><div class="avatar" style="background:#C2884A;">VC</div><div style="font-weight:600;font-size:13.5px;">Vikram Chauhan</div></div>
+        <div style="font-size:12.5px;">Transport Coordinator</div>
+        <div style="font-size:12.5px;color:var(--muted);">Operations</div>
+        <div class="mono" style="font-size:12px;color:var(--muted);">+91 98XXX XX612</div>
+        <div><span class="pill" style="background:var(--warn-tint);color:var(--warn);">On Leave</span></div>
+      </div>
+      <div class="emp-row" id="emp-row-7" data-name="Ramesh Bhatt" data-initials="RB" data-color="#3F9B7A" style="display:grid;grid-template-columns:1.9fr 1.6fr 1.1fr 1.3fr 0.9fr;align-items:center;padding:12px 20px;border-bottom:1px solid var(--line);">
+        <div style="display:flex;align-items:center;gap:10px;"><div class="avatar" style="background:#3F9B7A;">RB</div><div style="font-weight:600;font-size:13.5px;">Ramesh Bhatt</div></div>
+        <div style="font-size:12.5px;">Principal</div>
+        <div style="font-size:12.5px;color:var(--muted);">Administration</div>
+        <div class="mono" style="font-size:12px;color:var(--muted);">+91 98XXX XX734</div>
+        <div><span class="pill" style="background:var(--good-tint);color:var(--good);">Active</span></div>
+      </div>
+      <div class="emp-row" id="emp-row-8" data-name="Anita Rao" data-initials="AR" data-color="#B5624A" style="display:grid;grid-template-columns:1.9fr 1.6fr 1.1fr 1.3fr 0.9fr;align-items:center;padding:12px 20px;">
+        <div style="display:flex;align-items:center;gap:10px;"><div class="avatar" style="background:#B5624A;">AR</div><div style="font-weight:600;font-size:13.5px;">Anita Rao</div></div>
+        <div style="font-size:12.5px;">Receptionist</div>
+        <div style="font-size:12.5px;color:var(--muted);">Administration</div>
+        <div class="mono" style="font-size:12px;color:var(--muted);">+91 98XXX XX856</div>
+        <div><span class="pill" style="background:var(--good-tint);color:var(--good);">Active</span></div>
+      </div>
+    </div>
+
+    <!-- STAFF DETAIL PANEL -->
+    <div class="card" id="emp-detail-panel" style="padding:22px;display:flex;flex-direction:column;overflow:hidden;">
+      <div style="display:flex;align-items:center;gap:14px;margin-bottom:16px;">
+        <div class="avatar" id="emp-detail-avatar" style="width:52px;height:52px;font-size:17px;background:var(--marigold);">PK</div>
+        <div style="flex:1;">
+          <div style="display:flex;align-items:center;gap:8px;">
+            <div id="emp-detail-name" style="font-weight:700;font-size:16.5px;">Mrs. Priya Kapoor</div>
+            <span class="pill" style="background:var(--good-tint);color:var(--good);">Active</span>
+          </div>
+          <div style="font-size:12.5px;color:var(--muted);">Class Teacher — 6B · Academics · EMP-0142</div>
+        </div>
+      </div>
+
+      <div style="display:flex;gap:4px;background:var(--paper);border-radius:8px;padding:4px;margin-bottom:16px;">
+        <span class="emp-tab" id="emp-tab-profile" data-panel="emp-panel-profile">Profile</span>
+        <span class="emp-tab" id="emp-tab-attendance" data-panel="emp-panel-attendance">Attendance</span>
+        <span class="emp-tab" id="emp-tab-payroll" data-panel="emp-panel-payroll">Payroll</span>
+        <span class="emp-tab emp-tab-active" id="emp-tab-access" data-panel="emp-panel-access">Access &amp; Permissions</span>
+      </div>
+
+      <div class="emp-panel" id="emp-panel-profile">
+        <div style="flex:1;overflow-y:auto;">
+          <div class="emp-section-title">Personal Details</div>
+          <div class="emp-field-grid">
+            <div><div class="emp-field-label">Date of Birth</div><div class="emp-field-value">14 Mar 1988</div></div>
+            <div><div class="emp-field-label">Gender</div><div class="emp-field-value">Female</div></div>
+            <div><div class="emp-field-label">Blood Group</div><div class="emp-field-value">B+</div></div>
+            <div><div class="emp-field-label">Date of Joining</div><div class="emp-field-value">12 Jun 2018</div></div>
+          </div>
+
+          <div class="emp-section-title">Qualifications</div>
+          <div class="emp-field-grid">
+            <div><div class="emp-field-label">Highest Qualification</div><div class="emp-field-value">M.Ed — Mathematics</div></div>
+            <div><div class="emp-field-label">Additional Qualification</div><div class="emp-field-value">B.Ed, B.Sc (Mathematics)</div></div>
+            <div class="emp-field-full"><div class="emp-field-label">Subject Specialization</div><div class="emp-field-value">Mathematics — Middle School (Grades 5–8)</div></div>
+            <div><div class="emp-field-label">Experience</div><div class="emp-field-value">8 years</div></div>
+          </div>
+
+          <div class="emp-section-title">Contact</div>
+          <div class="emp-field-grid">
+            <div><div class="emp-field-label">Phone</div><div class="emp-field-value mono">+91 98765 43112</div></div>
+            <div><div class="emp-field-label">Email</div><div class="emp-field-value mono" style="font-size:12px;">priya.kapoor@vidyayati.edu.in</div></div>
+            <div class="emp-field-full"><div class="emp-field-label">Address</div><div class="emp-field-value">24, Lake Garden Road, Indiranagar, Bengaluru — 560038</div></div>
+            <div class="emp-field-full"><div class="emp-field-label">Emergency Contact</div><div class="emp-field-value">Rajesh Kapoor (Spouse) · +91 98765 11223</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="emp-panel" id="emp-panel-attendance">
+        <div style="flex:1;overflow-y:auto;">
+          <div class="emp-section-title">This Month — August 2026</div>
+          <div class="emp-stat-grid">
+            <div class="emp-stat-tile"><div class="emp-stat-tile-label">Present Days</div><div class="emp-stat-tile-value mono" style="color:var(--good);">17</div></div>
+            <div class="emp-stat-tile"><div class="emp-stat-tile-label">Absent</div><div class="emp-stat-tile-value mono" style="color:var(--critical);">1</div></div>
+            <div class="emp-stat-tile"><div class="emp-stat-tile-label">Leave / Late</div><div class="emp-stat-tile-value mono" style="color:var(--warn);">2</div></div>
+            <div class="emp-stat-tile"><div class="emp-stat-tile-label">Attendance</div><div class="emp-stat-tile-value mono">85%</div></div>
+          </div>
+
+          <div class="emp-section-title">Last 10 Working Days</div>
+          <div>
+            <div class="emp-att-row"><div><span class="emp-att-date">21 Aug</span><span class="emp-att-day">Fri</span></div><span class="pill" style="background:var(--good-tint);color:var(--good);">Present</span></div>
+            <div class="emp-att-row"><div><span class="emp-att-date">20 Aug</span><span class="emp-att-day">Thu</span></div><span class="pill" style="background:var(--good-tint);color:var(--good);">Present</span></div>
+            <div class="emp-att-row"><div><span class="emp-att-date">19 Aug</span><span class="emp-att-day">Wed</span></div><span class="pill" style="background:var(--warn-tint);color:var(--warn);">Leave</span></div>
+            <div class="emp-att-row"><div><span class="emp-att-date">18 Aug</span><span class="emp-att-day">Tue</span></div><span class="pill" style="background:var(--good-tint);color:var(--good);">Present</span></div>
+            <div class="emp-att-row"><div><span class="emp-att-date">17 Aug</span><span class="emp-att-day">Mon</span></div><span class="pill" style="background:var(--good-tint);color:var(--good);">Present</span></div>
+            <div class="emp-att-row"><div><span class="emp-att-date">14 Aug</span><span class="emp-att-day">Fri</span></div><span class="pill" style="background:var(--good-tint);color:var(--good);">Present</span></div>
+            <div class="emp-att-row"><div><span class="emp-att-date">13 Aug</span><span class="emp-att-day">Thu</span></div><span class="pill" style="background:var(--warn-tint);color:var(--warn);">Late</span></div>
+            <div class="emp-att-row"><div><span class="emp-att-date">12 Aug</span><span class="emp-att-day">Wed</span></div><span class="pill" style="background:var(--critical-tint);color:var(--critical);">Absent</span></div>
+            <div class="emp-att-row"><div><span class="emp-att-date">11 Aug</span><span class="emp-att-day">Tue</span></div><span class="pill" style="background:var(--good-tint);color:var(--good);">Present</span></div>
+            <div class="emp-att-row"><div><span class="emp-att-date">10 Aug</span><span class="emp-att-day">Mon</span></div><span class="pill" style="background:var(--good-tint);color:var(--good);">Present</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="emp-panel" id="emp-panel-payroll">
+        <div style="flex:1;overflow-y:auto;">
+          <div class="emp-section-title">Monthly Salary — August 2026</div>
+          <div class="emp-pay-row"><div>Basic Pay</div><span class="mono">₹42,000</span></div>
+          <div class="emp-pay-row"><div>House Rent Allowance</div><span class="mono">₹12,600</span></div>
+          <div class="emp-pay-row"><div>Special Allowance</div><span class="mono">₹5,400</span></div>
+          <div class="emp-pay-row emp-pay-row-total"><div>Gross Pay</div><span class="mono">₹60,000</span></div>
+          <div class="emp-pay-row"><div>Provident Fund</div><span class="mono" style="color:var(--critical);">−₹5,040</span></div>
+          <div class="emp-pay-row"><div>Professional Tax</div><span class="mono" style="color:var(--critical);">−₹200</span></div>
+          <div class="emp-pay-row"><div>Income Tax (TDS)</div><span class="mono" style="color:var(--critical);">−₹1,850</span></div>
+          <div class="emp-pay-row emp-pay-row-total"><div>Total Deductions</div><span class="mono" style="color:var(--critical);">−₹7,090</span></div>
+
+          <div class="emp-pay-net"><div class="emp-pay-net-label">Net Pay</div><span class="mono emp-pay-net-value">₹52,910</span></div>
+
+          <div class="emp-section-title">Recent Payslips</div>
+          <div class="emp-payslip-row"><div class="emp-payslip-month">April 2026</div><div class="emp-payslip-right"><span class="mono" style="font-size:12.5px;color:var(--muted);">₹52,910</span><span class="pill" style="background:var(--good-tint);color:var(--good);">Paid</span></div></div>
+          <div class="emp-payslip-row"><div class="emp-payslip-month">May 2026</div><div class="emp-payslip-right"><span class="mono" style="font-size:12.5px;color:var(--muted);">₹52,910</span><span class="pill" style="background:var(--good-tint);color:var(--good);">Paid</span></div></div>
+          <div class="emp-payslip-row"><div class="emp-payslip-month">June 2026</div><div class="emp-payslip-right"><span class="mono" style="font-size:12.5px;color:var(--muted);">₹52,910</span><span class="pill" style="background:var(--good-tint);color:var(--good);">Paid</span></div></div>
+          <div class="emp-payslip-row"><div class="emp-payslip-month">July 2026</div><div class="emp-payslip-right"><span class="mono" style="font-size:12.5px;color:var(--muted);">₹52,910</span><span class="pill" style="background:var(--good-tint);color:var(--good);">Paid</span></div></div>
+        </div>
+      </div>
+
+      <div class="emp-panel emp-panel-active" id="emp-panel-access">
+        <div style="background:var(--teal-tint);border-radius:8px;padding:10px 12px;font-size:11.5px;color:var(--teal);margin-bottom:14px;line-height:1.4;">Access is granted per module, not by a fixed role — this is what makes Mrs. Kapoor a "Class Teacher" functionally. Click a permission to cycle its level.</div>
+
+        <div style="flex:1;overflow-y:auto;">
+          <div class="permrow"><div style="font-size:13px;font-weight:600;">Students</div><span class="pill emp-perm-pill" id="emp-perm-students" data-states="No access|View only|View + Edit" data-state-idx="2" style="background:var(--good-tint);color:var(--good);">View + Edit</span></div>
+          <div class="permrow"><div style="font-size:13px;font-weight:600;">Attendance</div><span class="pill emp-perm-pill" id="emp-perm-attendance" data-states="No access|View only|Mark" data-state-idx="2" style="background:var(--teal-tint);color:var(--teal);">Mark</span></div>
+          <div class="permrow"><div style="font-size:13px;font-weight:600;">Homework</div><span class="pill emp-perm-pill" id="emp-perm-homework" data-states="No access|View only|View + Edit" data-state-idx="2" style="background:var(--good-tint);color:var(--good);">View + Edit</span></div>
+          <div class="permrow"><div style="font-size:13px;font-weight:600;">Exams</div><span class="pill emp-perm-pill" id="emp-perm-exams" data-states="No access|View only|Enter Marks" data-state-idx="2" style="background:var(--teal-tint);color:var(--teal);">Enter Marks</span></div>
+          <div class="permrow"><div style="font-size:13px;font-weight:600;">Timetable</div><span class="pill emp-perm-pill" id="emp-perm-timetable" data-states="No access|View only|View + Edit" data-state-idx="1" style="background:var(--marigold-tint);color:var(--marigold-deep);">View only</span></div>
+          <div class="permrow"><div style="font-size:13px;font-weight:600;">Fees</div><span class="pill emp-perm-pill" id="emp-perm-fees" data-states="No access|View only|View + Edit" data-state-idx="1" style="background:var(--marigold-tint);color:var(--marigold-deep);">View only</span></div>
+          <div class="permrow"><div style="font-size:13px;font-weight:600;">Communication</div><span class="pill emp-perm-pill" id="emp-perm-communication" data-states="No access|View only|Send" data-state-idx="2" style="background:var(--teal-tint);color:var(--teal);">Send</span></div>
+          <div class="permrow"><div style="font-size:13px;font-weight:600;">Accounts</div><span class="pill emp-perm-pill" id="emp-perm-accounts" data-states="No access|View only|View + Edit" data-state-idx="0" style="background:var(--line);color:var(--faint);">No access</span></div>
+          <div class="permrow"><div style="font-size:13px;font-weight:600;">Transport</div><span class="pill emp-perm-pill" id="emp-perm-transport" data-states="No access|View only|View + Edit" data-state-idx="0" style="background:var(--line);color:var(--faint);">No access</span></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+<script>
+(function(){
+  var root = document.getElementById('view-Employees');
+  if(!root) return;
+
+  // --- Tab switching (Profile / Attendance / Payroll / Access & Permissions) ---
+  var tabs = root.querySelectorAll('.emp-tab');
+  var panels = root.querySelectorAll('.emp-panel');
+  for (var i = 0; i < tabs.length; i++) {
+    (function(tab){
+      tab.addEventListener('click', function(){
+        for (var j = 0; j < tabs.length; j++) tabs[j].classList.remove('emp-tab-active');
+        for (var k = 0; k < panels.length; k++) panels[k].classList.remove('emp-panel-active');
+        tab.classList.add('emp-tab-active');
+        var panel = root.querySelector('#' + tab.getAttribute('data-panel'));
+        if (panel) panel.classList.add('emp-panel-active');
+      });
+    })(tabs[i]);
+  }
+
+  // --- Row selection (highlight + swap detail header) ---
+  var rows = root.querySelectorAll('.emp-row');
+  var detailAvatar = root.querySelector('#emp-detail-avatar');
+  var detailName = root.querySelector('#emp-detail-name');
+  var detailPanel = root.querySelector('#emp-detail-panel');
+  var defaultRow = root.querySelector('#emp-row-1');
+
+  for (var m = 0; m < rows.length; m++) {
+    (function(row){
+      row.addEventListener('click', function(){
+        for (var n = 0; n < rows.length; n++) rows[n].classList.remove('emp-row-selected');
+        row.classList.add('emp-row-selected');
+        if (detailAvatar) {
+          detailAvatar.textContent = row.getAttribute('data-initials');
+          detailAvatar.style.background = row.getAttribute('data-color');
+        }
+        if (detailName) detailName.textContent = row.getAttribute('data-name');
+        if (detailPanel) {
+          if (row === defaultRow) {
+            detailPanel.removeAttribute('title');
+          } else {
+            detailPanel.setAttribute('title', 'Illustrative data');
+          }
+        }
+      });
+    })(rows[m]);
+  }
+
+  // --- Access & Permissions: click a pill to cycle its level ---
+  function colorFor(label){
+    if (label === 'No access') return { bg: 'var(--line)', fg: 'var(--faint)' };
+    if (label === 'View only') return { bg: 'var(--marigold-tint)', fg: 'var(--marigold-deep)' };
+    if (label === 'View + Edit') return { bg: 'var(--good-tint)', fg: 'var(--good)' };
+    return { bg: 'var(--teal-tint)', fg: 'var(--teal)' }; // module-specific action states (Mark, Enter Marks, Send)
+  }
+
+  var pills = root.querySelectorAll('.emp-perm-pill');
+  for (var p = 0; p < pills.length; p++) {
+    (function(pill){
+      var states = pill.getAttribute('data-states').split('|');
+      pill.addEventListener('click', function(){
+        var idx = parseInt(pill.getAttribute('data-state-idx'), 10);
+        idx = (idx + 1) % states.length;
+        pill.setAttribute('data-state-idx', idx);
+        var label = states[idx];
+        pill.textContent = label;
+        var c = colorFor(label);
+        pill.style.background = c.bg;
+        pill.style.color = c.fg;
+      });
+    })(pills[p]);
+  }
+})();
+</script>

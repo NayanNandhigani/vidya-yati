@@ -1,0 +1,199 @@
+<section class="view" id="view-Timetable" data-view="Timetable">
+  <!-- MAIN -->
+  <div style="flex:1;overflow:hidden;padding:22px 30px;display:flex;flex-direction:column;gap:13px;">
+
+    <div style="display:flex;align-items:center;justify-content:space-between;">
+      <div>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div class="disp" style="font-size:21px;">Timetable</div>
+          <span style="font-size:11px;font-weight:700;color:var(--muted);background:var(--line);padding:3px 9px;border-radius:100px;">Illustrative data</span>
+        </div>
+        <div style="font-size:13px;color:var(--muted);margin-top:2px;">Friday, 21 August 2026 · Term 2</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;">
+        <select id="tt-class-select" class="mono" style="background:var(--card);border:1px solid var(--line);border-radius:8px;padding:8px 30px 8px 14px;font-size:13px;font-weight:600;color:var(--ink);font-family:'Plus Jakarta Sans',system-ui,sans-serif;cursor:pointer;">
+          <option value="6-B" selected>Class 6-B</option>
+          <option value="6-A">Class 6-A</option>
+          <option value="7-A">Class 7-A</option>
+        </select>
+        <span id="tt-class-teacher" style="background:var(--card);border:1px solid var(--line);border-radius:8px;padding:8px 14px;font-size:13px;font-weight:600;">Class teacher: Mrs. Priya Kapoor</span>
+        <span style="background:var(--marigold);color:#fff;border-radius:8px;padding:8px 15px;font-size:13px;font-weight:700;">Print</span>
+        <div style="width:32px;height:32px;border-radius:50%;background:var(--ink2);color:#fff;display:flex;align-items:center;justify-content:center;font-size:12.5px;font-weight:700;">SK</div>
+      </div>
+    </div>
+
+    <!-- SUBJECT LEGEND -->
+    <div class="card" style="padding:10px 18px;display:flex;align-items:center;gap:20px;flex-wrap:wrap;font-size:11.5px;color:var(--muted);">
+      <span><span class="tt-legend-dot" style="background:var(--marigold);"></span>Mathematics</span>
+      <span><span class="tt-legend-dot" style="background:var(--teal);"></span>Science</span>
+      <span><span class="tt-legend-dot" style="background:var(--clay);"></span>English</span>
+      <span><span class="tt-legend-dot" style="background:var(--good);"></span>Hindi</span>
+      <span><span class="tt-legend-dot" style="background:var(--info);"></span>Social Studies</span>
+      <span><span class="tt-legend-dot" style="background:var(--info);"></span>Computer Science</span>
+      <span><span class="tt-legend-dot" style="background:var(--clay);"></span>Art</span>
+      <span><span class="tt-legend-dot" style="background:var(--warn);"></span>Physical Education</span>
+      <span><span class="tt-legend-dot" style="background:var(--faint);"></span>Library</span>
+      <span><span class="tt-legend-dot" style="background:var(--critical);"></span>Sanskrit</span>
+    </div>
+
+    <!-- WEEKLY GRID -->
+    <div class="card" style="padding:0;flex:1;min-height:0;display:flex;flex-direction:column;overflow:hidden;">
+
+      <!-- DAY HEADER -->
+      <div style="display:grid;grid-template-columns:84px repeat(6,1fr);border-bottom:1px solid var(--line);flex:none;">
+        <div style="padding:9px 12px;font-size:10px;color:var(--faint);text-transform:uppercase;letter-spacing:.05em;border-right:1px solid var(--line);">Period</div>
+        <div style="padding:9px 0;text-align:center;font-size:12.5px;font-weight:700;border-right:1px solid var(--line);">Mon</div>
+        <div style="padding:9px 0;text-align:center;font-size:12.5px;font-weight:700;border-right:1px solid var(--line);">Tue</div>
+        <div style="padding:9px 0;text-align:center;font-size:12.5px;font-weight:700;border-right:1px solid var(--line);">Wed</div>
+        <div style="padding:9px 0;text-align:center;font-size:12.5px;font-weight:700;border-right:1px solid var(--line);">Thu</div>
+        <div class="tt-today" style="padding:9px 0;text-align:center;font-size:12.5px;font-weight:700;border-right:1px solid var(--line);color:var(--marigold-deep);">Fri <span class="mono" style="font-size:9.5px;font-weight:600;">· Today</span></div>
+        <div style="padding:9px 0;text-align:center;font-size:12.5px;font-weight:700;">Sat</div>
+      </div>
+
+      <!-- Populated by JS from TT_DATA below, keyed by the class selector's
+           value — see the script block after this section. -->
+      <div id="tt-grid" style="flex:1;min-height:0;display:flex;flex-direction:column;"></div>
+    </div>
+  </div>
+</section>
+<script>
+(function(){
+  var root = document.getElementById('view-Timetable');
+  if(!root) return;
+
+  // Friday is "today" per the page header (Fri 21 Aug 2026) — same column
+  // (0=Mon..5=Sat) is highlighted for every class.
+  var TODAY_COL = 4;
+
+  var SUBJECT_STYLE = {
+    'Mathematics':     { bg:'var(--marigold-tint)', fg:'var(--marigold-deep)' },
+    'Science':         { bg:'var(--teal-tint)',      fg:'var(--teal)' },
+    'English':         { bg:'var(--clay-tint)',       fg:'var(--clay)' },
+    'Hindi':           { bg:'var(--good-tint)',       fg:'var(--good)' },
+    'Sanskrit':        { bg:'var(--critical-tint)',   fg:'var(--critical)' },
+    'Social Studies':  { bg:'var(--info-tint)',       fg:'var(--info)' },
+    'Computer Sci.':   { bg:'var(--info-tint)',       fg:'var(--info)' },
+    'Art':             { bg:'var(--clay-tint)',       fg:'var(--clay)' },
+    'Phys. Education': { bg:'var(--warn-tint)',       fg:'var(--warn)' },
+    'Library':         { bg:'var(--faint)',           fg:'#fff', solid:true }
+  };
+
+  // ---- Weekly timetable data, one entry per class code (matches the
+  // <option value> on #tt-class-select). Each row is either a teaching
+  // period ({p, time, cells}) or a break ({brk:true, time, label}); cells
+  // run Mon..Sat, each as [subject, teacherCode] — a subject of '—' with a
+  // label in the teacherCode slot renders as a blank/placeholder chip
+  // (Assembly, no class, etc). ----
+  var TT_DATA = {
+    '6-B': {
+      teacher: 'Mrs. Priya Kapoor',
+      rows: [
+        { p:'P1', time:'08:00–08:40', cells:[['Mathematics','PK'],['English','MS'],['Science','AV'],['Mathematics','PK'],['Social Studies','DK'],['Mathematics','PK']] },
+        { p:'P2', time:'08:40–09:20', cells:[['Science','AV'],['Mathematics','PK'],['English','MS'],['Hindi','SB'],['Mathematics','PK'],['English','MS']] },
+        { p:'P3', time:'09:20–10:00', cells:[['English','MS'],['Science','AV'],['Mathematics','PK'],['English','MS'],['Science','AV'],['Science','AV']] },
+        { p:'P4', time:'10:00–10:40', cells:[['Hindi','SB'],['Social Studies','DK'],['Computer Sci.','RN'],['Science','AV'],['English','MS'],['Hindi','SB']] },
+        { p:'P5', time:'10:40–11:20', cells:[['Social Studies','DK'],['Hindi','SB'],['Social Studies','DK'],['Computer Sci.','RN'],['Hindi','SB'],['—','Assembly']] },
+        { brk:true, time:'11:20–12:00', label:'Lunch Break' },
+        { p:'P6', time:'12:00–12:40', cells:[['Computer Sci.','RN'],['Phys. Education','KB'],['Hindi','SB'],['Social Studies','DK'],['Art','TR'],['—','— No class —']] },
+        { p:'P7', time:'12:40–13:20', cells:[['Art','TR'],['Library','LN'],['Art','TR'],['Phys. Education','KB'],['Computer Sci.','RN'],['—','— No class —']] },
+        { p:'P8', time:'13:20–14:00', cells:[['Phys. Education','KB'],['Computer Sci.','RN'],['Mathematics','PK'],['Library','LN'],['Mathematics','PK'],['—','— No class —']] }
+      ]
+    },
+    '6-A': {
+      teacher: 'Mrs. Fatima Sheikh',
+      rows: [
+        { p:'P1', time:'08:00–08:40', cells:[['Science','KR'],['Mathematics','NG'],['English','RI'],['Social Studies','FS'],['Mathematics','NG'],['Hindi','SJ']] },
+        { p:'P2', time:'08:40–09:20', cells:[['Mathematics','NG'],['English','RI'],['Science','KR'],['Mathematics','NG'],['English','RI'],['Mathematics','NG']] },
+        { p:'P3', time:'09:20–10:00', cells:[['English','RI'],['Social Studies','FS'],['Mathematics','NG'],['Hindi','SJ'],['Science','KR'],['English','RI']] },
+        { brk:true, time:'10:00–10:15', label:'Recess' },
+        { p:'P4', time:'10:15–10:55', cells:[['Hindi','SJ'],['Science','KR'],['Social Studies','FS'],['English','RI'],['Mathematics','NG'],['—','Assembly']] },
+        { p:'P5', time:'10:55–11:35', cells:[['Social Studies','FS'],['Computer Sci.','VN'],['Hindi','SJ'],['Science','KR'],['Social Studies','FS'],['—','— No class —']] },
+        { brk:true, time:'11:35–12:15', label:'Lunch Break' },
+        { p:'P6', time:'12:15–12:55', cells:[['Computer Sci.','VN'],['Art','LM'],['Phys. Education','KB'],['Computer Sci.','VN'],['Hindi','SJ'],['—','— No class —']] },
+        { p:'P7', time:'12:55–13:35', cells:[['Art','LM'],['Phys. Education','KB'],['Computer Sci.','VN'],['Art','LM'],['Library','LN'],['—','— No class —']] },
+        { p:'P8', time:'13:35–14:15', cells:[['Phys. Education','KB'],['Library','LN'],['Art','LM'],['Phys. Education','KB'],['Computer Sci.','VN'],['—','— No class —']] }
+      ]
+    },
+    '7-A': {
+      teacher: 'Mrs. Meera Nair',
+      rows: [
+        { p:'P1', time:'07:50–08:35', cells:[['Mathematics','SR'],['Science','KD'],['English','MN'],['Sanskrit','RP'],['Social Studies','DK'],['Mathematics','SR']] },
+        { p:'P2', time:'08:35–09:20', cells:[['English','MN'],['Mathematics','SR'],['Science','KD'],['Mathematics','SR'],['English','MN'],['Science','KD']] },
+        { p:'P3', time:'09:20–10:05', cells:[['Science','KD'],['English','MN'],['Sanskrit','RP'],['Social Studies','DK'],['Mathematics','SR'],['Social Studies','DK']] },
+        { p:'P4', time:'10:05–10:50', cells:[['Social Studies','DK'],['Sanskrit','RP'],['Mathematics','SR'],['Science','KD'],['Hindi','AK'],['—','Assembly']] },
+        { brk:true, time:'10:50–11:05', label:'Short Break' },
+        { p:'P5', time:'11:05–11:50', cells:[['Hindi','AK'],['Social Studies','DK'],['Hindi','AK'],['English','MN'],['Computer Sci.','RN'],['—','— No class —']] },
+        { p:'P6', time:'11:50–12:35', cells:[['Computer Sci.','RN'],['Hindi','AK'],['Computer Sci.','RN'],['Sanskrit','RP'],['Science','KD'],['—','— No class —']] },
+        { brk:true, time:'12:35–13:15', label:'Lunch Break' },
+        { p:'P7', time:'13:15–14:00', cells:[['Art','TR'],['Phys. Education','KB'],['Library','LN'],['Art','TR'],['Phys. Education','KB'],['—','— No class —']] },
+        { p:'P8', time:'14:00–14:45', cells:[['Phys. Education','KB'],['Art','TR'],['Phys. Education','KB'],['Library','LN'],['Art','TR'],['—','— No class —']] }
+      ]
+    }
+  };
+
+  var grid = root.querySelector('#tt-grid');
+  var classSelect = root.querySelector('#tt-class-select');
+  var teacherLabel = root.querySelector('#tt-class-teacher');
+
+  function cellHtml(subject, code, isToday){
+    var cls = 'tt-cell' + (isToday ? ' tt-today' : '');
+    if (subject === '—') {
+      return '<div class="' + cls + '"><div class="tt-chip" style="background:var(--paper);border:1px dashed var(--line);">'
+        + '<div style="font-size:10.5px;font-weight:700;color:var(--faint);">' + code + '</div></div></div>';
+    }
+    var style = SUBJECT_STYLE[subject] || { bg:'var(--line)', fg:'var(--muted)' };
+    var chipOpacity = style.solid ? 'opacity:.9;' : '';
+    var codeOpacity = style.solid ? 'opacity:.8;' : 'opacity:.75;';
+    return '<div class="' + cls + '"><div class="tt-chip" style="background:' + style.bg + ';' + chipOpacity + '">'
+      + '<div style="font-size:11px;font-weight:700;color:' + style.fg + ';">' + subject + '</div>'
+      + '<div class="mono" style="font-size:9px;color:' + style.fg + ';' + codeOpacity + '">' + code + '</div></div></div>';
+  }
+
+  function rowHtml(row){
+    if (row.brk) {
+      return '<div class="tt-row" style="flex:0.55;background:var(--paper);">'
+        + '<div class="tt-period" style="border-right:1px solid var(--line);"><div style="font-size:10.5px;font-weight:700;color:var(--faint);">Break</div>'
+        + '<div class="mono" style="font-size:9px;color:var(--faint);">' + row.time + '</div></div>'
+        + '<div style="grid-column:2 / span 6;display:flex;align-items:center;justify-content:center;font-size:11.5px;font-weight:700;color:var(--faint);letter-spacing:.03em;">— ' + row.label + ' —</div>'
+        + '</div>';
+    }
+    var cellsHtml = '';
+    for (var i = 0; i < row.cells.length; i++) {
+      cellsHtml += cellHtml(row.cells[i][0], row.cells[i][1], i === TODAY_COL);
+    }
+    return '<div class="tt-row"><div class="tt-period"><div style="font-size:12px;font-weight:700;">' + row.p + '</div>'
+      + '<div class="mono" style="font-size:9px;color:var(--faint);">' + row.time + '</div></div>'
+      + cellsHtml + '</div>';
+  }
+
+  function renderClass(code){
+    var data = TT_DATA[code];
+    if (!data || !grid) return;
+    var html = '';
+    for (var i = 0; i < data.rows.length; i++) { html += rowHtml(data.rows[i]); }
+    grid.innerHTML = html;
+    if (teacherLabel) teacherLabel.textContent = 'Class teacher: ' + data.teacher;
+  }
+
+  // ---- Class selector: rebuilds the weekly grid + class-teacher label
+  // from TT_DATA for whichever class is chosen — all three options carry
+  // real, distinct data (different subjects/teachers/period-and-break
+  // timings), so switching classes genuinely changes what's shown. ----
+  if (classSelect) {
+    classSelect.addEventListener('change', function(){
+      renderClass(classSelect.value);
+    });
+    renderClass(classSelect.value);
+  }
+
+  // ---- Period cells: hover affordance (CSS) + click-to-toggle "selected"
+  // outline. Delegated on the grid container since its cells are rebuilt
+  // whenever the class selection changes. ----
+  if (grid) {
+    grid.addEventListener('click', function(e){
+      var cell = e.target.closest('.tt-cell');
+      if (cell) cell.classList.toggle('tt-cell-selected');
+    });
+  }
+})();
+</script>

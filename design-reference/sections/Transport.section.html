@@ -1,0 +1,338 @@
+<section class="view" id="view-Transport" data-view="Transport">
+  <!-- MAIN -->
+  <div style="flex:1;overflow:hidden;padding:26px 34px;display:flex;flex-direction:column;gap:16px;">
+
+    <div style="display:flex;align-items:center;justify-content:space-between;">
+      <div>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div class="disp" style="font-size:21px;">Transport &amp; Hostel</div>
+          <span style="font-size:11px;font-weight:700;color:var(--muted);background:var(--line);padding:3px 9px;border-radius:100px;">Illustrative data</span>
+        </div>
+        <div style="font-size:13px;color:var(--muted);margin-top:2px;">Friday, 21 August 2026 · Term 2</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:12px;">
+        <span style="background:var(--card);border:1px solid var(--line);border-radius:8px;padding:8px 15px;font-size:13px;font-weight:600;">+ Add route</span>
+        <div style="width:32px;height:32px;border-radius:50%;background:var(--ink2);color:#fff;display:flex;align-items:center;justify-content:center;font-size:12.5px;font-weight:700;">SK</div>
+      </div>
+    </div>
+
+    <!-- TAB BAR -->
+    <div style="display:flex;border-bottom:1px solid var(--line);">
+      <div class="trn-tab active" id="trn-tab-transport">Transport</div>
+      <div class="trn-tab" id="trn-tab-hostel">Hostel</div>
+    </div>
+
+    <!-- TRANSPORT TAB CONTENT -->
+    <div id="trn-tab-content-transport" style="display:flex;flex-direction:column;gap:16px;flex:1;min-height:0;">
+
+      <!-- STAT TILES -->
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:13px;">
+        <div class="card" style="padding:14px 17px;"><div style="font-size:11.5px;color:var(--muted);margin-bottom:6px;">Active routes</div><div class="mono" style="font-size:21px;font-weight:700;">6</div></div>
+        <div class="card" style="padding:14px 17px;"><div style="font-size:11.5px;color:var(--muted);margin-bottom:6px;">Students commuting</div><div class="mono" style="font-size:21px;font-weight:700;">143</div></div>
+        <div class="card" style="padding:14px 17px;"><div style="font-size:11.5px;color:var(--muted);margin-bottom:6px;">Buses in service</div><div class="mono" style="font-size:21px;font-weight:700;color:var(--teal);">5<span style="font-size:13px;color:var(--faint);font-weight:500;"> / 6</span></div></div>
+        <div class="card" style="padding:14px 17px;"><div style="font-size:11.5px;color:var(--muted);margin-bottom:6px;">Avg. seat utilisation</div><div class="mono" style="font-size:21px;font-weight:700;color:var(--marigold-deep);">64%</div></div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1.7fr 1fr;gap:16px;flex:1;min-height:0;">
+
+        <!-- ROUTES TABLE -->
+        <div class="card" style="padding:0;display:flex;flex-direction:column;overflow:hidden;">
+          <div style="display:grid;grid-template-columns:1.8fr 1.3fr 1.1fr 0.7fr 0.9fr 0.9fr;padding:13px 20px;border-bottom:1px solid var(--line);font-size:10.5px;color:var(--faint);text-transform:uppercase;letter-spacing:.05em;">
+            <div>Route</div><div>Driver</div><div>Vehicle no.</div><div>Capacity</div><div>Assigned</div><div>Status</div>
+          </div>
+
+          <div class="trn-row">
+            <div style="font-weight:600;">Route 1 · City Centre</div>
+            <div style="color:var(--muted);">Ramesh Yadav</div>
+            <div class="mono" style="color:var(--muted);">DL 1PC 4521</div>
+            <div class="mono">45</div>
+            <div class="mono" style="font-weight:600;">38/45</div>
+            <div><span class="pill" style="background:var(--good-tint);color:var(--good);">Active</span></div>
+          </div>
+          <div class="trn-row" style="background:var(--teal-tint);">
+            <div style="font-weight:600;">Route 2 · Greenfield Colony</div>
+            <div style="color:var(--muted);">Suresh Kumar</div>
+            <div class="mono" style="color:var(--muted);">DL 1PC 3187</div>
+            <div class="mono">40</div>
+            <div class="mono" style="font-weight:700;">40/40</div>
+            <div><span class="pill" style="background:#fff;color:var(--teal);">Full</span></div>
+          </div>
+          <div class="trn-row trn-row-selected" style="background:var(--marigold-tint);">
+            <div style="font-weight:700;">Route 3 · Lakeview Express</div>
+            <div style="color:var(--muted);">Anita Desai</div>
+            <div class="mono" style="color:var(--muted);">DL 1PC 6642</div>
+            <div class="mono">45</div>
+            <div class="mono" style="font-weight:700;">31/45</div>
+            <div><span class="pill" style="background:#fff;color:var(--marigold-deep);">Selected</span></div>
+          </div>
+          <div class="trn-row">
+            <div style="font-weight:600;">Route 4 · Hilltop Residency</div>
+            <div style="color:var(--muted);">Manoj Tiwari</div>
+            <div class="mono" style="color:var(--muted);">DL 1PC 2098</div>
+            <div class="mono">35</div>
+            <div class="mono" style="font-weight:600;">22/35</div>
+            <div><span class="pill" style="background:var(--good-tint);color:var(--good);">Active</span></div>
+          </div>
+          <div class="trn-row">
+            <div style="font-weight:600;">Route 5 · Riverside Enclave</div>
+            <div style="color:var(--muted);">Priya Nair</div>
+            <div class="mono" style="color:var(--muted);">DL 1PC 7754</div>
+            <div class="mono">45</div>
+            <div class="mono" style="font-weight:600;color:var(--warn);">12/45</div>
+            <div><span class="pill" style="background:var(--warn-tint);color:var(--warn);">Under-subscribed</span></div>
+          </div>
+          <div class="trn-row" style="border-bottom:none;">
+            <div style="font-weight:600;color:var(--faint);">Route 6 · Metro Station Link</div>
+            <div style="color:var(--faint);">Vikram Singh</div>
+            <div class="mono" style="color:var(--faint);">DL 1PC 5310</div>
+            <div class="mono" style="color:var(--faint);">40</div>
+            <div class="mono" style="color:var(--faint);">0/40</div>
+            <div><span class="pill" style="background:var(--line);color:var(--faint);">Inactive</span></div>
+          </div>
+        </div>
+
+        <!-- ROUTE DETAIL / STOPS -->
+        <div class="card" style="padding:22px;display:flex;flex-direction:column;gap:14px;overflow:hidden;">
+          <div>
+            <div id="trn-detail-name" style="font-size:13.5px;font-weight:700;margin-bottom:2px;">Route 3 · Lakeview Express</div>
+            <div id="trn-detail-meta" style="font-size:12px;color:var(--muted);">Anita Desai · DL 1PC 6642 · 31 of 45 seats</div>
+          </div>
+
+          <div style="height:9px;border-radius:5px;background:var(--marigold-tint);"><div style="height:100%;width:69%;border-radius:5px;background:var(--marigold);"></div></div>
+
+          <div style="display:flex;gap:10px;">
+            <div style="flex:1;background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:9px 11px;">
+              <div style="font-size:10.5px;color:var(--faint);margin-bottom:3px;">First pickup</div>
+              <div class="mono" style="font-size:14px;font-weight:600;">7:05 AM</div>
+            </div>
+            <div style="flex:1;background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:9px 11px;">
+              <div style="font-size:10.5px;color:var(--faint);margin-bottom:3px;">School arrival</div>
+              <div class="mono" style="font-size:14px;font-weight:600;">7:45 AM</div>
+            </div>
+          </div>
+
+          <div style="border-top:1px solid var(--line);padding-top:14px;margin-top:2px;flex:1;overflow-y:auto;">
+            <div style="font-size:11.5px;color:var(--faint);text-transform:uppercase;letter-spacing:.05em;margin-bottom:12px;">Stop list · pickup times</div>
+
+            <div style="display:flex;flex-direction:column;">
+              <div style="display:flex;gap:12px;">
+                <div style="display:flex;flex-direction:column;align-items:center;">
+                  <div style="width:9px;height:9px;border-radius:50%;background:var(--marigold);flex:none;"></div>
+                  <div style="width:1.5px;flex:1;background:var(--line);min-height:20px;"></div>
+                </div>
+                <div style="padding-bottom:16px;">
+                  <div style="font-size:13px;font-weight:600;">Lakeview Gate 1</div>
+                  <div class="mono" style="font-size:11.5px;color:var(--muted);">7:05 AM</div>
+                </div>
+              </div>
+              <div style="display:flex;gap:12px;">
+                <div style="display:flex;flex-direction:column;align-items:center;">
+                  <div style="width:9px;height:9px;border-radius:50%;background:var(--marigold);flex:none;"></div>
+                  <div style="width:1.5px;flex:1;background:var(--line);min-height:20px;"></div>
+                </div>
+                <div style="padding-bottom:16px;">
+                  <div style="font-size:13px;font-weight:600;">Lakeview Gate 2</div>
+                  <div class="mono" style="font-size:11.5px;color:var(--muted);">7:10 AM</div>
+                </div>
+              </div>
+              <div style="display:flex;gap:12px;">
+                <div style="display:flex;flex-direction:column;align-items:center;">
+                  <div style="width:9px;height:9px;border-radius:50%;background:var(--marigold);flex:none;"></div>
+                  <div style="width:1.5px;flex:1;background:var(--line);min-height:20px;"></div>
+                </div>
+                <div style="padding-bottom:16px;">
+                  <div style="font-size:13px;font-weight:600;">Elm Street Junction</div>
+                  <div class="mono" style="font-size:11.5px;color:var(--muted);">7:18 AM</div>
+                </div>
+              </div>
+              <div style="display:flex;gap:12px;">
+                <div style="display:flex;flex-direction:column;align-items:center;">
+                  <div style="width:9px;height:9px;border-radius:50%;background:var(--marigold);flex:none;"></div>
+                  <div style="width:1.5px;flex:1;background:var(--line);min-height:20px;"></div>
+                </div>
+                <div style="padding-bottom:16px;">
+                  <div style="font-size:13px;font-weight:600;">Cedar Park</div>
+                  <div class="mono" style="font-size:11.5px;color:var(--muted);">7:25 AM</div>
+                </div>
+              </div>
+              <div style="display:flex;gap:12px;">
+                <div style="display:flex;flex-direction:column;align-items:center;">
+                  <div style="width:9px;height:9px;border-radius:50%;background:var(--teal);flex:none;"></div>
+                </div>
+                <div>
+                  <div style="font-size:13px;font-weight:700;">School Arrival</div>
+                  <div class="mono" style="font-size:11.5px;color:var(--muted);">7:45 AM</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- HOSTEL TAB CONTENT -->
+    <div id="trn-tab-content-hostel" style="display:none;flex-direction:column;gap:16px;flex:1;min-height:0;">
+
+      <!-- STAT TILES -->
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:13px;">
+        <div class="card" style="padding:14px 17px;"><div style="font-size:11.5px;color:var(--muted);margin-bottom:6px;">Total rooms</div><div class="mono" id="hst-stat-total" style="font-size:21px;font-weight:700;">7</div></div>
+        <div class="card" style="padding:14px 17px;"><div style="font-size:11.5px;color:var(--muted);margin-bottom:6px;">Occupied beds</div><div class="mono" id="hst-stat-occupied" style="font-size:21px;font-weight:700;color:var(--teal);">18</div></div>
+        <div class="card" style="padding:14px 17px;"><div style="font-size:11.5px;color:var(--muted);margin-bottom:6px;">Available beds</div><div class="mono" id="hst-stat-available" style="font-size:21px;font-weight:700;color:var(--good);">4</div></div>
+        <div class="card" style="padding:14px 17px;"><div style="font-size:11.5px;color:var(--muted);margin-bottom:6px;">Occupancy %</div><div class="mono" id="hst-stat-occupancy" style="font-size:21px;font-weight:700;color:var(--marigold-deep);">82%</div></div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1.7fr 1fr;gap:16px;flex:1;min-height:0;">
+
+        <!-- ROOMS TABLE -->
+        <div class="card" style="padding:0;display:flex;flex-direction:column;overflow:hidden;">
+          <div style="display:grid;grid-template-columns:1fr 1.6fr 0.8fr 0.9fr 1fr;padding:13px 20px;border-bottom:1px solid var(--line);font-size:10.5px;color:var(--faint);text-transform:uppercase;letter-spacing:.05em;">
+            <div>Room No.</div><div>Block / Wing</div><div>Capacity</div><div>Occupied</div><div>Status</div>
+          </div>
+
+          <div class="hst-row">
+            <div style="font-weight:600;">Room 101</div>
+            <div style="color:var(--muted);">Block A · North Wing</div>
+            <div class="mono">4</div>
+            <div class="mono" style="font-weight:600;">4</div>
+            <div><span class="pill" style="background:var(--teal-tint);color:var(--teal);">Full</span></div>
+          </div>
+          <div class="hst-row hst-row-selected">
+            <div style="font-weight:700;">Room 102</div>
+            <div style="color:var(--muted);">Block A · North Wing</div>
+            <div class="mono">4</div>
+            <div class="mono" style="font-weight:600;">3</div>
+            <div><span class="pill" style="background:var(--good-tint);color:var(--good);">Available</span></div>
+          </div>
+          <div class="hst-row">
+            <div style="font-weight:600;">Room 103</div>
+            <div style="color:var(--muted);">Block A · North Wing</div>
+            <div class="mono">4</div>
+            <div class="mono" style="font-weight:600;">4</div>
+            <div><span class="pill" style="background:var(--teal-tint);color:var(--teal);">Full</span></div>
+          </div>
+          <div class="hst-row">
+            <div style="font-weight:600;">Room 201</div>
+            <div style="color:var(--muted);">Block B · South Wing</div>
+            <div class="mono">3</div>
+            <div class="mono" style="font-weight:600;">2</div>
+            <div><span class="pill" style="background:var(--good-tint);color:var(--good);">Available</span></div>
+          </div>
+          <div class="hst-row">
+            <div style="font-weight:600;color:var(--faint);">Room 202</div>
+            <div style="color:var(--faint);">Block B · South Wing</div>
+            <div class="mono" style="color:var(--faint);">3</div>
+            <div class="mono" style="color:var(--faint);">0</div>
+            <div><span class="pill" style="background:var(--line);color:var(--faint);">Under maintenance</span></div>
+          </div>
+          <div class="hst-row">
+            <div style="font-weight:600;">Room 203</div>
+            <div style="color:var(--muted);">Block B · South Wing</div>
+            <div class="mono">3</div>
+            <div class="mono" style="font-weight:600;">3</div>
+            <div><span class="pill" style="background:var(--teal-tint);color:var(--teal);">Full</span></div>
+          </div>
+          <div class="hst-row" style="border-bottom:none;">
+            <div style="font-weight:600;">Room 301</div>
+            <div style="color:var(--muted);">Block C · East Wing</div>
+            <div class="mono">4</div>
+            <div class="mono" style="font-weight:600;">2</div>
+            <div><span class="pill" style="background:var(--good-tint);color:var(--good);">Available</span></div>
+          </div>
+        </div>
+
+        <!-- ROOM DETAIL / ALLOCATE -->
+        <div class="card" style="padding:22px;display:flex;flex-direction:column;gap:14px;overflow:hidden;">
+          <div>
+            <div style="font-size:13.5px;font-weight:700;margin-bottom:10px;">Allocate a student</div>
+            <div style="display:flex;flex-direction:column;gap:8px;">
+              <div class="field"><label>Student name</label><input class="in" id="hst-allocate-input" type="text" placeholder="Full name"></div>
+            </div>
+            <span id="hst-allocate-btn" style="display:block;background:var(--marigold);color:#fff;border-radius:8px;padding:9px;text-align:center;font-size:13px;font-weight:700;margin-top:10px;cursor:pointer;">Allocate</span>
+          </div>
+
+          <div style="border-top:1px solid var(--line);padding-top:14px;margin-top:2px;flex:1;overflow-y:auto;">
+            <div>
+              <div id="hst-detail-room" style="font-size:13.5px;font-weight:700;margin-bottom:2px;">Room 102 roster</div>
+              <div id="hst-detail-meta" class="mono" style="font-size:12px;color:var(--muted);">Block A · North Wing · 3 of 4 beds occupied</div>
+            </div>
+
+            <div style="height:9px;border-radius:5px;background:var(--marigold-tint);margin:12px 0 16px;"><div id="hst-detail-bar" style="height:100%;width:75%;border-radius:5px;background:var(--marigold);"></div></div>
+
+            <div style="font-size:11.5px;color:var(--faint);text-transform:uppercase;letter-spacing:.05em;margin-bottom:12px;">Allocated students</div>
+
+            <div id="hst-roster-list" style="display:flex;flex-direction:column;gap:10px;">
+              <div class="hst-roster-item">
+                <div style="font-size:13px;font-weight:700;">Aisha Reddy</div>
+                <div style="font-size:12px;color:var(--muted);margin:2px 0 4px;">Class 9-B</div>
+                <div class="mono" style="font-size:11px;color:var(--faint);">Moved in 12 Jun 2026</div>
+              </div>
+              <div class="hst-roster-item">
+                <div style="font-size:13px;font-weight:700;">Kabir Malhotra</div>
+                <div style="font-size:12px;color:var(--muted);margin:2px 0 4px;">Class 10-A</div>
+                <div class="mono" style="font-size:11px;color:var(--faint);">Moved in 15 Jun 2026</div>
+              </div>
+              <div class="hst-roster-item">
+                <div style="font-size:13px;font-weight:700;">Rohan Verma</div>
+                <div style="font-size:12px;color:var(--muted);margin:2px 0 4px;">Class 9-B</div>
+                <div class="mono" style="font-size:11px;color:var(--faint);">Moved in 02 Jul 2026</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</section>
+<script>
+(function(){
+  var root = document.getElementById('view-Transport');
+  if (!root) return;
+
+  // Marker so the shared shell knows this single section also covers the
+  // separate "Hostel" sidebar nav item — no other wiring needed here.
+  document.body.setAttribute('data-transport-covers-hostel', 'true');
+
+  var tabTransport = root.querySelector('#trn-tab-transport');
+  var tabHostel = root.querySelector('#trn-tab-hostel');
+  var contentTransport = root.querySelector('#trn-tab-content-transport');
+  var contentHostel = root.querySelector('#trn-tab-content-hostel');
+
+  function selectTab(which){
+    var isTransport = which === 'transport';
+    if (tabTransport) tabTransport.classList.toggle('active', isTransport);
+    if (tabHostel) tabHostel.classList.toggle('active', !isTransport);
+    if (contentTransport) contentTransport.style.display = isTransport ? 'flex' : 'none';
+    if (contentHostel) contentHostel.style.display = isTransport ? 'none' : 'flex';
+  }
+
+  if (tabTransport) tabTransport.addEventListener('click', function(){ selectTab('transport'); });
+  if (tabHostel) tabHostel.addEventListener('click', function(){ selectTab('hostel'); });
+
+  // Route row selection — clicking a row highlights it and updates the
+  // detail panel's header (name / driver / vehicle) from that row's own cells.
+  var rows = root.querySelectorAll('.trn-row');
+  var detailName = root.querySelector('#trn-detail-name');
+  var detailMeta = root.querySelector('#trn-detail-meta');
+
+  rows.forEach(function(row){
+    row.addEventListener('click', function(){
+      rows.forEach(function(r){ r.classList.remove('trn-row-selected'); });
+      row.classList.add('trn-row-selected');
+
+      var cells = row.children;
+      var routeName = cells[0] ? cells[0].textContent.trim() : '';
+      var driver = cells[1] ? cells[1].textContent.trim() : '';
+      var vehicle = cells[2] ? cells[2].textContent.trim() : '';
+      var assigned = cells[4] ? cells[4].textContent.trim() : '';
+
+      if (detailName && routeName) detailName.textContent = routeName;
+      if (detailMeta && driver) {
+        detailMeta.textContent = driver + (vehicle ? ' · ' + vehicle : '') + (assigned ? ' · ' + assigned + ' seats' : '');
+      }
+    });
+  });
+})();
+</script>

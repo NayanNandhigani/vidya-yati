@@ -1,0 +1,685 @@
+<title>Vidya Yati Data Dictionary</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap">
+<style>
+:root{
+  --bg:#F7F8FA; --surface:#FFFFFF; --surface2:#F1F2F5; --line:#E5E8EE;
+  --ink:#17223B; --ink2:#22315A; --muted:#5B6478; --faint:#8890A0;
+  --marigold:#E08A2C; --marigold-deep:#B96E1E; --marigold-tint:#FCEEDC;
+  --teal:#1E6E71; --teal-tint:#E1EFEE;
+  --clay:#B5624A; --clay-tint:#F6E4DF;
+  --good:#2F7D4F; --good-tint:#E4F3E9;
+  --info:#3A6FA8; --info-tint:#E4EDF7;
+  --pk:#B96E1E; --fk:#1E6E71;
+  --code-bg:#EEF0F4;
+  --shadow: 0 1px 2px rgba(23,34,59,.04), 0 8px 24px -12px rgba(23,34,59,.10);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0F1420; --surface:#171E30; --surface2:#1D2538; --line:#2B3450;
+    --ink:#ECEEF5; --ink2:#D3D9EA; --muted:#9AA3BE; --faint:#6E7791;
+    --marigold:#F0A046; --marigold-deep:#F7B968; --marigold-tint:#3A2C18;
+    --teal:#45D6C0; --teal-tint:#12302E;
+    --clay:#E08669; --clay-tint:#38241E;
+    --good:#5FCB86; --good-tint:#14301F;
+    --info:#7FAEDD; --info-tint:#182D45;
+    --pk:#F7B968; --fk:#45D6C0;
+    --code-bg:#1D2538;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px -12px rgba(0,0,0,.5);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0F1420; --surface:#171E30; --surface2:#1D2538; --line:#2B3450;
+  --ink:#ECEEF5; --ink2:#D3D9EA; --muted:#9AA3BE; --faint:#6E7791;
+  --marigold:#F0A046; --marigold-deep:#F7B968; --marigold-tint:#3A2C18;
+  --teal:#45D6C0; --teal-tint:#12302E;
+  --clay:#E08669; --clay-tint:#38241E;
+  --good:#5FCB86; --good-tint:#14301F;
+  --info:#7FAEDD; --info-tint:#182D45;
+  --pk:#F7B968; --fk:#45D6C0;
+  --code-bg:#1D2538;
+  --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px -12px rgba(0,0,0,.5);
+}
+
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:'Plus Jakarta Sans',system-ui,sans-serif;font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased;}
+.mono{font-family:'IBM Plex Mono',ui-monospace,monospace;}
+.disp{font-family:'Fraunces',Georgia,serif;font-weight:600;text-wrap:balance;}
+a{color:var(--teal);}
+code{font-family:'IBM Plex Mono',ui-monospace,monospace;background:var(--code-bg);padding:1px 5px;border-radius:4px;font-size:.9em;}
+
+/* ---------- layout ---------- */
+#page{display:grid;grid-template-columns:260px minmax(0,1fr);min-height:100vh;}
+#toc{border-right:1px solid var(--line);padding:28px 18px 40px;position:sticky;top:0;height:100vh;overflow-y:auto;}
+#toc .brand{display:flex;align-items:center;gap:9px;padding:0 6px 20px;}
+#toc .brand svg{flex:none;}
+#toc .brand span{font-size:15px;color:var(--ink);}
+#toc .brand small{display:block;font-size:10.5px;color:var(--faint);font-weight:600;letter-spacing:.04em;text-transform:uppercase;margin-top:1px;}
+#toc nav{display:flex;flex-direction:column;gap:2px;}
+#toc .toc-group{font-family:'IBM Plex Mono',monospace;font-size:9.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--faint);margin:14px 10px 3px;}
+#toc a.toc-link{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:5.5px 10px;border-radius:7px;font-size:13px;font-weight:500;color:var(--muted);text-decoration:none;}
+#toc a.toc-link:hover{background:var(--surface2);color:var(--ink);}
+#toc a.toc-link .n{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--faint);}
+
+main{padding:44px 48px 100px;max-width:900px;}
+@media (max-width:860px){ #page{grid-template-columns:1fr;} #toc{position:static;height:auto;border-right:none;border-bottom:1px solid var(--line);} }
+
+/* ---------- intro ---------- */
+#intro h1{font-size:32px;margin:0 0 10px;}
+#intro .lede{font-size:16px;color:var(--muted);max-width:62ch;margin:0 0 22px;}
+.legend{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:36px;}
+.legend .chip{display:flex;align-items:center;gap:7px;background:var(--surface);border:1px solid var(--line);border-radius:100px;padding:6px 13px 6px 10px;font-size:12.5px;color:var(--muted);box-shadow:var(--shadow);}
+.legend .swatch{width:9px;height:9px;border-radius:50%;flex:none;}
+
+/* ---------- diagram ---------- */
+#diagram-wrap{margin:0 0 44px;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:24px 20px;box-shadow:var(--shadow);overflow-x:auto;}
+#diagram-wrap svg{display:block;margin:0 auto;min-width:760px;}
+.dg-node rect{fill:var(--surface2);stroke:var(--line);}
+.dg-node text{fill:var(--ink);font-family:'Plus Jakarta Sans',sans-serif;font-size:12.5px;font-weight:700;}
+.dg-node .sub{fill:var(--muted);font-weight:500;font-size:10.5px;}
+.dg-edge{stroke:var(--faint);stroke-width:1.3;fill:none;}
+.dg-caption{text-align:center;font-size:12px;color:var(--faint);margin-top:10px;}
+
+/* ---------- domain sections ---------- */
+.domain{margin:0 0 54px;scroll-margin-top:24px;}
+.domain > .domain-head{display:flex;align-items:baseline;gap:12px;margin-bottom:6px;border-bottom:1px solid var(--line);padding-bottom:10px;}
+.domain > .domain-head h2{font-size:21px;margin:0;}
+.domain > .domain-head .count{font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:var(--faint);}
+.domain-desc{color:var(--muted);font-size:13.5px;max-width:64ch;margin:8px 0 20px;}
+
+.tbl{scroll-margin-top:24px;background:var(--surface);border:1px solid var(--line);border-radius:14px;margin-bottom:16px;box-shadow:var(--shadow);overflow:hidden;}
+.tbl-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:15px 20px;border-bottom:1px solid var(--line);background:var(--surface2);}
+.tbl-head .name{font-family:'IBM Plex Mono',monospace;font-size:14px;font-weight:600;color:var(--ink);}
+.tbl-head .purpose{font-size:12.5px;color:var(--muted);text-align:right;max-width:46ch;}
+.tbl-rows{display:grid;grid-template-columns:auto 1fr 1.4fr;}
+.tbl-rows .r{display:contents;}
+.tbl-rows .c{padding:8px 16px;font-size:12.8px;border-top:1px solid var(--line);}
+.tbl-rows .r:first-child .c{border-top:none;}
+.tbl-rows .fname{font-family:'IBM Plex Mono',monospace;font-weight:600;color:var(--ink2);white-space:nowrap;}
+.tbl-rows .fdesc{color:var(--muted);}
+.keytag{display:inline-flex;align-items:center;gap:4px;font-family:'IBM Plex Mono',monospace;font-size:9.5px;font-weight:700;letter-spacing:.03em;padding:1px 6px;border-radius:5px;margin-right:6px;vertical-align:1px;}
+.keytag.pk{background:var(--marigold-tint);color:var(--pk);}
+.keytag.fk{background:var(--teal-tint);color:var(--fk);}
+.links-row{padding:11px 20px;border-top:1px solid var(--line);font-size:12px;color:var(--faint);background:var(--surface2);}
+.links-row b{color:var(--muted);font-weight:700;}
+.links-row a{color:var(--teal);text-decoration:none;font-family:'IBM Plex Mono',monospace;font-size:11.5px;}
+.links-row a:hover{text-decoration:underline;}
+
+footer{max-width:900px;margin:60px 0 0;padding-top:22px;border-top:1px solid var(--line);color:var(--faint);font-size:12px;}
+</style>
+
+<div id="page">
+
+<aside id="toc">
+  <div class="brand">
+    <svg width="24" height="24" viewBox="0 0 30 30"><rect x="1" y="1" width="28" height="28" rx="7" fill="var(--marigold)"/><path d="M8 20 L15 9 L22 20" stroke="var(--surface)" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/><line x1="11.3" y1="15" x2="18.7" y2="15" stroke="var(--surface)" stroke-width="2.2" stroke-linecap="round"/></svg>
+    <span class="disp"><small>Vidya Yati</small>Data dictionary</span>
+  </div>
+  <nav>
+    <a class="toc-link" href="#intro">Overview</a>
+    <a class="toc-link" href="#diagram-wrap">How it connects</a>
+
+    <div class="toc-group">Platform</div>
+    <a class="toc-link" href="#d-platform"><span>Platform &amp; billing</span><span class="n">3</span></a>
+
+    <div class="toc-group">People</div>
+    <a class="toc-link" href="#d-people"><span>People &amp; access</span><span class="n">5</span></a>
+
+    <div class="toc-group">Product</div>
+    <a class="toc-link" href="#d-academics"><span>Academics</span><span class="n">12</span></a>
+    <a class="toc-link" href="#d-finance"><span>Finance</span><span class="n">4</span></a>
+    <a class="toc-link" href="#d-admissions"><span>Admissions</span><span class="n">1</span></a>
+    <a class="toc-link" href="#d-operations"><span>Operations</span><span class="n">7</span></a>
+    <a class="toc-link" href="#d-engagement"><span>Engagement</span><span class="n">6</span></a>
+    <a class="toc-link" href="#d-settings"><span>Settings</span><span class="n">3</span></a>
+  </nav>
+</aside>
+
+<main>
+
+  <section id="intro">
+    <h1 class="disp">How Vidya Yati's data fits together</h1>
+    <p class="lede">This is the map for the backend build — every screen you've clicked through is a window onto these 41 tables. Each one below shows what it stores, in plain language, and which other tables it points to.</p>
+    <div class="legend">
+      <span class="chip"><span class="keytag pk" style="margin:0;">PK</span> the field that uniquely identifies each row (a primary key)</span>
+      <span class="chip"><span class="keytag fk" style="margin:0;">FK</span> a field that points to a row in another table (a foreign key — how tables link up)</span>
+    </div>
+  </section>
+
+  <section id="diagram-wrap">
+    <svg viewBox="0 0 900 330" width="100%" height="330" role="img" aria-label="Simplified diagram showing Schools connected to Users, Students, Classes, and to Finance and Operations groups">
+      <defs>
+        <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0,0 L10,5 L0,10 z" fill="var(--faint)"/>
+        </marker>
+      </defs>
+      <!-- edges -->
+      <path class="dg-edge" marker-end="url(#arrow)" d="M170,60 L170,110"/>
+      <path class="dg-edge" marker-end="url(#arrow)" d="M170,150 L170,190"/>
+      <path class="dg-edge" marker-end="url(#arrow)" d="M250,130 L400,130"/>
+      <path class="dg-edge" marker-end="url(#arrow)" d="M250,210 L400,210"/>
+      <path class="dg-edge" marker-end="url(#arrow)" d="M480,150 L480,190"/>
+      <path class="dg-edge" marker-end="url(#arrow)" d="M560,210 L700,130"/>
+      <path class="dg-edge" marker-end="url(#arrow)" d="M560,230 L700,230"/>
+      <path class="dg-edge" marker-end="url(#arrow)" d="M560,250 L700,290"/>
+      <path class="dg-edge" marker-end="url(#arrow)" d="M250,270 L400,270"/>
+
+      <!-- Schools -->
+      <g class="dg-node"><rect x="90" y="20" width="160" height="40" rx="9"/><text x="170" y="36" text-anchor="middle">Schools</text><text class="sub" x="170" y="50" text-anchor="middle">one row per customer</text></g>
+      <!-- Users -->
+      <g class="dg-node"><rect x="90" y="110" width="160" height="40" rx="9"/><text x="170" y="126" text-anchor="middle">Users</text><text class="sub" x="170" y="140" text-anchor="middle">Admin · Staff · Parent</text></g>
+      <!-- Students -->
+      <g class="dg-node"><rect x="90" y="190" width="160" height="40" rx="9"/><text x="170" y="206" text-anchor="middle">Students</text><text class="sub" x="170" y="220" text-anchor="middle">linked to Parents</text></g>
+      <!-- Classes -->
+      <g class="dg-node"><rect x="400" y="110" width="160" height="40" rx="9"/><text x="480" y="126" text-anchor="middle">Classes &amp; Sections</text><text class="sub" x="480" y="140" text-anchor="middle">grade · section · teacher</text></g>
+      <!-- Attendance/Exams/Homework cluster -->
+      <g class="dg-node"><rect x="400" y="190" width="160" height="40" rx="9"/><text x="480" y="206" text-anchor="middle">Academics</text><text class="sub" x="480" y="220" text-anchor="middle">Attendance · Exams · Homework</text></g>
+      <!-- Admissions -->
+      <g class="dg-node"><rect x="400" y="250" width="160" height="40" rx="9"/><text x="480" y="266" text-anchor="middle">Admissions</text><text class="sub" x="480" y="280" text-anchor="middle">Enquiry → Admitted</text></g>
+      <!-- Finance -->
+      <g class="dg-node"><rect x="700" y="110" width="160" height="40" rx="9"/><text x="780" y="126" text-anchor="middle">Finance</text><text class="sub" x="780" y="140" text-anchor="middle">Fees · Payroll · Accounts</text></g>
+      <!-- Operations -->
+      <g class="dg-node"><rect x="700" y="210" width="160" height="40" rx="9"/><text x="780" y="226" text-anchor="middle">Operations</text><text class="sub" x="780" y="240" text-anchor="middle">Transport · Hostel · Library</text></g>
+      <!-- Engagement -->
+      <g class="dg-node"><rect x="700" y="270" width="160" height="40" rx="9"/><text x="780" y="286" text-anchor="middle">Engagement</text><text class="sub" x="780" y="300" text-anchor="middle">Events · Certificates · Comms</text></g>
+    </svg>
+    <div class="dg-caption">Simplified view — every table below ultimately traces back to a School. Full field-level links are listed under each table.</div>
+  </section>
+
+  <!-- ============ PLATFORM ============ -->
+  <section class="domain" id="d-platform">
+    <div class="domain-head"><h2>Platform &amp; billing</h2><span class="count">3 tables · Super Admin only</span></div>
+    <p class="domain-desc">How the Vidya Yati company itself tracks its customers — the schools — and whether they've paid. This is what powers the Super Admin dashboard and the Subscriptions &amp; Billing screen.</p>
+
+    <div class="tbl" id="t-schools">
+      <div class="tbl-head"><span class="name">Schools</span><span class="purpose">One row per school using the platform</span></div>
+      <div class="tbl-rows">
+        <div class="r"><div class="c fname"><span class="keytag pk">PK</span>school_id</div><div class="c">ID</div><div class="c fdesc">Unique identifier for the school</div></div>
+        <div class="r"><div class="c fname">name</div><div class="c">Text</div><div class="c fdesc">e.g. "Sunrise Public School"</div></div>
+        <div class="r"><div class="c fname">city, state</div><div class="c">Text</div><div class="c fdesc">Location</div></div>
+        <div class="r"><div class="c fname">plan</div><div class="c">Standard / Premium</div><div class="c fdesc">Subscription tier</div></div>
+        <div class="r"><div class="c fname">status</div><div class="c">Trial / Active / Expiring / Overdue / Cancelled</div><div class="c fdesc">Current subscription state</div></div>
+        <div class="r"><div class="c fname">onboarded_on</div><div class="c">Date</div><div class="c fdesc">When the school joined the platform</div></div>
+      </div>
+      <div class="links-row"><b>Everything belongs to a School.</b> Almost every other table below carries a <code>school_id</code> so one school's data never mixes with another's.</div>
+    </div>
+
+    <div class="tbl" id="t-invoices">
+      <div class="tbl-head"><span class="name">Subscription Invoices</span><span class="purpose">Bills issued to a school for their annual plan</span></div>
+      <div class="tbl-rows">
+        <div class="r"><div class="c fname"><span class="keytag pk">PK</span>invoice_id</div><div class="c">ID</div><div class="c fdesc">Unique identifier</div></div>
+        <div class="r"><div class="c fname"><span class="keytag fk">FK</span>school_id</div><div class="c">→ Schools</div><div class="c fdesc">Which school this bill is for</div></div>
+        <div class="r"><div class="c fname">amount, billing_period</div><div class="c">₹, dates</div><div class="c fdesc">What's owed and for which year</div></div>
+        <div class="r"><div class="c fname">due_date</div><div class="c">Date</div><div class="c fdesc">When payment is expected</div></div>
+        <div class="r"><div class="c fname">status</div><div class="c">Pending / Paid / Overdue</div><div class="c fdesc">Current billing state</div></div>
+      </div>
+      <div class="links-row"><b>Links to:</b> <a href="#t-schools">Schools</a></div>
+    </div>
+
+    <div class="tbl" id="t-sub-payments">
+      <div class="tbl-head"><span class="name">Subscription Payments</span><span class="purpose">Actual payments received against an invoice</span></div>
+      <div class="tbl-rows">
+        <div class="r"><div class="c fname"><span class="keytag pk">PK</span>payment_id</div><div class="c">ID</div><div class="c fdesc">Unique identifier</div></div>
+        <div class="r"><div class="c fname"><span class="keytag fk">FK</span>invoice_id</div><div class="c">→ Subscription Invoices</div><div class="c fdesc">Which bill this payment settles</div></div>
+        <div class="r"><div class="c fname">amount, method, reference_no</div><div class="c">₹, text</div><div class="c fdesc">How much, how (bank transfer / UPI / cheque), and a reference number</div></div>
+        <div class="r"><div class="c fname">paid_on</div><div class="c">Date</div><div class="c fdesc">When it was recorded</div></div>
+      </div>
+      <div class="links-row"><b>Links to:</b> <a href="#t-invoices">Subscription Invoices</a> — this is what the "Record a payment" panel writes.</div>
+    </div>
+  </section>
+
+  <!-- ============ PEOPLE & ACCESS ============ -->
+  <section class="domain" id="d-people">
+    <div class="domain-head"><h2>People &amp; access</h2><span class="count">5 tables</span></div>
+    <p class="domain-desc">Everyone who logs in, and what they're allowed to see and do. There's one login system for all three roles — Admin, Staff, Parent — and Staff get their permissions from a flexible per-module list rather than a fixed "Teacher" role.</p>
+
+    <div class="tbl" id="t-users">
+      <div class="tbl-head"><span class="name">Users</span><span class="purpose">Every login account, across all roles</span></div>
+      <div class="tbl-rows">
+        <div class="r"><div class="c fname"><span class="keytag pk">PK</span>user_id</div><div class="c">ID</div><div class="c fdesc">Unique identifier</div></div>
+        <div class="r"><div class="c fname"><span class="keytag fk">FK</span>school_id</div><div class="c">→ Schools</div><div class="c fdesc">Blank for Super Admin accounts</div></div>
+        <div class="r"><div class="c fname">name, phone, email</div><div class="c">Text</div><div class="c fdesc">Contact &amp; login details</div></div>
+        <div class="r"><div class="c fname">role</div><div class="c">Super Admin / School Admin / Staff / Parent</div><div class="c fdesc">Which portal and permissions apply</div></div>
+        <div class="r"><div class="c fname">status</div><div class="c">Active / Inactive</div><div class="c fdesc">Can they currently log in</div></div>
+      </div>
+      <div class="links-row"><b>Links to:</b> <a href="#t-schools">Schools</a> · extended by <a href="#t-staff">Staff Profiles</a> or <a href="#t-parents">Parents</a> depending on role</div>
+    </div>
+
+    <div class="tbl" id="t-staff">
+      <div class="tbl-head"><span class="name">Staff Profiles</span><span class="purpose">Extra details for anyone with a Staff login</span></div>
+      <div class="tbl-rows">
+        <div class="r"><div class="c fname"><span class="keytag pk">PK</span>staff_id</div><div class="c">ID</div><div class="c fdesc">Unique identifier</div></div>
+        <div class="r"><div class="c fname"><span class="keytag fk">FK</span>user_id</div><div class="c">→ Users</div><div class="c fdesc">Their login account</div></div>
+        <div class="r"><div class="c fname">designation, department</div><div class="c">Text</div><div class="c fdesc">e.g. "Class Teacher — 6B", "Accounts"</div></div>
+        <div class="r"><div class="c fname">date_joined</div><div class="c">Date</div><div class="c fdesc">Employment start date</div></div>
+        <div class="r"><div class="c fname">employment_status</div><div class="c">Active / On Leave</div><div class="c fdesc">Current status</div></div>
+      </div>
+      <div class="links-row"><b>Links to:</b> <a href="#t-users">Users</a> · referenced by <a href="#t-permissions">Staff Permissions</a>, <a href="#t-classes">Classes</a> (as class teacher), <a href="#t-timetable">Timetable</a>, <a href="#t-payroll">Payroll Runs</a>, and more</div>
+    </div>
+
+    <div class="tbl" id="t-permissions">
+      <div class="tbl-head"><span class="name">Staff Permissions</span><span class="purpose">What each staff member can see &amp; do, module by module</span></div>
+      <div class="tbl-rows">
+        <div class="r"><div class="c fname"><span class="keytag pk">PK</span>permission_id</div><div class="c">ID</div><div class="c fdesc">Unique identifier</div></div>
+        <div class="r"><div class="c fname"><span class="keytag fk">FK</span>staff_id</div><div class="c">→ Staff Profiles</div><div class="c fdesc">Whose permissions these are</div></div>
+        <div class="r"><div class="c fname">module_name</div><div class="c">Text</div><div class="c fdesc">e.g. "Attendance", "Fees", "Accounts"</div></div>
+        <div class="r"><div class="c fname">access_level</div><div class="c">No access / View only / Edit / Full</div><div class="c fdesc">This is what replaces a fixed "Teacher" role — a class teacher gets Full on Attendance, View only on Accounts, and so on</div></div>
+      </div>
+      <div class="links-row"><b>Links to:</b> <a href="#t-staff">Staff Profiles</a></div>
+    </div>
+
+    <div class="tbl" id="t-parents">
+      <div class="tbl-head"><span class="name">Parents</span><span class="purpose">Parent/guardian contacts with app access</span></div>
+      <div class="tbl-rows">
+        <div class="r"><div class="c fname"><span class="keytag pk">PK</span>parent_id</div><div class="c">ID</div><div class="c fdesc">Unique identifier</div></div>
+        <div class="r"><div class="c fname"><span class="keytag fk">FK</span>user_id</div><div class="c">→ Users</div><div class="c fdesc">Their login account</div></div>
+        <div class="r"><div class="c fname">name, phone, email</div><div class="c">Text</div><div class="c fdesc">Contact details</div></div>
+      </div>
+      <div class="links-row"><b>Links to:</b> <a href="#t-users">Users</a> · connected to children via <a href="#t-links">Student–Parent Links</a></div>
+    </div>
+
+    <div class="tbl" id="t-links">
+      <div class="tbl-head"><span class="name">Student–Parent Links</span><span class="purpose">Connects a student to one or more parents/guardians</span></div>
+      <div class="tbl-rows">
+        <div class="r"><div class="c fname"><span class="keytag pk">PK</span>link_id</div><div class="c">ID</div><div class="c fdesc">Unique identifier</div></div>
+        <div class="r"><div class="c fname"><span class="keytag fk">FK</span>student_id</div><div class="c">→ Students</div><div class="c fdesc">The child</div></div>
+        <div class="r"><div class="c fname"><span class="keytag fk">FK</span>parent_id</div><div class="c">→ Parents</div><div class="c fdesc">The parent/guardian</div></div>
+        <div class="r"><div class="c fname">relation</div><div class="c">Father / Mother / Guardian</div><div class="c fdesc">Relationship type</div></div>
+      </div>
+      <div class="links-row"><b>Links to:</b> <a href="#t-students">Students</a>, <a href="#t-parents">Parents</a> — a student can have more than one linked parent</div>
+    </div>
+  </section>
+
+  <!-- ============ ACADEMICS ============ -->
+  <section class="domain" id="d-academics">
+    <div class="domain-head"><h2>Academics</h2><span class="count">12 tables</span></div>
+    <p class="domain-desc">The day-to-day teaching side: who's in which class, who showed up, how they scored, what's due, and when classes happen.</p>
+
+    <div class="tbl" id="t-years">
+      <div class="tbl-head"><span class="name">Academic Years</span><span class="purpose">Which year/term a school is currently running</span></div>
+      <div class="tbl-rows">
+        <div class="r"><div class="c fname"><span class="keytag pk">PK</span>year_id</div><div class="c">ID</div><div class="c fdesc">Unique identifier</div></div>
+        <div class="r"><div class="c fname"><span class="keytag fk">FK</span>school_id</div><div class="c">→ Schools</div><div class="c fdesc">Which school</div></div>
+        <div class="r"><div class="c fname">label</div><div class="c">Text</div><div class="c fdesc">e.g. "2026–27"</div></div>
+        <div class="r"><div class="c fname">start_date, end_date</div><div class="c">Dates</div><div class="c fdesc">Term boundaries</div></div>
+        <div class="r"><div class="c fname">is_current</div><div class="c">Yes/No</div><div class="c fdesc">Marks the active year</div></div>
+      </div>
+      <div class="links-row"><b>Links to:</b> <a href="#t-schools">Schools</a> · referenced by Classes, Exams, Fee Structures</div>
+    </div>
+
+    <div class="tbl" id="t-classes">
+      <div class="tbl-head"><span class="name">Classes &amp; Sections</span><span class="purpose">e.g. "Class 6, Section B"</span></div>
+      <div class="tbl-rows">
+        <div class="r"><div class="c fname"><span class="keytag pk">PK</span>class_id</div><div class="c">ID</div><div class="c fdesc">Unique identifier</div></div>
+        <div class="r"><div class="c fname"><span class="keytag fk">FK</span>school_id, year_id</div><div class="c">→ Schools, → Academic Years</div><div class="c fdesc">Context</div></div>
+        <div class="r"><div class="c fname">grade, section</div><div class="c">Text</div><div class="c fdesc">e.g. "6", "B"</div></div>
+        <div class="r"><div class="c fname"><span class="keytag fk">FK</span>class_teacher_staff_id</div><div class="c">→ Staff Profiles</div><div class="c fdesc">The class teacher</div></div>
+      </div>
+      <div class="links-row"><b>Links to:</b> <a href="#t-years">Academic Years</a>, <a href="#t-staff">Staff Profiles</a> · referenced by Students, Attendance, Exams, Timetable, Fee Structures</div>
+    </div>
+
+    <div class="tbl" id="t-subjects">
+      <div class="tbl-head"><span class="name">Subjects</span><span class="purpose">The subjects taught at a school</span></div>
+      <div class="tbl-rows">
+        <div class="r"><div class="c fname"><span class="keytag pk">PK</span>subject_id</div><div class="c">ID</div><div class="c fdesc">Unique identifier</div></div>
+        <div class="r"><div class="c fname"><span class="keytag fk">FK</span>school_id</div><div class="c">→ Schools</div><div class="c fdesc">Which school</div></div>
+        <div class="r"><div class="c fname">name</div><div class="c">Text</div><div class="c fdesc">e.g. "Mathematics"</div></div>
+      </div>
+      <div class="links-row"><b>Links to:</b> <a href="#t-schools">Schools</a> · referenced by Exam Subjects, Homework, Timetable</div>
+    </div>
+
+    <div class="tbl" id="t-students">
+      <div class="tbl-head"><span class="name">Students</span><span class="purpose">Every enrolled student</span></div>
+      <div class="tbl-rows">
+        <div class="r"><div class="c fname"><span class="keytag pk">PK</span>student_id</div><div class="c">ID</div><div class="c fdesc">Unique identifier</div></div>
+        <div class="r"><div class="c fname">admission_no</div><div class="c">Text</div><div class="c fdesc">The school's own admission number</div></div>
+        <div class="r"><div class="c fname">name, dob, gender</div><div class="c">Text, date</div><div class="c fdesc">Basic profile</div></div>
+        <div class="r"><div class="c fname"><span class="keytag fk">FK</span>class_id</div><div class="c">→ Classes &amp; Sections</div><div class="c fdesc">Current class</div></div>
+        <div class="r"><div class="c fname">status</div><div class="c">Active / Alumni</div><div class="c fdesc">Currently enrolled or graduated/left</div></div>
+      </div>
+      <div class="links-row"><b>Links to:</b> <a href="#t-classes">Classes &amp; Sections</a> · this is the most-referenced table in the system — Attendance, Fees, Marks, Homework Submissions, Library, Transport, Certificates all point here</div>
+    </div>
+
+    <div class="tbl" id="t-attendance">
+      <div class="tbl-head"><span class="name">Attendance</span><span class="purpose">One row per student per day</span></div>
+      <div class="tbl-rows">
+        <div class="r"><div class="c fname"><span class="keytag pk">PK</span>attendance_id</div><div class="c">ID</div><div class="c fdesc">Unique identifier</div></div>
+        <div class="r"><div class="c fname"><span class="keytag fk">FK</span>student_id</div><div class="c">→ Students</div><div class="c fdesc">Who</div></div>
+        <div class="r"><div class="c fname">date</div><div class="c">Date</div><div class="c fdesc">Which day</div></div>
+        <div class="r"><div class="c fname">status</div><div class="c">Present / Absent / Half-day</div><div class="c fdesc">Marked by the teacher in the app</div></div>
+        <div class="r"><div class="c fname"><span class="keytag fk">FK</span>marked_by_staff_id</div><div class="c">→ Staff Profiles</div><div class="c fdesc">Who marked it</div></div>
+      </div>
+      <div class="links-row"><b>Links to:</b> <a href="#t-students">Students</a>, <a href="#t-staff">Staff Profiles</a></div>
+    </div>
+
+    <div class="tbl" id="t-staff-attendance">
+      <div class="tbl-head"><span class="name">Staff Attendance</span><span class="purpose">Same idea, for teaching &amp; non-teaching staff</span></div>
+      <div class="tbl-rows">
+        <div class="r"><div class="c fname"><span class="keytag pk">PK</span>staff_attendance_id</div><div class="c">ID</div><div class="c fdesc">Unique identifier</div></div>
+        <div class="r"><div class="c fname"><span class="keytag fk">FK</span>staff_id</div><div class="c">→ Staff Profiles</div><div class="c fdesc">Who</div></div>
+        <div class="r"><div class="c fname">date, status</div><div class="c">Date, Present/Absent</div><div class="c fdesc">Same pattern as student attendance</div></div>
+      </div>
+      <div class="links-row"><b>Links to:</b> <a href="#t-staff">Staff Profiles</a></div>
+    </div>
+
+    <div class="tbl" id="t-exams">
+      <div class="tbl-head"><span class="name">Exams</span><span class="purpose">e.g. "Mid-Term", "Unit Test 1"</span></div>
+      <div class="tbl-rows">
+        <div class="r"><div class="c fname"><span class="keytag pk">PK</span>exam_id</div><div class="c">ID</div><div class="c fdesc">Unique identifier</div></div>
+        <div class="r"><div class="c fname"><span class="keytag fk">FK</span>school_id, year_id, class_id</div><div class="c">→ Schools, Years, Classes</div><div class="c fdesc">Context</div></div>
+        <div class="r"><div class="c fname">name</div><div class="c">Text</div><div class="c fdesc">The exam's name</div></div>
+        <div class="r"><div class="c fname">start_date, end_date</div><div class="c">Dates</div><div class="c fdesc">Exam window</div></div>
+      </div>
+      <div class="links-row"><b>Links to:</b> <a href="#t-classes">Classes &amp; Sections</a> · broken into <a href="#t-exam-subjects">Exam Subjects</a></div>
+    </div>
+
+    <div class="tbl" id="t-exam-subjects">
+      <div class="tbl-head"><span class="name">Exam Subjects</span><span class="purpose">Each subject within an exam, and its maximum marks</span></div>
+      <div class="tbl-rows">
+        <div class="r"><div class="c fname"><span class="keytag pk">PK</span>exam_subject_id</div><div class="c">ID</div><div class="c fdesc">Unique identifier</div></div>
+        <div class="r"><div class="c fname"><span class="keytag fk">FK</span>exam_id, subject_id</div><div class="c">→ Exams, → Subjects</div><div class="c fdesc">Which exam, which subject</div></div>
+        <div class="r"><div class="c fname">max_marks</div><div class="c">Number</div><div class="c fdesc">e.g. 100</div></div>
+      </div>
+      <div class="links-row"><b>Links to:</b> <a href="#t-exams">Exams</a>, <a href="#t-subjects">Subjects</a> · each student's score is stored in <a href="#t-marks">Marks</a></div>
+    </div>
+
+    <div class="tbl" id="t-marks">
+      <div class="tbl-head"><span class="name">Marks</span><span class="purpose">One student's score in one exam subject</span></div>
+      <div class="tbl-rows">
+        <div class="r"><div class="c fname"><span class="keytag pk">PK</span>mark_id</div><div class="c">ID</div><div class="c fdesc">Unique identifier</div></div>
+        <div class="r"><div class="c fname"><span class="keytag fk">FK</span>exam_subject_id</div><div class="c">→ Exam Subjects</div><div class="c fdesc">Which exam &amp; subject</div></div>
+        <div class="r"><div class="c fname"><span class="keytag fk">FK</span>student_id</div><div class="c">→ Students</div><div class="c fdesc">Who</div></div>
+        <div class="r"><div class="c fname">marks_obtained</div><div class="c">Number</div><div class="c fdesc">The score — this is what the marks-entry grid writes to</div></div>
+      </div>
+      <div class="links-row"><b>Links to:</b> <a href="#t-exam-subjects">Exam Subjects</a>, <a href="#t-students">Students</a> — Total/% on the report card is calculated from these rows, not stored separately</div>
+    </div>
+
+    <div class="tbl" id="t-homework">
+      <div class="tbl-head"><span class="name">Homework / Assignments</span><span class="purpose">One assignment given to a class</span></div>
+      <div class="tbl-rows">
+        <div class="r"><div class="c fname"><span class="keytag pk">PK</span>assignment_id</div><div class="c">ID</div><div class="c fdesc">Unique identifier</div></div>
+        <div class="r"><div class="c fname"><span class="keytag fk">FK</span>class_id, subject_id, staff_id</div><div class="c">→ Classes, Subjects, Staff</div><div class="c fdesc">Who assigned what, to whom</div></div>
+        <div class="r"><div class="c fname">title, description, due_date</div><div class="c">Text, date</div><div class="c fdesc">The assignment itself</div></div>
+      </div>
+      <div class="links-row"><b>Links to:</b> <a href="#t-classes">Classes &amp; Sections</a>, <a href="#t-subjects">Subjects</a>, <a href="#t-staff">Staff Profiles</a> · tracked per-student in <a href="#t-submissions">Homework Submissions</a></div>
+    </div>
+
+    <div class="tbl" id="t-submissions">
+      <div class="tbl-head"><span class="name">Homework Submissions</span><span class="purpose">Whether each student turned it in</span></div>
+      <div class="tbl-rows">
+        <div class="r"><div class="c fname"><span class="keytag pk">PK</span>submission_id</div><div class="c">ID</div><div class="c fdesc">Unique identifier</div></div>
+        <div class="r"><div class="c fname"><span class="keytag fk">FK</span>assignment_id, student_id</div><div class="c">→ Homework, → Students</div><div class="c fdesc">Which assignment, which student</div></div>
+        <div class="r"><div class="c fname">status</div><div class="c">Pending / Submitted / Late</div><div class="c fdesc">Submission state</div></div>
+        <div class="r"><div class="c fname">submitted_on</div><div class="c">Date</div><div class="c fdesc">When (if) submitted</div></div>
+      </div>
+      <div class="links-row"><b>Links to:</b> <a href="#t-homework">Homework / Assignments</a>, <a href="#t-students">Students</a></div>
+    </div>
+
+    <div class="tbl" id="t-timetable">
+      <div class="tbl-head"><span class="name">Timetable Slots</span><span class="purpose">One period, one day, one class</span></div>
+      <div class="tbl-rows">
+        <div class="r"><div class="c fname"><span class="keytag pk">PK</span>slot_id</div><div class="c">ID</div><div class="c fdesc">Unique identifier</div></div>
+        <div class="r"><div class="c fname"><span class="keytag fk">FK</span>class_id, subject_id, staff_id</div><div class="c">→ Classes, Subjects, Staff</div><div class="c fdesc">What's happening, taught by whom</div></div>
+        <div class="r"><div class="c fname">day_of_week, period_no</div><div class="c">Mon–Sat, 1–8</div><div class="c fdesc">When in the week</div></div>
+      </div>
+      <div class="links-row"><b>Links to:</b> <a href="#t-classes">Classes &amp; Sections</a>, <a href="#t-subjects">Subjects</a>, <a href="#t-staff">Staff Profiles</a></div>
+    </div>
+  </section>
+
+  <!-- ============ FINANCE ============ -->
+  <section class="domain" id="d-finance">
+    <div class="domain-head"><h2>Finance</h2><span class="count">4 tables · School Admin</span></div>
+    <p class="domain-desc">What a school charges families, what it pays staff, and the cash-flow ledger that ties the two together — a school's own money, separate from what the school pays Vidya Yati.</p>
+
+    <div class="tbl" id="t-fee-structures">
+      <div class="tbl-head"><span class="name">Fee Structures</span><span class="purpose">What's billed, per class, per term</span></div>
+      <div class="tbl-rows">
+        <div class="r"><div class="c fname"><span class="keytag pk">PK</span>fee_structure_id</div><div class="c">ID</div><div class="c fdesc">Unique identifier</div></div>
+        <div class="r"><div class="c fname"><span class="keytag fk">FK</span>class_id, year_id</div><div class="c">→ Classes, → Academic Years</div><div class="c fdesc">Who this applies to</div></div>
+        <div class="r"><div class="c fname">term, amount, due_date</div><div class="c">Text, ₹, date</div><div class="c fdesc">e.g. "Term 2", ₹22,000, due 15 Sep</div></div>
+      </div>
+      <div class="links-row"><b>Links to:</b> <a href="#t-classes">Classes &amp; Sections</a>, <a href="#t-years">Academic Years</a> · billed against in <a href="#t-fee-payments">Fee Payments</a></div>
+    </div>
+
+    <div class="tbl" id="t-fee-payments">
+      <div class="tbl-head"><span class="name">Fee Payments</span><span class="purpose">What a family has actually paid</span></div>
+      <div class="tbl-rows">
+        <div class="r"><div class="c fname"><span class="keytag pk">PK</span>payment_id</div><div class="c">ID</div><div class="c fdesc">Unique identifier</div></div>
+        <div class="r"><div class="c fname"><span class="keytag fk">FK</span>student_id, fee_structure_id</div><div class="c">→ Students, → Fee Structures</div><div class="c fdesc">Who paid, against which bill</div></div>
+        <div class="r"><div class="c fname">amount, method, reference_no</div><div class="c">₹, text</div><div class="c fdesc">How much and how</div></div>
+        <div class="r"><div class="c fname">paid_on, status</div><div class="c">Date, Paid/Partial</div><div class="c fdesc">When, and whether it clears the balance</div></div>
+      </div>
+      <div class="links-row"><b>Links to:</b> <a href="#t-students">Students</a>, <a href="#t-fee-structures">Fee Structures</a> — every payment here automatically appears as income in <a href="#t-accounts">Accounts Transactions</a></div>
+    </div>
+
+    <div class="tbl" id="t-accounts">
+      <div class="tbl-head"><span class="name">Accounts Transactions</span><span class="purpose">The school's full cash-flow ledger</span></div>
+      <div class="tbl-rows">
+        <div class="r"><div class="c fname"><span class="keytag pk">PK</span>transaction_id</div><div class="c">ID</div><div class="c fdesc">Unique identifier</div></div>
+        <div class="r"><div class="c fname"><span class="keytag fk">FK</span>school_id</div><div class="c">→ Schools</div><div class="c fdesc">Which school</div></div>
+        <div class="r"><div class="c fname">date, description, category</div><div class="c">Date, text</div><div class="c fdesc">What happened</div></div>
+        <div class="r"><div class="c fname">source</div><div class="c">Auto: Fees / Auto: Payroll / Manual</div><div class="c fdesc">Auto rows are written by the system when a fee is paid or payroll runs; Manual rows are typed in by the school admin</div></div>
+        <div class="r"><div class="c fname">type, amount</div><div class="c">Income/Expense, ₹</div><div class="c fdesc">Direction and value</div></div>
+      </div>
+      <div class="links-row"><b>Links to:</b> <a href="#t-schools">Schools</a>, fed by <a href="#t-fee-payments">Fee Payments</a> and <a href="#t-payroll">Payroll Runs</a> — this is deliberately simple cash-in/cash-out, not formal double-entry accounting</div>
+    </div>
+
+    <div class="tbl" id="t-payroll">
+      <div class="tbl-head"><span class="name">Payroll Runs</span><span class="purpose">Salary paid to a staff member for a month</span></div>
+      <div class="tbl-rows">
+        <div class="r"><div class="c fname"><span class="keytag pk">PK</span>payroll_id</div><div class="c">ID</div><div class="c fdesc">Unique identifier</div></div>
+        <div class="r"><div class="c fname"><span class="keytag fk">FK</span>staff_id</div><div class="c">→ Staff Profiles</div><div class="c fdesc">Who was paid</div></div>
+        <div class="r"><div class="c fname">month, amount, status, paid_on</div><div class="c">Text, ₹, date</div><div class="c fdesc">Pay period and details</div></div>
+      </div>
+      <div class="links-row"><b>Links to:</b> <a href="#t-staff">Staff Profiles</a> — feeds <a href="#t-accounts">Accounts Transactions</a> as an "Auto: Payroll" expense</div>
+    </div>
+  </section>
+
+  <!-- ============ ADMISSIONS ============ -->
+  <section class="domain" id="d-admissions">
+    <div class="domain-head"><h2>Admissions</h2><span class="count">1 table</span></div>
+    <p class="domain-desc">The Kanban board you clicked through — enquiries moving to applications to admitted students.</p>
+
+    <div class="tbl" id="t-admissions">
+      <div class="tbl-head"><span class="name">Admissions Pipeline</span><span class="purpose">One row per prospective family</span></div>
+      <div class="tbl-rows">
+        <div class="r"><div class="c fname"><span class="keytag pk">PK</span>enquiry_id</div><div class="c">ID</div><div class="c fdesc">Unique identifier</div></div>
+        <div class="r"><div class="c fname"><span class="keytag fk">FK</span>school_id</div><div class="c">→ Schools</div><div class="c fdesc">Which school</div></div>
+        <div class="r"><div class="c fname">applicant_name, parent_contact, class_applied</div><div class="c">Text</div><div class="c fdesc">Who's applying, and for which class</div></div>
+        <div class="r"><div class="c fname">stage</div><div class="c">Enquiry / Application / Admitted</div><div class="c fdesc">Kanban column — this is what "Move →" changes</div></div>
+        <div class="r"><div class="c fname"><span class="keytag fk">FK</span>converted_student_id</div><div class="c">→ Students (optional)</div><div class="c fdesc">Filled in once admitted — links this enquiry to the new student record</div></div>
+      </div>
+      <div class="links-row"><b>Links to:</b> <a href="#t-schools">Schools</a>, and to <a href="#t-students">Students</a> once admitted</div>
+    </div>
+  </section>
+
+  <!-- ============ OPERATIONS ============ -->
+  <section class="domain" id="d-operations">
+    <div class="domain-head"><h2>Operations</h2><span class="count">7 tables</span></div>
+    <p class="domain-desc">Transport, hostel, and the library — the logistics side of running a school.</p>
+
+    <div class="tbl" id="t-routes">
+      <div class="tbl-head"><span class="name">Transport Routes</span><span class="purpose">One bus route</span></div>
+      <div class="tbl-rows">
+        <div class="r"><div class="c fname"><span class="keytag pk">PK</span>route_id</div><div class="c">ID</div><div class="c fdesc">Unique identifier</div></div>
+        <div class="r"><div class="c fname"><span class="keytag fk">FK</span>school_id</div><div class="c">→ Schools</div><div class="c fdesc">Which school</div></div>
+        <div class="r"><div class="c fname">name, driver_name, vehicle_no, capacity</div><div class="c">Text, number</div><div class="c fdesc">Route details</div></div>
+      </div>
+      <div class="links-row"><b>Links to:</b> <a href="#t-schools">Schools</a> · has <a href="#t-stops">Transport Stops</a> and <a href="#t-student-transport">assigned students</a></div>
+    </div>
+
+    <div class="tbl" id="t-stops">
+      <div class="tbl-head"><span class="name">Transport Stops</span><span class="purpose">Pickup points along a route</span></div>
+      <div class="tbl-rows">
+        <div class="r"><div class="c fname"><span class="keytag pk">PK</span>stop_id</div><div class="c">ID</div><div class="c fdesc">Unique identifier</div></div>
+        <div class="r"><div class="c fname"><span class="keytag fk">FK</span>route_id</div><div class="c">→ Transport Routes</div><div class="c fdesc">Which route</div></div>
+        <div class="r"><div class="c fname">stop_name, pickup_time, sequence</div><div class="c">Text, time, number</div><div class="c fdesc">Stop order and timing</div></div>
+      </div>
+      <div class="links-row"><b>Links to:</b> <a href="#t-routes">Transport Routes</a></div>
+    </div>
+
+    <div class="tbl" id="t-student-transport">
+      <div class="tbl-head"><span class="name">Student Transport Assignments</span><span class="purpose">Which student rides which route</span></div>
+      <div class="tbl-rows">
+        <div class="r"><div class="c fname"><span class="keytag fk">FK</span>student_id</div><div class="c">→ Students</div><div class="c fdesc">Who</div></div>
+        <div class="r"><div class="c fname"><span class="keytag fk">FK</span>route_id, stop_id</div><div class="c">→ Routes, → Stops</div><div class="c fdesc">Their route and pickup point</div></div>
+      </div>
+      <div class="links-row"><b>Links to:</b> <a href="#t-students">Students</a>, <a href="#t-routes">Transport Routes</a>, <a href="#t-stops">Transport Stops</a></div>
+    </div>
+
+    <div class="tbl" id="t-hostel-rooms">
+      <div class="tbl-head"><span class="name">Hostel Rooms</span><span class="purpose">Room inventory</span></div>
+      <div class="tbl-rows">
+        <div class="r"><div class="c fname"><span class="keytag pk">PK</span>room_id</div><div class="c">ID</div><div class="c fdesc">Unique identifier</div></div>
+        <div class="r"><div class="c fname"><span class="keytag fk">FK</span>school_id</div><div class="c">→ Schools</div><div class="c fdesc">Which school</div></div>
+        <div class="r"><div class="c fname">room_no, capacity</div><div class="c">Text, number</div><div class="c fdesc">Room details</div></div>
+      </div>
+      <div class="links-row"><b>Links to:</b> <a href="#t-schools">Schools</a> · filled via <a href="#t-hostel-alloc">Hostel Allocations</a></div>
+    </div>
+
+    <div class="tbl" id="t-hostel-alloc">
+      <div class="tbl-head"><span class="name">Hostel Allocations</span><span class="purpose">Which student is in which room</span></div>
+      <div class="tbl-rows">
+        <div class="r"><div class="c fname"><span class="keytag pk">PK</span>allocation_id</div><div class="c">ID</div><div class="c fdesc">Unique identifier</div></div>
+        <div class="r"><div class="c fname"><span class="keytag fk">FK</span>room_id, student_id</div><div class="c">→ Hostel Rooms, → Students</div><div class="c fdesc">Who's where</div></div>
+        <div class="r"><div class="c fname">date_from</div><div class="c">Date</div><div class="c fdesc">When they moved in</div></div>
+      </div>
+      <div class="links-row"><b>Links to:</b> <a href="#t-hostel-rooms">Hostel Rooms</a>, <a href="#t-students">Students</a></div>
+    </div>
+
+    <div class="tbl" id="t-books">
+      <div class="tbl-head"><span class="name">Library Books</span><span class="purpose">The catalogue</span></div>
+      <div class="tbl-rows">
+        <div class="r"><div class="c fname"><span class="keytag pk">PK</span>book_id</div><div class="c">ID</div><div class="c fdesc">Unique identifier</div></div>
+        <div class="r"><div class="c fname"><span class="keytag fk">FK</span>school_id</div><div class="c">→ Schools</div><div class="c fdesc">Which school's library</div></div>
+        <div class="r"><div class="c fname">title, author, accession_no, category</div><div class="c">Text</div><div class="c fdesc">Book details</div></div>
+        <div class="r"><div class="c fname">copies_total, copies_available</div><div class="c">Number</div><div class="c fdesc">Stock on hand vs. currently issued</div></div>
+      </div>
+      <div class="links-row"><b>Links to:</b> <a href="#t-schools">Schools</a> · tracked by <a href="#t-circulation">Library Circulation</a></div>
+    </div>
+
+    <div class="tbl" id="t-circulation">
+      <div class="tbl-head"><span class="name">Library Circulation</span><span class="purpose">Who has which book, and when it's due</span></div>
+      <div class="tbl-rows">
+        <div class="r"><div class="c fname"><span class="keytag pk">PK</span>circulation_id</div><div class="c">ID</div><div class="c fdesc">Unique identifier</div></div>
+        <div class="r"><div class="c fname"><span class="keytag fk">FK</span>book_id, student_id</div><div class="c">→ Books, → Students</div><div class="c fdesc">What was issued, to whom</div></div>
+        <div class="r"><div class="c fname">issue_date, due_date, return_date</div><div class="c">Dates</div><div class="c fdesc">The loan window</div></div>
+        <div class="r"><div class="c fname">status</div><div class="c">Issued / Returned / Overdue</div><div class="c fdesc">This is what flags an overdue book</div></div>
+      </div>
+      <div class="links-row"><b>Links to:</b> <a href="#t-books">Library Books</a>, <a href="#t-students">Students</a></div>
+    </div>
+  </section>
+
+  <!-- ============ ENGAGEMENT ============ -->
+  <section class="domain" id="d-engagement">
+    <div class="domain-head"><h2>Engagement</h2><span class="count">6 tables</span></div>
+    <p class="domain-desc">Events, certificates, and in-app announcements — how the school communicates and celebrates.</p>
+
+    <div class="tbl" id="t-events">
+      <div class="tbl-head"><span class="name">Events</span><span class="purpose">School events like Sports Day or a PTM</span></div>
+      <div class="tbl-rows">
+        <div class="r"><div class="c fname"><span class="keytag pk">PK</span>event_id</div><div class="c">ID</div><div class="c fdesc">Unique identifier</div></div>
+        <div class="r"><div class="c fname"><span class="keytag fk">FK</span>school_id</div><div class="c">→ Schools</div><div class="c fdesc">Which school</div></div>
+        <div class="r"><div class="c fname">title, type, date, venue</div><div class="c">Text, date</div><div class="c fdesc">Event details</div></div>
+        <div class="r"><div class="c fname">expected_attendance, budget_estimate</div><div class="c">Number, ₹</div><div class="c fdesc">Planning figures</div></div>
+      </div>
+      <div class="links-row"><b>Links to:</b> <a href="#t-schools">Schools</a> · has <a href="#t-checklist">Event Checklist Items</a></div>
+    </div>
+
+    <div class="tbl" id="t-checklist">
+      <div class="tbl-head"><span class="name">Event Checklist Items</span><span class="purpose">Prep tasks for an event</span></div>
+      <div class="tbl-rows">
+        <div class="r"><div class="c fname"><span class="keytag pk">PK</span>checklist_id</div><div class="c">ID</div><div class="c fdesc">Unique identifier</div></div>
+        <div class="r"><div class="c fname"><span class="keytag fk">FK</span>event_id</div><div class="c">→ Events</div><div class="c fdesc">Which event</div></div>
+        <div class="r"><div class="c fname">task, status</div><div class="c">Text, Pending/Done</div><div class="c fdesc">The task and whether it's done</div></div>
+      </div>
+      <div class="links-row"><b>Links to:</b> <a href="#t-events">Events</a></div>
+    </div>
+
+    <div class="tbl" id="t-cert-templates">
+      <div class="tbl-head"><span class="name">Certificate Templates</span><span class="purpose">The wording for each certificate type</span></div>
+      <div class="tbl-rows">
+        <div class="r"><div class="c fname"><span class="keytag pk">PK</span>template_id</div><div class="c">ID</div><div class="c fdesc">Unique identifier</div></div>
+        <div class="r"><div class="c fname"><span class="keytag fk">FK</span>school_id</div><div class="c">→ Schools</div><div class="c fdesc">Which school (schools can customize wording)</div></div>
+        <div class="r"><div class="c fname">type</div><div class="c">Bonafide / Transfer / Character / Achievement</div><div class="c fdesc">Certificate type</div></div>
+        <div class="r"><div class="c fname">body_text</div><div class="c">Text</div><div class="c fdesc">The template wording, with placeholders for name/class/year</div></div>
+      </div>
+      <div class="links-row"><b>Links to:</b> <a href="#t-schools">Schools</a> · used by <a href="#t-cert-issued">Certificates Issued</a></div>
+    </div>
+
+    <div class="tbl" id="t-cert-issued">
+      <div class="tbl-head"><span class="name">Certificates Issued</span><span class="purpose">A record of every certificate generated</span></div>
+      <div class="tbl-rows">
+        <div class="r"><div class="c fname"><span class="keytag pk">PK</span>certificate_id</div><div class="c">ID</div><div class="c fdesc">Unique identifier</div></div>
+        <div class="r"><div class="c fname"><span class="keytag fk">FK</span>student_id, template_id</div><div class="c">→ Students, → Templates</div><div class="c fdesc">For whom, which kind</div></div>
+        <div class="r"><div class="c fname">issued_date</div><div class="c">Date</div><div class="c fdesc">When generated</div></div>
+        <div class="r"><div class="c fname"><span class="keytag fk">FK</span>issued_by_staff_id</div><div class="c">→ Staff Profiles</div><div class="c fdesc">Who generated it</div></div>
+      </div>
+      <div class="links-row"><b>Links to:</b> <a href="#t-students">Students</a>, <a href="#t-cert-templates">Certificate Templates</a>, <a href="#t-staff">Staff Profiles</a></div>
+    </div>
+
+    <div class="tbl" id="t-announcements">
+      <div class="tbl-head"><span class="name">Announcements</span><span class="purpose">In-app notices — Communication module</span></div>
+      <div class="tbl-rows">
+        <div class="r"><div class="c fname"><span class="keytag pk">PK</span>announcement_id</div><div class="c">ID</div><div class="c fdesc">Unique identifier</div></div>
+        <div class="r"><div class="c fname"><span class="keytag fk">FK</span>school_id</div><div class="c">→ Schools</div><div class="c fdesc">Which school</div></div>
+        <div class="r"><div class="c fname">title, body</div><div class="c">Text</div><div class="c fdesc">The notice</div></div>
+        <div class="r"><div class="c fname">audience_type, audience_target</div><div class="c">All Parents / All Staff / Specific Class / Specific Student</div><div class="c fdesc">Who sees it</div></div>
+        <div class="r"><div class="c fname">published_on, scheduled_for</div><div class="c">Dates</div><div class="c fdesc">When it went (or will go) out</div></div>
+      </div>
+      <div class="links-row"><b>Links to:</b> <a href="#t-schools">Schools</a> · read-receipts tracked in <a href="#t-reads">Announcement Reads</a>. This is in-app only — no WhatsApp/SMS in this phase, that integration is on hold.</div>
+    </div>
+
+    <div class="tbl" id="t-reads">
+      <div class="tbl-head"><span class="name">Announcement Reads</span><span class="purpose">Read-receipt tracking</span></div>
+      <div class="tbl-rows">
+        <div class="r"><div class="c fname"><span class="keytag fk">FK</span>announcement_id, user_id</div><div class="c">→ Announcements, → Users</div><div class="c fdesc">Who read what</div></div>
+        <div class="r"><div class="c fname">read_on</div><div class="c">Date</div><div class="c fdesc">When they opened it — this is what powers the "412/642 viewed" counter</div></div>
+      </div>
+      <div class="links-row"><b>Links to:</b> <a href="#t-announcements">Announcements</a>, <a href="#t-users">Users</a></div>
+    </div>
+  </section>
+
+  <!-- ============ SETTINGS ============ -->
+  <section class="domain" id="d-settings">
+    <div class="domain-head"><h2>Settings</h2><span class="count">3 tables</span></div>
+    <p class="domain-desc">Per-school customization — including the Website Builder you tried out.</p>
+
+    <div class="tbl" id="t-website">
+      <div class="tbl-head"><span class="name">Website Settings</span><span class="purpose">A school's public website content</span></div>
+      <div class="tbl-rows">
+        <div class="r"><div class="c fname"><span class="keytag pk">PK</span><span class="keytag fk">FK</span>school_id</div><div class="c">→ Schools</div><div class="c fdesc">One row per school</div></div>
+        <div class="r"><div class="c fname">tagline, logo_url, theme_color</div><div class="c">Text, URL, color</div><div class="c fdesc">What you edited in the Website Builder</div></div>
+        <div class="r"><div class="c fname">section_visibility</div><div class="c">Hero / About / Admissions CTA / Faculty / Gallery / Contact — each on/off</div><div class="c fdesc">The show/hide toggles</div></div>
+      </div>
+      <div class="links-row"><b>Links to:</b> <a href="#t-schools">Schools</a></div>
+    </div>
+
+    <div class="tbl" id="t-idcards">
+      <div class="tbl-head"><span class="name">ID Card Templates</span><span class="purpose">Layout for printed student/staff ID cards</span></div>
+      <div class="tbl-rows">
+        <div class="r"><div class="c fname"><span class="keytag pk">PK</span>template_id</div><div class="c">ID</div><div class="c fdesc">Unique identifier</div></div>
+        <div class="r"><div class="c fname"><span class="keytag fk">FK</span>school_id</div><div class="c">→ Schools</div><div class="c fdesc">Which school</div></div>
+        <div class="r"><div class="c fname">layout_config</div><div class="c">Config</div><div class="c fdesc">Which fields appear on the card and where</div></div>
+      </div>
+      <div class="links-row"><b>Links to:</b> <a href="#t-schools">Schools</a></div>
+    </div>
+
+    <div class="tbl" id="t-viewconfig">
+      <div class="tbl-head"><span class="name">Screen Customization</span><span class="purpose">Field Manager / List View / Profile View settings</span></div>
+      <div class="tbl-rows">
+        <div class="r"><div class="c fname"><span class="keytag pk">PK</span>config_id</div><div class="c">ID</div><div class="c fdesc">Unique identifier</div></div>
+        <div class="r"><div class="c fname"><span class="keytag fk">FK</span>school_id</div><div class="c">→ Schools</div><div class="c fdesc">Which school</div></div>
+        <div class="r"><div class="c fname">screen_name, config</div><div class="c">Text, Config</div><div class="c fdesc">Which screen, and which fields/columns a school has chosen to show</div></div>
+      </div>
+      <div class="links-row"><b>Links to:</b> <a href="#t-schools">Schools</a></div>
+    </div>
+  </section>
+
+  <footer>
+    Vidya Yati — internal reference, generated to accompany the design canvas and clickable prototype. Table and field names here are the working proposal for the backend build, not final until reviewed together.
+  </footer>
+
+</main>
+</div>

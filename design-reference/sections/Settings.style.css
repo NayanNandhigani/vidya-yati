@@ -1,0 +1,96 @@
+/* Bespoke classes from Settings.dc.html, prefixed set- to avoid collisions with
+   other modules' equally-generic names (toggle, swatch, field label, subnav item).
+   Shared common set (tokens, .mono, .disp, .card, .pill, .navitem/.navitem.active/
+   .icon/.navgroup, .field/.in) is provided by the shell and NOT redefined here. */
+
+/* settings sub-nav */
+.set-subnav-item{padding:9px 13px;border-radius:8px;font-size:13px;font-weight:600;color:var(--muted);cursor:pointer;}
+.set-subnav-item.active{background:var(--marigold-tint);color:var(--marigold-deep);}
+
+/* form field label */
+.set-flabel{font-size:10.5px;color:var(--faint);margin-bottom:6px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;}
+
+/* Settings.dc.html's own "field" box (static-text style, label rendered above
+   via .set-flabel) — deliberately NOT named .field: the shared common set's
+   .field/.in is a different pattern (flex-column wrapper around a labeled
+   .in input, used by Fees/Accounts/etc.) and would collide if reused here.
+   Now a real <input>, so add outline/focus handling. */
+.set-field-box{background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:9px 12px;font-size:13.5px;font-weight:600;color:var(--ink);outline:none;}
+.set-field-box:focus{border-color:var(--marigold);box-shadow:0 0 0 2px var(--marigold-tint);}
+
+/* toggle switch */
+.set-toggle{width:32px;height:18px;border-radius:100px;position:relative;flex:none;cursor:pointer;transition:background .15s ease;}
+.set-toggle.on{background:var(--teal);}
+.set-toggle.off{background:var(--line);}
+.set-toggle .set-knob{position:absolute;top:2px;width:14px;height:14px;border-radius:50%;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.25);transition:left .15s ease;}
+.set-toggle.on .set-knob{left:16px;}
+.set-toggle.off .set-knob{left:2px;}
+
+.set-swatch{width:25px;height:25px;border-radius:50%;flex:none;cursor:pointer;transition:box-shadow .15s ease;}
+.set-visrow{display:flex;justify-content:space-between;align-items:center;padding:9.5px 0;border-bottom:1px solid var(--line);font-size:13px;font-weight:600;}
+.set-visrow:last-child{border-bottom:none;}
+
+/* Shared panel shell for the 7 sub-nav panels beyond Website Builder
+   (which keeps its own bespoke two-column flex layout, not this class) */
+.set-panel{flex:1;display:none;flex-direction:column;padding:26px;overflow-y:auto;}
+
+/* small "+ Add …" link-style action, used under Academic Years / Fields Manager */
+.set-add-btn{display:inline-block;margin-top:14px;font-size:12.5px;font-weight:700;color:var(--marigold-deep);cursor:pointer;padding:6px 4px;}
+
+/* ---------- Academic Years ---------- */
+.set-years-list{display:flex;flex-direction:column;}
+.set-years-row{border-bottom:1px solid var(--line);padding:14px 0;}
+.set-years-row:last-child{border-bottom:none;}
+.set-years-row-main{display:flex;align-items:center;justify-content:space-between;cursor:pointer;gap:12px;}
+.set-years-editlink{font-size:12px;font-weight:700;color:var(--marigold-deep);cursor:pointer;}
+.set-years-setactive{font-size:12px;font-weight:700;color:var(--teal);cursor:pointer;}
+.set-years-edit{display:none;margin-top:14px;padding:14px;background:var(--paper);border-radius:10px;gap:12px;align-items:flex-end;flex-wrap:wrap;}
+.set-years-edit.open{display:flex;}
+.set-years-edit .field{flex:1;min-width:140px;}
+.set-years-save{background:var(--marigold);color:#fff;border-radius:8px;padding:8px 16px;font-size:12.5px;font-weight:600;cursor:pointer;flex:none;height:fit-content;}
+.set-years-savemsg{font-size:11.5px;font-weight:700;color:var(--good);display:none;align-self:center;}
+
+/* ---------- ID Card Templates ---------- */
+.set-idcard-tile{width:190px;flex:none;cursor:pointer;border:2px solid transparent;border-radius:14px;padding:10px;transition:border-color .15s ease, background .15s ease;}
+.set-idcard-tile:hover{background:var(--paper);}
+.set-idcard-tile.set-idcard-selected{border-color:var(--marigold);background:var(--marigold-tint);}
+.set-idcard-mock{position:relative;height:112px;border-radius:10px;padding:12px;display:flex;flex-direction:column;align-items:center;color:#fff;overflow:hidden;}
+.set-idcard-badge{position:absolute;top:8px;right:8px;width:18px;height:18px;border-radius:50%;background:#fff;color:var(--good);font-size:11px;font-weight:900;display:none;align-items:center;justify-content:center;}
+.set-idcard-tile.set-idcard-selected .set-idcard-badge{display:flex;}
+.set-idcard-photo{width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.35);margin-bottom:6px;margin-top:4px;}
+.set-idcard-mockname{font-size:11px;font-weight:700;}
+.set-idcard-mockid{font-size:9px;opacity:.85;margin-top:2px;}
+.set-idcard-qr{position:absolute;bottom:8px;right:8px;width:20px;height:20px;background:rgba(255,255,255,.55);border-radius:3px;}
+.set-idcard-selectbtn{display:block;margin-top:9px;text-align:center;font-size:12px;font-weight:700;padding:6px 0;border-radius:7px;background:var(--card);border:1px solid var(--line);color:var(--ink);}
+.set-idcard-tile.set-idcard-selected .set-idcard-selectbtn{background:var(--marigold);color:#fff;border-color:var(--marigold);}
+
+/* ---------- Fields Manager ---------- */
+.set-fields-head{display:grid;grid-template-columns:1.6fr 1fr auto auto;gap:14px;padding-bottom:10px;border-bottom:1px solid var(--line);font-size:11px;font-weight:700;color:var(--faint);text-transform:uppercase;letter-spacing:.04em;}
+.set-fields-list{display:flex;flex-direction:column;}
+.set-field-row{display:grid;grid-template-columns:1.6fr 1fr auto auto;gap:14px;align-items:center;padding:12px 0;border-bottom:1px solid var(--line);}
+.set-field-row:last-child{border-bottom:none;}
+.set-field-required{display:flex;align-items:center;gap:8px;font-size:11.5px;color:var(--muted);font-weight:600;white-space:nowrap;}
+.set-field-remove{font-size:13px;color:var(--faint);cursor:pointer;padding:4px 9px;border-radius:6px;}
+.set-field-remove:hover{color:var(--critical);background:var(--critical-tint);}
+
+/* ---------- List View Settings ---------- */
+.set-listview-cols{display:grid;grid-template-columns:1fr 1fr;gap:2px 24px;}
+.set-listview-row{display:flex;align-items:center;gap:11px;padding:8px 0;font-size:13px;font-weight:600;}
+.set-listview-preview{display:flex;gap:0;background:var(--paper);border-radius:8px;padding:10px 14px;font-size:11px;font-weight:700;color:var(--faint);text-transform:uppercase;letter-spacing:.03em;overflow-x:auto;white-space:nowrap;}
+.set-listview-preview span{padding:0 14px;border-right:1px solid var(--line);}
+.set-listview-preview span:last-child{border-right:none;}
+
+/* ---------- Profile View Editor ---------- */
+.set-profiletab-preview{display:flex;gap:6px;flex-wrap:wrap;}
+.set-profiletab-preview span{background:var(--paper);border:1px solid var(--line);border-radius:7px;padding:6px 13px;font-size:12px;font-weight:700;color:var(--ink2);}
+
+/* ---------- Users & Roles ---------- */
+.set-users-head{display:grid;grid-template-columns:1.3fr 1.6fr auto auto;gap:14px;padding-bottom:10px;border-bottom:1px solid var(--line);font-size:11px;font-weight:700;color:var(--faint);text-transform:uppercase;letter-spacing:.04em;}
+.set-users-table{display:flex;flex-direction:column;}
+.set-user-row{display:grid;grid-template-columns:1.3fr 1.6fr auto auto;gap:14px;align-items:center;padding:12px 0;border-bottom:1px solid var(--line);}
+.set-user-row:last-child{border-bottom:none;}
+.set-user-name{display:flex;align-items:center;gap:10px;font-weight:700;font-size:13.5px;}
+.set-user-avatar{width:28px;height:28px;border-radius:50%;color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex:none;}
+.set-user-role{cursor:pointer;}
+.set-user-remove{font-size:13px;color:var(--faint);cursor:pointer;padding:4px 9px;border-radius:6px;}
+.set-user-remove:hover{color:var(--critical);background:var(--critical-tint);}

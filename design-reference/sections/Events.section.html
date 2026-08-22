@@ -1,0 +1,291 @@
+<section class="view" id="view-Events" data-view="Events">
+  <!-- MAIN -->
+  <div style="flex:1;overflow:hidden;padding:26px 34px;display:flex;flex-direction:column;gap:16px;">
+
+    <div style="display:flex;align-items:center;justify-content:space-between;">
+      <div>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div class="disp" style="font-size:21px;">School events</div>
+          <span style="font-size:11px;font-weight:700;color:var(--muted);background:var(--line);padding:3px 9px;border-radius:100px;">Illustrative data</span>
+        </div>
+        <div style="font-size:13px;color:var(--muted);margin-top:2px;">Friday, 21 August 2026 · Term 2</div>
+      </div>
+      <span style="background:var(--marigold);color:#fff;border-radius:8px;padding:8px 16px;font-size:13px;font-weight:600;">+ New event</span>
+    </div>
+
+    <div style="display:flex;gap:24px;font-size:13px;align-items:center;">
+      <div><span style="color:var(--muted);">Events this term</span> <span class="mono" style="font-weight:700;">5</span></div>
+      <div style="color:var(--faint);">·</div>
+      <div><span style="color:var(--muted);">Upcoming</span> <span class="mono" style="font-weight:700;">4</span></div>
+      <div style="color:var(--faint);">·</div>
+      <div><span style="color:var(--muted);">Completed</span> <span class="mono" style="font-weight:700;">1</span></div>
+      <div style="margin-left:auto;color:var(--muted);">Next up <span style="font-weight:700;color:var(--ink);">Sports Day</span> · <span class="mono" style="color:var(--marigold-deep);font-weight:700;">in 16 days</span></div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1.12fr 0.88fr;gap:16px;flex:1;min-height:0;">
+
+      <!-- EVENT LIST -->
+      <div id="evt-list" style="display:flex;flex-direction:column;gap:11px;overflow-y:auto;padding-right:2px;">
+
+        <!-- Independence Day — completed -->
+        <div class="card evcard" id="evt-card-independence" data-evt-key="independence"
+             data-evt-title="Independence Day celebration" data-evt-date="Saturday, 15 August 2026"
+             data-evt-time="7:30 – 9:30 AM" data-evt-venue="Main Ground" data-evt-pill="National"
+             data-evt-color="var(--clay)" data-evt-tint="var(--clay-tint)">
+          <div class="datebadge" style="background:var(--clay-tint);color:var(--clay);">
+            <div class="mono" style="font-size:19px;font-weight:700;">15</div>
+            <div style="font-size:9.5px;font-weight:700;text-transform:uppercase;">Aug</div>
+          </div>
+          <div style="flex:1;min-width:0;">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;">
+              <div style="font-weight:700;font-size:14px;">Independence Day celebration</div>
+              <span class="pill" style="background:var(--clay-tint);color:var(--clay);">National</span>
+            </div>
+            <div class="metarow" style="color:var(--muted);margin-top:5px;">
+              <svg class="mini" viewBox="0 0 20 20"><circle cx="10" cy="10" r="7.2"/><path d="M10 6v4l3 2"/></svg>Sat · 7:30–9:30 AM
+              <span style="color:var(--line);">|</span>
+              <svg class="mini" viewBox="0 0 20 20"><path d="M10 17s6-5.5 6-9.5A6 6 0 1 0 4 7.5C4 11.5 10 17 10 17z"/><circle cx="10" cy="7.3" r="2"/></svg>Main Ground
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-top:9px;">
+              <span class="metarow" style="color:var(--faint);"><svg class="mini" viewBox="0 0 20 20"><circle cx="7" cy="7" r="2.4"/><path d="M2.8 15.5c0-2.4 1.9-4.3 4.2-4.3s4.2 1.9 4.2 4.3"/><circle cx="14" cy="7.6" r="1.9"/><path d="M12.4 11.4c1.7.1 3 1.7 3 3.6"/></svg>612 attended</span>
+              <span class="pill" style="background:var(--good-tint);color:var(--good);">Completed</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- PTM -->
+        <div class="card evcard" id="evt-card-ptm" data-evt-key="ptm"
+             data-evt-title="Parent-Teacher Meeting" data-evt-date="Saturday, 29 August 2026"
+             data-evt-time="9:00 AM – 1:00 PM" data-evt-venue="Classrooms · Blocks A–C" data-evt-pill="Academic"
+             data-evt-color="var(--warn)" data-evt-tint="var(--warn-tint)">
+          <div class="datebadge" style="background:var(--warn-tint);color:var(--warn);">
+            <div class="mono" style="font-size:19px;font-weight:700;">29</div>
+            <div style="font-size:9.5px;font-weight:700;text-transform:uppercase;">Aug</div>
+          </div>
+          <div style="flex:1;min-width:0;">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;">
+              <div style="font-weight:700;font-size:14px;">Parent-Teacher Meeting</div>
+              <span class="pill" style="background:var(--warn-tint);color:var(--warn);">Academic</span>
+            </div>
+            <div class="metarow" style="color:var(--muted);margin-top:5px;">
+              <svg class="mini" viewBox="0 0 20 20"><circle cx="10" cy="10" r="7.2"/><path d="M10 6v4l3 2"/></svg>Sat · 9:00 AM–1:00 PM
+              <span style="color:var(--line);">|</span>
+              <svg class="mini" viewBox="0 0 20 20"><path d="M10 17s6-5.5 6-9.5A6 6 0 1 0 4 7.5C4 11.5 10 17 10 17z"/><circle cx="10" cy="7.3" r="2"/></svg>Classrooms · Blocks A–C
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-top:9px;">
+              <span class="metarow" style="color:var(--faint);"><svg class="mini" viewBox="0 0 20 20"><circle cx="7" cy="7" r="2.4"/><path d="M2.8 15.5c0-2.4 1.9-4.3 4.2-4.3s4.2 1.9 4.2 4.3"/><circle cx="14" cy="7.6" r="1.9"/><path d="M12.4 11.4c1.7.1 3 1.7 3 3.6"/></svg>540 parents expected</span>
+              <span class="pill" style="background:var(--marigold-tint);color:var(--marigold-deep);">Upcoming · 8 days</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sports Day — selected -->
+        <div class="card evcard evt-selected" id="evt-card-sportsday" data-evt-key="sportsday"
+             data-evt-title="Sports Day" data-evt-date="Sunday, 6 September 2026"
+             data-evt-time="8:00 AM – 4:00 PM" data-evt-venue="Main Ground" data-evt-pill="Sports"
+             data-evt-color="var(--teal)" data-evt-tint="var(--teal-tint)">
+          <div class="datebadge" style="background:var(--teal-tint);color:var(--teal);">
+            <div class="mono" style="font-size:19px;font-weight:700;">06</div>
+            <div style="font-size:9.5px;font-weight:700;text-transform:uppercase;">Sep</div>
+          </div>
+          <div style="flex:1;min-width:0;">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;">
+              <div style="font-weight:700;font-size:14px;">Sports Day</div>
+              <span class="pill" style="background:var(--teal-tint);color:var(--teal);">Sports</span>
+            </div>
+            <div class="metarow" style="color:var(--muted);margin-top:5px;">
+              <svg class="mini" viewBox="0 0 20 20"><circle cx="10" cy="10" r="7.2"/><path d="M10 6v4l3 2"/></svg>Sun · 8:00 AM–4:00 PM
+              <span style="color:var(--line);">|</span>
+              <svg class="mini" viewBox="0 0 20 20"><path d="M10 17s6-5.5 6-9.5A6 6 0 1 0 4 7.5C4 11.5 10 17 10 17z"/><circle cx="10" cy="7.3" r="2"/></svg>Main Ground
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-top:9px;">
+              <span class="metarow" style="color:var(--faint);"><svg class="mini" viewBox="0 0 20 20"><circle cx="7" cy="7" r="2.4"/><path d="M2.8 15.5c0-2.4 1.9-4.3 4.2-4.3s4.2 1.9 4.2 4.3"/><circle cx="14" cy="7.6" r="1.9"/><path d="M12.4 11.4c1.7.1 3 1.7 3 3.6"/></svg>480 expected</span>
+              <span class="pill" style="background:var(--marigold);color:#fff;">Viewing</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Science Exhibition -->
+        <div class="card evcard" id="evt-card-science" data-evt-key="science"
+             data-evt-title="Science Exhibition" data-evt-date="Saturday, 10 October 2026"
+             data-evt-time="10:00 AM – 2:00 PM" data-evt-venue="Science Block · Labs 1–3" data-evt-pill="Academic"
+             data-evt-color="var(--good)" data-evt-tint="var(--good-tint)">
+          <div class="datebadge" style="background:var(--good-tint);color:var(--good);">
+            <div class="mono" style="font-size:19px;font-weight:700;">10</div>
+            <div style="font-size:9.5px;font-weight:700;text-transform:uppercase;">Oct</div>
+          </div>
+          <div style="flex:1;min-width:0;">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;">
+              <div style="font-weight:700;font-size:14px;">Science Exhibition</div>
+              <span class="pill" style="background:var(--good-tint);color:var(--good);">Academic</span>
+            </div>
+            <div class="metarow" style="color:var(--muted);margin-top:5px;">
+              <svg class="mini" viewBox="0 0 20 20"><circle cx="10" cy="10" r="7.2"/><path d="M10 6v4l3 2"/></svg>Sat · 10:00 AM–2:00 PM
+              <span style="color:var(--line);">|</span>
+              <svg class="mini" viewBox="0 0 20 20"><path d="M10 17s6-5.5 6-9.5A6 6 0 1 0 4 7.5C4 11.5 10 17 10 17z"/><circle cx="10" cy="7.3" r="2"/></svg>Science Block · Labs 1–3
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-top:9px;">
+              <span class="metarow" style="color:var(--faint);"><svg class="mini" viewBox="0 0 20 20"><circle cx="7" cy="7" r="2.4"/><path d="M2.8 15.5c0-2.4 1.9-4.3 4.2-4.3s4.2 1.9 4.2 4.3"/><circle cx="14" cy="7.6" r="1.9"/><path d="M12.4 11.4c1.7.1 3 1.7 3 3.6"/></svg>310 expected</span>
+              <span class="pill" style="background:var(--marigold-tint);color:var(--marigold-deep);">Upcoming · 50 days</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Annual Day -->
+        <div class="card evcard" id="evt-card-annualday" data-evt-key="annualday"
+             data-evt-title="Annual Day" data-evt-date="Friday, 18 December 2026"
+             data-evt-time="5:00 – 8:30 PM" data-evt-venue="School Auditorium" data-evt-pill="Cultural"
+             data-evt-color="var(--marigold-deep)" data-evt-tint="var(--marigold-tint)">
+          <div class="datebadge" style="background:var(--marigold-tint);color:var(--marigold-deep);">
+            <div class="mono" style="font-size:19px;font-weight:700;">18</div>
+            <div style="font-size:9.5px;font-weight:700;text-transform:uppercase;">Dec</div>
+          </div>
+          <div style="flex:1;min-width:0;">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;">
+              <div style="font-weight:700;font-size:14px;">Annual Day</div>
+              <span class="pill" style="background:var(--marigold-tint);color:var(--marigold-deep);">Cultural</span>
+            </div>
+            <div class="metarow" style="color:var(--muted);margin-top:5px;">
+              <svg class="mini" viewBox="0 0 20 20"><circle cx="10" cy="10" r="7.2"/><path d="M10 6v4l3 2"/></svg>Fri · 5:00–8:30 PM
+              <span style="color:var(--line);">|</span>
+              <svg class="mini" viewBox="0 0 20 20"><path d="M10 17s6-5.5 6-9.5A6 6 0 1 0 4 7.5C4 11.5 10 17 10 17z"/><circle cx="10" cy="7.3" r="2"/></svg>School Auditorium
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-top:9px;">
+              <span class="metarow" style="color:var(--faint);"><svg class="mini" viewBox="0 0 20 20"><circle cx="7" cy="7" r="2.4"/><path d="M2.8 15.5c0-2.4 1.9-4.3 4.2-4.3s4.2 1.9 4.2 4.3"/><circle cx="14" cy="7.6" r="1.9"/><path d="M12.4 11.4c1.7.1 3 1.7 3 3.6"/></svg>620 expected</span>
+              <span class="pill" style="background:var(--marigold-tint);color:var(--marigold-deep);">Upcoming · 119 days</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- DETAIL PANEL -->
+      <div class="card" style="display:flex;flex-direction:column;overflow:hidden;">
+        <div id="evt-detail-header" style="background:var(--teal-tint);padding:18px 20px 16px;border-bottom:1px solid var(--line);">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;">
+            <div style="display:flex;align-items:center;gap:11px;">
+              <div id="evt-detail-iconwrap" style="width:38px;height:38px;border-radius:9px;background:var(--teal);display:flex;align-items:center;justify-content:center;flex:none;">
+                <svg width="19" height="19" viewBox="0 0 20 20" stroke="#fff" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="4" width="15" height="13" rx="1.5"/><path d="M2.5 8h15M6 2.5v3M14 2.5v3"/><circle cx="10" cy="12.7" r="1.5" fill="#fff" stroke="none"/></svg>
+              </div>
+              <div>
+                <div class="disp" id="evt-detail-title" style="font-size:17px;">Sports Day</div>
+                <div style="font-size:11.5px;color:var(--muted);margin-top:1px;">Annual inter-house athletics meet</div>
+              </div>
+            </div>
+            <span class="pill" id="evt-detail-pill" style="background:var(--teal);color:#fff;">Sports</span>
+          </div>
+        </div>
+
+        <div style="padding:18px 20px;display:flex;flex-direction:column;gap:16px;flex:1;overflow-y:auto;">
+
+          <div style="display:flex;flex-direction:column;gap:9px;">
+            <div class="metarow"><svg class="mini" viewBox="0 0 20 20"><rect x="2.5" y="4" width="15" height="13" rx="1.5"/><path d="M2.5 8h15M6 2.5v3M14 2.5v3"/></svg><span id="evt-detail-date" style="font-weight:600;">Sunday, 6 September 2026</span></div>
+            <div class="metarow"><svg class="mini" viewBox="0 0 20 20"><circle cx="10" cy="10" r="7.2"/><path d="M10 6v4l3 2"/></svg><span id="evt-detail-time">8:00 AM – 4:00 PM</span></div>
+            <div class="metarow"><svg class="mini" viewBox="0 0 20 20"><path d="M10 17s6-5.5 6-9.5A6 6 0 1 0 4 7.5C4 11.5 10 17 10 17z"/><circle cx="10" cy="7.3" r="2"/></svg><span id="evt-detail-venue">Main Ground</span></div>
+            <div class="metarow"><svg class="mini" viewBox="0 0 20 20"><rect x="2.5" y="3.5" width="15" height="13" rx="1.8"/><circle cx="7.3" cy="8.3" r="1.9"/><path d="M4.5 13.8c0-1.6 1.3-2.6 2.8-2.6s2.8 1 2.8 2.6M12 7.5h3.3M12 10.5h3.3"/></svg><span>Organised by Rakesh Verma · Sports Dept.</span></div>
+            <div class="metarow"><svg class="mini" viewBox="0 0 20 20"><circle cx="7" cy="7" r="2.4"/><path d="M2.8 15.5c0-2.4 1.9-4.3 4.2-4.3s4.2 1.9 4.2 4.3"/><circle cx="14" cy="7.6" r="1.9"/><path d="M12.4 11.4c1.7.1 3 1.7 3 3.6"/></svg><span><span class="mono" style="font-weight:700;">480</span> expected — all classes, staff &amp; parents</span></div>
+          </div>
+
+          <div style="border-top:1px solid var(--line);"></div>
+
+          <div>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:9px;">
+              <span style="font-weight:700;font-size:13px;">Preparation checklist</span>
+              <span class="mono" id="evt-checklist-count" style="font-size:11.5px;color:var(--muted);">3/7 done</span>
+            </div>
+            <div style="height:6px;border-radius:3px;background:var(--line);overflow:hidden;margin-bottom:6px;">
+              <div id="evt-checklist-bar" style="height:100%;width:43%;background:var(--good);border-radius:3px;"></div>
+            </div>
+            <div id="evt-checklist-list">
+              <div class="chk" id="evt-chk-1" data-done="true"><svg class="mini evt-chk-dot" viewBox="0 0 20 20"><circle cx="10" cy="10" r="7.5"/><path class="evt-chk-tick" d="M6.5 10.3l2.3 2.3L14 7.8"/></svg><span class="evt-chk-label">Ground booking confirmed</span></div>
+              <div class="chk" id="evt-chk-2" data-done="true"><svg class="mini evt-chk-dot" viewBox="0 0 20 20"><circle cx="10" cy="10" r="7.5"/><path class="evt-chk-tick" d="M6.5 10.3l2.3 2.3L14 7.8"/></svg><span class="evt-chk-label">Parent RSVP circular sent</span></div>
+              <div class="chk" id="evt-chk-3" data-done="true"><svg class="mini evt-chk-dot" viewBox="0 0 20 20"><circle cx="10" cy="10" r="7.5"/><path class="evt-chk-tick" d="M6.5 10.3l2.3 2.3L14 7.8"/></svg><span class="evt-chk-label">Trophies &amp; medals ordered</span></div>
+              <div class="chk" id="evt-chk-4" data-done="false"><svg class="mini evt-chk-dot" viewBox="0 0 20 20"><circle cx="10" cy="10" r="7.5"/><path class="evt-chk-tick" d="M6.5 10.3l2.3 2.3L14 7.8"/></svg><span class="evt-chk-label">PA system &amp; sound arranged</span></div>
+              <div class="chk" id="evt-chk-5" data-done="false"><svg class="mini evt-chk-dot" viewBox="0 0 20 20"><circle cx="10" cy="10" r="7.5"/><path class="evt-chk-tick" d="M6.5 10.3l2.3 2.3L14 7.8"/></svg><span class="evt-chk-label">Volunteer duty roster assigned</span></div>
+              <div class="chk" id="evt-chk-6" data-done="false"><svg class="mini evt-chk-dot" viewBox="0 0 20 20"><circle cx="10" cy="10" r="7.5"/><path class="evt-chk-tick" d="M6.5 10.3l2.3 2.3L14 7.8"/></svg><span class="evt-chk-label">Refreshment vendor confirmed</span></div>
+              <div class="chk" id="evt-chk-7" data-done="false"><svg class="mini evt-chk-dot" viewBox="0 0 20 20"><circle cx="10" cy="10" r="7.5"/><path class="evt-chk-tick" d="M6.5 10.3l2.3 2.3L14 7.8"/></svg><span class="evt-chk-label">First-aid &amp; safety check</span></div>
+            </div>
+          </div>
+
+          <div style="border-top:1px solid var(--line);"></div>
+
+          <div style="display:flex;justify-content:space-between;align-items:flex-end;">
+            <div>
+              <div style="font-size:11.5px;color:var(--muted);">Estimated cost</div>
+              <div class="mono" style="font-size:20px;font-weight:600;color:var(--marigold-deep);">₹45,000</div>
+            </div>
+            <div style="font-size:11px;color:var(--faint);text-align:right;max-width:170px;">Tracked under Sports &amp; Co-curricular · Term 2 budget (Accounts)</div>
+          </div>
+
+          <div style="display:flex;gap:10px;margin-top:auto;">
+            <span style="flex:1;text-align:center;background:var(--card);border:1px solid var(--line);border-radius:8px;padding:9px;font-size:12.5px;font-weight:600;">Edit details</span>
+            <span style="flex:1;text-align:center;background:var(--marigold);color:#fff;border-radius:8px;padding:9px;font-size:12.5px;font-weight:600;">Send reminder</span>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+<script>
+(function(){
+  var root = document.getElementById('view-Events');
+  if(!root) return;
+
+  var cards = root.querySelectorAll('[data-evt-key]');
+  var elHeader = root.querySelector('#evt-detail-header');
+  var elIconWrap = root.querySelector('#evt-detail-iconwrap');
+  var elTitle = root.querySelector('#evt-detail-title');
+  var elPill = root.querySelector('#evt-detail-pill');
+  var elDate = root.querySelector('#evt-detail-date');
+  var elTime = root.querySelector('#evt-detail-time');
+  var elVenue = root.querySelector('#evt-detail-venue');
+
+  function selectEvent(card){
+    cards.forEach(function(c){ c.classList.remove('evt-selected'); });
+    card.classList.add('evt-selected');
+
+    var tint = card.getAttribute('data-evt-tint');
+    var color = card.getAttribute('data-evt-color');
+    elHeader.style.background = tint;
+    elIconWrap.style.background = color;
+    elTitle.textContent = card.getAttribute('data-evt-title');
+    elPill.textContent = card.getAttribute('data-evt-pill');
+    elPill.style.background = color;
+    elPill.style.color = '#fff';
+    elDate.textContent = card.getAttribute('data-evt-date');
+    elTime.textContent = card.getAttribute('data-evt-time');
+    elVenue.textContent = card.getAttribute('data-evt-venue');
+  }
+
+  cards.forEach(function(card){
+    card.addEventListener('click', function(){ selectEvent(card); });
+  });
+
+  // Preparation checklist — toggle done/pending + live progress
+  var chkRows = root.querySelectorAll('.chk');
+  var countEl = root.querySelector('#evt-checklist-count');
+  var barEl = root.querySelector('#evt-checklist-bar');
+
+  function recalcProgress(){
+    var total = chkRows.length, done = 0;
+    chkRows.forEach(function(r){ if(r.getAttribute('data-done') === 'true') done++; });
+    countEl.textContent = done + '/' + total + ' done';
+    var pct = total ? Math.round((done / total) * 100) : 0;
+    barEl.style.width = pct + '%';
+  }
+
+  chkRows.forEach(function(row){
+    var dot = row.querySelector('.evt-chk-dot');
+    dot.addEventListener('click', function(e){
+      e.stopPropagation();
+      var isDone = row.getAttribute('data-done') === 'true';
+      row.setAttribute('data-done', isDone ? 'false' : 'true');
+      recalcProgress();
+    });
+  });
+
+  recalcProgress();
+})();
+</script>

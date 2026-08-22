@@ -1,0 +1,251 @@
+<section class="view" id="view-Students" data-view="Students" style="flex:1;overflow:hidden;padding:26px 34px;display:flex;flex-direction:column;gap:16px;">
+
+  <div style="display:flex;align-items:center;justify-content:space-between;">
+    <div class="disp" style="font-size:21px;">Students <span class="mono" style="font-family:'IBM Plex Mono';font-size:14px;font-weight:500;color:var(--faint);">· 642</span></div>
+    <div style="display:flex;align-items:center;gap:10px;">
+      <span style="background:var(--card);border:1px solid var(--line);border-radius:8px;padding:8px 15px;font-size:13px;color:var(--faint);width:220px;">🔍  Search students…</span>
+      <span style="background:var(--card);border:1px solid var(--line);border-radius:8px;padding:8px 14px;font-size:13px;font-weight:600;">Class ▾</span>
+      <span style="background:var(--card);border:1px solid var(--line);border-radius:8px;padding:8px 14px;font-size:13px;font-weight:600;">Status ▾</span>
+      <span style="background:var(--marigold);color:#fff;border-radius:8px;padding:8px 16px;font-size:13px;font-weight:600;">+ Add Student</span>
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1.55fr 1fr;gap:16px;flex:1;min-height:0;">
+
+    <!-- LIST -->
+    <div class="card" id="stu-list" style="padding:0;display:flex;flex-direction:column;overflow:hidden;">
+      <div style="display:grid;grid-template-columns:2.3fr 1fr 0.9fr 1.3fr 1fr;padding:14px 20px;border-bottom:1px solid var(--line);font-size:11px;color:var(--faint);text-transform:uppercase;letter-spacing:.05em;">
+        <div>Student</div><div>Adm. No.</div><div>Class</div><div>Parent</div><div>Fee status</div>
+      </div>
+
+      <div class="stu-row stu-row-selected" id="stu-row-1" data-name="Aarav Mehta" data-initials="AM" data-color="var(--marigold)" style="display:grid;grid-template-columns:2.3fr 1fr 0.9fr 1.3fr 1fr;align-items:center;padding:13px 20px;border-bottom:1px solid var(--line);">
+        <div style="display:flex;align-items:center;gap:10px;"><div class="avatar" style="background:var(--marigold);">AM</div><div><div style="font-weight:700;font-size:13.5px;">Aarav Mehta</div><div style="font-size:11.5px;color:var(--faint);">6 · B</div></div></div>
+        <div class="mono" style="font-size:12.5px;color:var(--muted);">AD-2041</div>
+        <div style="font-size:12.5px;">6-B</div>
+        <div style="font-size:12.5px;color:var(--muted);">Rohit Mehta</div>
+        <div><span class="pill" style="background:var(--good-tint);color:var(--good);">Paid</span></div>
+      </div>
+      <div class="stu-row" id="stu-row-2" data-name="Diya Sharma" data-initials="DS" data-color="var(--teal)" style="display:grid;grid-template-columns:2.3fr 1fr 0.9fr 1.3fr 1fr;align-items:center;padding:13px 20px;border-bottom:1px solid var(--line);">
+        <div style="display:flex;align-items:center;gap:10px;"><div class="avatar" style="background:var(--teal);">DS</div><div><div style="font-weight:600;font-size:13.5px;">Diya Sharma</div><div style="font-size:11.5px;color:var(--faint);">6 · B</div></div></div>
+        <div class="mono" style="font-size:12.5px;color:var(--muted);">AD-2042</div>
+        <div style="font-size:12.5px;">6-B</div>
+        <div style="font-size:12.5px;color:var(--muted);">Anjali Sharma</div>
+        <div><span class="pill" style="background:var(--warn-tint);color:var(--warn);">Pending</span></div>
+      </div>
+      <div class="stu-row" id="stu-row-3" data-name="Kabir Verma" data-initials="KV" data-color="#8A6FD1" style="display:grid;grid-template-columns:2.3fr 1fr 0.9fr 1.3fr 1fr;align-items:center;padding:13px 20px;border-bottom:1px solid var(--line);">
+        <div style="display:flex;align-items:center;gap:10px;"><div class="avatar" style="background:#8A6FD1;">KV</div><div><div style="font-weight:600;font-size:13.5px;">Kabir Verma</div><div style="font-size:11.5px;color:var(--faint);">5 · A</div></div></div>
+        <div class="mono" style="font-size:12.5px;color:var(--muted);">AD-2039</div>
+        <div style="font-size:12.5px;">5-A</div>
+        <div style="font-size:12.5px;color:var(--muted);">Suresh Verma</div>
+        <div><span class="pill" style="background:var(--good-tint);color:var(--good);">Paid</span></div>
+      </div>
+      <div class="stu-row" id="stu-row-4" data-name="Meera Iyer" data-initials="MI" data-color="#D16F8A" style="display:grid;grid-template-columns:2.3fr 1fr 0.9fr 1.3fr 1fr;align-items:center;padding:13px 20px;border-bottom:1px solid var(--line);">
+        <div style="display:flex;align-items:center;gap:10px;"><div class="avatar" style="background:#D16F8A;">MI</div><div><div style="font-weight:600;font-size:13.5px;">Meera Iyer</div><div style="font-size:11.5px;color:var(--faint);">6 · A</div></div></div>
+        <div class="mono" style="font-size:12.5px;color:var(--muted);">AD-2044</div>
+        <div style="font-size:12.5px;">6-A</div>
+        <div style="font-size:12.5px;color:var(--muted);">Lakshmi Iyer</div>
+        <div><span class="pill" style="background:var(--good-tint);color:var(--good);">Paid</span></div>
+      </div>
+      <div class="stu-row" id="stu-row-5" data-name="Yash Patel" data-initials="YP" data-color="#4C8FBF" style="display:grid;grid-template-columns:2.3fr 1fr 0.9fr 1.3fr 1fr;align-items:center;padding:13px 20px;border-bottom:1px solid var(--line);">
+        <div style="display:flex;align-items:center;gap:10px;"><div class="avatar" style="background:#4C8FBF;">YP</div><div><div style="font-weight:600;font-size:13.5px;">Yash Patel</div><div style="font-size:11.5px;color:var(--faint);">5 · A</div></div></div>
+        <div class="mono" style="font-size:12.5px;color:var(--muted);">AD-2038</div>
+        <div style="font-size:12.5px;">5-A</div>
+        <div style="font-size:12.5px;color:var(--muted);">Nikhil Patel</div>
+        <div><span class="pill" style="background:var(--critical-tint);color:var(--critical);">Overdue</span></div>
+      </div>
+      <div class="stu-row" id="stu-row-6" data-name="Zara Khan" data-initials="ZK" data-color="#C2884A" style="display:grid;grid-template-columns:2.3fr 1fr 0.9fr 1.3fr 1fr;align-items:center;padding:13px 20px;border-bottom:1px solid var(--line);">
+        <div style="display:flex;align-items:center;gap:10px;"><div class="avatar" style="background:#C2884A;">ZK</div><div><div style="font-weight:600;font-size:13.5px;">Zara Khan</div><div style="font-size:11.5px;color:var(--faint);">6 · B</div></div></div>
+        <div class="mono" style="font-size:12.5px;color:var(--muted);">AD-2045</div>
+        <div style="font-size:12.5px;">6-B</div>
+        <div style="font-size:12.5px;color:var(--muted);">Farah Khan</div>
+        <div><span class="pill" style="background:var(--good-tint);color:var(--good);">Paid</span></div>
+      </div>
+      <div class="stu-row" id="stu-row-7" data-name="Ishaan Rao" data-initials="IR" data-color="#3F9B7A" style="display:grid;grid-template-columns:2.3fr 1fr 0.9fr 1.3fr 1fr;align-items:center;padding:13px 20px;">
+        <div style="display:flex;align-items:center;gap:10px;"><div class="avatar" style="background:#3F9B7A;">IR</div><div><div style="font-weight:600;font-size:13.5px;">Ishaan Rao</div><div style="font-size:11.5px;color:var(--faint);">5 · A</div></div></div>
+        <div class="mono" style="font-size:12.5px;color:var(--muted);">AD-2040</div>
+        <div style="font-size:12.5px;">5-A</div>
+        <div style="font-size:12.5px;color:var(--muted);">Deepak Rao</div>
+        <div><span class="pill" style="background:var(--warn-tint);color:var(--warn);">Pending</span></div>
+      </div>
+    </div>
+
+    <!-- PROFILE PANEL -->
+    <div class="card" id="stu-detail-panel" style="padding:22px;display:flex;flex-direction:column;overflow:hidden;">
+      <div style="display:flex;align-items:center;gap:14px;margin-bottom:18px;">
+        <div class="avatar" id="stu-detail-avatar" style="width:52px;height:52px;font-size:17px;background:var(--marigold);">AM</div>
+        <div>
+          <div id="stu-detail-name" style="font-weight:700;font-size:16.5px;">Aarav Mehta</div>
+          <div style="font-size:12.5px;color:var(--muted);">Class 6-B · Adm. No. AD-2041</div>
+        </div>
+      </div>
+      <div style="display:flex;gap:4px;background:var(--paper);border-radius:8px;padding:4px;margin-bottom:18px;">
+        <span class="stu-tab stu-tab-active" id="stu-tab-profile" data-panel="stu-panel-profile">Profile</span>
+        <span class="stu-tab" id="stu-tab-attendance" data-panel="stu-panel-attendance">Attendance</span>
+        <span class="stu-tab" id="stu-tab-fees" data-panel="stu-panel-fees">Fees</span>
+        <span class="stu-tab" id="stu-tab-exams" data-panel="stu-panel-exams">Exams</span>
+      </div>
+
+      <div class="stu-panel stu-panel-active" id="stu-panel-profile">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px;">
+          <div style="background:var(--paper);border-radius:8px;padding:12px;"><div style="font-size:10.5px;color:var(--faint);margin-bottom:3px;">Attendance</div><div class="mono" style="font-size:16px;font-weight:700;color:var(--teal);">96%</div></div>
+          <div style="background:var(--paper);border-radius:8px;padding:12px;"><div style="font-size:10.5px;color:var(--faint);margin-bottom:3px;">Overall grade</div><div class="mono" style="font-size:16px;font-weight:700;">A</div></div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:13px;font-size:13.5px;flex:1;">
+          <div style="display:flex;justify-content:space-between;border-bottom:1px solid var(--line);padding-bottom:10px;"><span style="color:var(--muted);">Date of birth</span><span style="font-weight:600;">14 Mar 2016</span></div>
+          <div style="display:flex;justify-content:space-between;border-bottom:1px solid var(--line);padding-bottom:10px;"><span style="color:var(--muted);">Gender</span><span style="font-weight:600;">Male</span></div>
+          <div style="display:flex;justify-content:space-between;border-bottom:1px solid var(--line);padding-bottom:10px;"><span style="color:var(--muted);">Parent / guardian</span><span style="font-weight:600;">Rohit Mehta</span></div>
+          <div style="display:flex;justify-content:space-between;border-bottom:1px solid var(--line);padding-bottom:10px;"><span style="color:var(--muted);">Contact</span><span class="mono" style="font-weight:600;">+91 98XXX XXX41</span></div>
+          <div style="display:flex;justify-content:space-between;"><span style="color:var(--muted);">Transport route</span><span style="font-weight:600;">Route 4 — Whitefield</span></div>
+        </div>
+      </div>
+
+      <div class="stu-panel" id="stu-panel-attendance">
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px;">
+          <div class="stu-stat-box"><div class="stu-stat-label">Present</div><div class="stu-stat-value mono" style="color:var(--good);">13<span style="font-size:11px;font-weight:600;color:var(--faint);"> / 15</span></div></div>
+          <div class="stu-stat-box"><div class="stu-stat-label">Late</div><div class="stu-stat-value mono" style="color:var(--warn);">1</div></div>
+          <div class="stu-stat-box"><div class="stu-stat-label">Absent</div><div class="stu-stat-value mono" style="color:var(--critical);">1</div></div>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:9px;">
+          <div style="font-size:11px;color:var(--faint);text-transform:uppercase;letter-spacing:.05em;">Last 15 school days · Aug 2026</div>
+          <div class="mono" style="font-size:12px;font-weight:700;color:var(--teal);">87% present</div>
+        </div>
+        <div class="stu-att-grid" id="stu-att-grid">
+          <div class="stu-att-day stu-att-present"><span class="stu-att-date mono">3</span><span class="stu-att-mark">P</span></div>
+          <div class="stu-att-day stu-att-present"><span class="stu-att-date mono">4</span><span class="stu-att-mark">P</span></div>
+          <div class="stu-att-day stu-att-present"><span class="stu-att-date mono">5</span><span class="stu-att-mark">P</span></div>
+          <div class="stu-att-day stu-att-present"><span class="stu-att-date mono">6</span><span class="stu-att-mark">P</span></div>
+          <div class="stu-att-day stu-att-late"><span class="stu-att-date mono">7</span><span class="stu-att-mark">L</span></div>
+          <div class="stu-att-day stu-att-present"><span class="stu-att-date mono">10</span><span class="stu-att-mark">P</span></div>
+          <div class="stu-att-day stu-att-present"><span class="stu-att-date mono">11</span><span class="stu-att-mark">P</span></div>
+          <div class="stu-att-day stu-att-present"><span class="stu-att-date mono">12</span><span class="stu-att-mark">P</span></div>
+          <div class="stu-att-day stu-att-present"><span class="stu-att-date mono">13</span><span class="stu-att-mark">P</span></div>
+          <div class="stu-att-day stu-att-absent"><span class="stu-att-date mono">14</span><span class="stu-att-mark">A</span></div>
+          <div class="stu-att-day stu-att-present"><span class="stu-att-date mono">17</span><span class="stu-att-mark">P</span></div>
+          <div class="stu-att-day stu-att-present"><span class="stu-att-date mono">18</span><span class="stu-att-mark">P</span></div>
+          <div class="stu-att-day stu-att-present"><span class="stu-att-date mono">19</span><span class="stu-att-mark">P</span></div>
+          <div class="stu-att-day stu-att-present"><span class="stu-att-date mono">20</span><span class="stu-att-mark">P</span></div>
+          <div class="stu-att-day stu-att-present"><span class="stu-att-date mono">21</span><span class="stu-att-mark">P</span></div>
+        </div>
+        <div style="display:flex;gap:14px;margin-top:12px;font-size:11px;color:var(--muted);">
+          <span style="display:flex;align-items:center;gap:5px;"><span class="stu-att-dot" style="background:var(--good);"></span>Present</span>
+          <span style="display:flex;align-items:center;gap:5px;"><span class="stu-att-dot" style="background:var(--warn);"></span>Late</span>
+          <span style="display:flex;align-items:center;gap:5px;"><span class="stu-att-dot" style="background:var(--critical);"></span>Absent</span>
+        </div>
+      </div>
+
+      <div class="stu-panel" id="stu-panel-fees">
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px;">
+          <div class="stu-stat-box"><div class="stu-stat-label">Total fee</div><div class="stu-stat-value mono">₹70,100</div></div>
+          <div class="stu-stat-box"><div class="stu-stat-label">Paid</div><div class="stu-stat-value mono" style="color:var(--good);">₹47,400</div></div>
+          <div class="stu-stat-box"><div class="stu-stat-label">Due</div><div class="stu-stat-value mono" style="color:var(--warn);">₹22,700</div></div>
+        </div>
+        <div style="font-size:11px;color:var(--faint);text-transform:uppercase;letter-spacing:.05em;margin-bottom:9px;">Installments · AY 2026–27</div>
+        <div class="stu-fee-list">
+          <div class="stu-fee-row">
+            <div><div class="stu-fee-name">Term 1 tuition fee</div><div class="stu-fee-sub">Apr – Jun 2026 · paid 02 May</div></div>
+            <div class="mono stu-fee-amt">₹19,500</div>
+            <div><span class="pill" style="background:var(--good-tint);color:var(--good);">Paid</span></div>
+          </div>
+          <div class="stu-fee-row">
+            <div><div class="stu-fee-name">Term 2 tuition fee</div><div class="stu-fee-sub">Jul – Sep 2026 · paid 18 Jul</div></div>
+            <div class="mono stu-fee-amt">₹19,500</div>
+            <div><span class="pill" style="background:var(--good-tint);color:var(--good);">Paid</span></div>
+          </div>
+          <div class="stu-fee-row">
+            <div><div class="stu-fee-name">Term 3 tuition fee</div><div class="stu-fee-sub">Oct – Dec 2026 · due 05 Oct</div></div>
+            <div class="mono stu-fee-amt">₹19,500</div>
+            <div><span class="pill" style="background:var(--warn-tint);color:var(--warn);">Due</span></div>
+          </div>
+          <div class="stu-fee-row">
+            <div><div class="stu-fee-name">Transport fee</div><div class="stu-fee-sub">Annual · Route 4 · paid 12 Apr</div></div>
+            <div class="mono stu-fee-amt">₹8,400</div>
+            <div><span class="pill" style="background:var(--good-tint);color:var(--good);">Paid</span></div>
+          </div>
+          <div class="stu-fee-row stu-fee-row-overdue">
+            <div><div class="stu-fee-name">Activity &amp; lab fee</div><div class="stu-fee-sub">Annual · was due 10 Jun</div></div>
+            <div class="mono stu-fee-amt">₹3,200</div>
+            <div><span class="pill" style="background:var(--critical-tint);color:var(--critical);">Overdue</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="stu-panel" id="stu-panel-exams">
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px;">
+          <div class="stu-stat-box"><div class="stu-stat-label">Latest average</div><div class="stu-stat-value mono" style="color:var(--teal);">88%</div></div>
+          <div class="stu-stat-box"><div class="stu-stat-label">Overall grade</div><div class="stu-stat-value">A</div></div>
+          <div class="stu-stat-box"><div class="stu-stat-label">Trend</div><div class="stu-stat-value mono" style="color:var(--good);">▲ 4%</div></div>
+        </div>
+        <div style="font-size:11px;color:var(--faint);text-transform:uppercase;letter-spacing:.05em;margin-bottom:9px;">Recent exams</div>
+        <div class="stu-exam-list">
+          <div class="stu-exam-item">
+            <div><div class="stu-exam-name">Mid-Term Examination</div><div class="stu-exam-sub">All subjects · 18 Aug 2026</div></div>
+            <div class="mono stu-exam-score">441<span style="color:var(--faint);font-weight:500;"> / 500</span></div>
+            <div class="mono stu-exam-pct" style="color:var(--good);">88%</div>
+            <div><span class="pill" style="background:var(--good-tint);color:var(--good);">A</span></div>
+          </div>
+          <div class="stu-exam-item">
+            <div><div class="stu-exam-name">Unit Test 3</div><div class="stu-exam-sub">Science · 29 Jul 2026</div></div>
+            <div class="mono stu-exam-score">46<span style="color:var(--faint);font-weight:500;"> / 50</span></div>
+            <div class="mono stu-exam-pct" style="color:var(--good);">92%</div>
+            <div><span class="pill" style="background:var(--good-tint);color:var(--good);">A+</span></div>
+          </div>
+          <div class="stu-exam-item">
+            <div><div class="stu-exam-name">Unit Test 2</div><div class="stu-exam-sub">Mathematics · 08 Jul 2026</div></div>
+            <div class="mono stu-exam-score">40<span style="color:var(--faint);font-weight:500;"> / 50</span></div>
+            <div class="mono stu-exam-pct" style="color:var(--warn);">80%</div>
+            <div><span class="pill" style="background:var(--warn-tint);color:var(--warn);">B+</span></div>
+          </div>
+          <div class="stu-exam-item">
+            <div><div class="stu-exam-name">Unit Test 1</div><div class="stu-exam-sub">English · 12 Jun 2026</div></div>
+            <div class="mono stu-exam-score">43<span style="color:var(--faint);font-weight:500;"> / 50</span></div>
+            <div class="mono stu-exam-pct" style="color:var(--good);">86%</div>
+            <div><span class="pill" style="background:var(--good-tint);color:var(--good);">A-</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+<script>
+(function(){
+  var root = document.getElementById('view-Students');
+  if(!root) return;
+
+  // --- Tab switching (Profile / Attendance / Fees / Exams) ---
+  var tabs = root.querySelectorAll('.stu-tab');
+  var panels = root.querySelectorAll('.stu-panel');
+  for (var i = 0; i < tabs.length; i++) {
+    (function(tab){
+      tab.addEventListener('click', function(){
+        for (var j = 0; j < tabs.length; j++) tabs[j].classList.remove('stu-tab-active');
+        for (var k = 0; k < panels.length; k++) panels[k].classList.remove('stu-panel-active');
+        tab.classList.add('stu-tab-active');
+        var panel = root.querySelector('#' + tab.getAttribute('data-panel'));
+        if (panel) panel.classList.add('stu-panel-active');
+      });
+    })(tabs[i]);
+  }
+
+  // --- Row selection (highlight + swap detail header) ---
+  var rows = root.querySelectorAll('.stu-row');
+  var detailAvatar = root.querySelector('#stu-detail-avatar');
+  var detailName = root.querySelector('#stu-detail-name');
+  var detailPanel = root.querySelector('#stu-detail-panel');
+
+  for (var m = 0; m < rows.length; m++) {
+    (function(row){
+      row.addEventListener('click', function(){
+        for (var n = 0; n < rows.length; n++) rows[n].classList.remove('stu-row-selected');
+        row.classList.add('stu-row-selected');
+        if (detailAvatar) {
+          detailAvatar.textContent = row.getAttribute('data-initials');
+          detailAvatar.style.background = row.getAttribute('data-color');
+        }
+        if (detailName) detailName.textContent = row.getAttribute('data-name');
+        if (detailPanel) detailPanel.setAttribute('title', 'Illustrative data');
+      });
+    })(rows[m]);
+  }
+})();
+</script>

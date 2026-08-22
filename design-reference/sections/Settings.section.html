@@ -1,0 +1,829 @@
+<section class="view" id="view-Settings" data-view="Settings">
+  <!-- MAIN -->
+  <div style="flex:1;overflow:hidden;padding:26px 34px;display:flex;flex-direction:column;gap:18px;">
+
+    <!-- HEADER -->
+    <div style="display:flex;align-items:center;justify-content:space-between;flex:none;">
+      <div>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div class="disp" style="font-size:21px;">Settings</div>
+          <span style="font-size:11px;font-weight:700;color:var(--muted);background:var(--line);padding:3px 9px;border-radius:100px;">Illustrative content</span>
+        </div>
+        <div id="set-header-subtitle" style="font-size:13px;color:var(--muted);margin-top:2px;">Website Builder — customize your school's public website, no developer needed</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:12px;">
+        <span id="set-btn-previewsite" style="background:var(--card);border:1px solid var(--line);border-radius:8px;padding:8px 15px;font-size:13px;font-weight:600;cursor:pointer;" onclick="console.log('settings: preview live site clicked')">Preview live site ↗</span>
+        <span id="set-btn-publish" style="background:var(--marigold);color:#fff;border-radius:8px;padding:8px 16px;font-size:13px;font-weight:600;cursor:pointer;" onclick="console.log('settings: publish changes clicked')">Publish changes</span>
+      </div>
+    </div>
+
+    <!-- BODY -->
+    <div style="display:flex;gap:20px;flex:1;min-height:0;">
+
+      <!-- SETTINGS SUB-NAV -->
+      <div class="card" style="width:196px;flex:none;padding:10px;display:flex;flex-direction:column;gap:2px;height:fit-content;">
+        <div class="set-subnav-item" id="set-subnav-general" data-panel="general">General</div>
+        <div class="set-subnav-item" id="set-subnav-years" data-panel="years">Academic Years</div>
+        <div class="set-subnav-item" id="set-subnav-idcards" data-panel="idcards">ID Card Templates</div>
+        <div class="set-subnav-item" id="set-subnav-fields" data-panel="fields">Fields Manager</div>
+        <div class="set-subnav-item" id="set-subnav-listview" data-panel="listview">List View Settings</div>
+        <div class="set-subnav-item" id="set-subnav-profileview" data-panel="profileview">Profile View Editor</div>
+        <div class="set-subnav-item active" id="set-subnav-website" data-panel="website">Website Builder</div>
+        <div class="set-subnav-item" id="set-subnav-users" data-panel="users">Users &amp; Roles</div>
+      </div>
+
+      <!-- WEBSITE BUILDER EDITOR -->
+      <div id="set-panel-website" style="flex:1;display:flex;gap:20px;min-height:0;">
+
+        <!-- CONTROLS -->
+        <div class="card" style="width:322px;flex:none;padding:22px;display:flex;flex-direction:column;gap:18px;overflow-y:auto;">
+
+          <div>
+            <div class="mono" style="font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);margin-bottom:2px;">Site content</div>
+          </div>
+
+          <div>
+            <div class="set-flabel">School name</div>
+            <input class="set-field-box" id="set-input-schoolname" type="text" value="Sunrise Public School" style="width:100%;font-family:inherit;">
+          </div>
+
+          <div>
+            <div class="set-flabel">Tagline</div>
+            <input class="set-field-box" id="set-input-tagline" type="text" value="Nurturing minds since 1998" style="width:100%;font-family:inherit;font-weight:500;color:var(--muted);">
+          </div>
+
+          <div>
+            <div class="set-flabel">Logo</div>
+            <div style="display:flex;align-items:center;gap:12px;">
+              <div class="disp" id="set-logo-badge" style="width:46px;height:46px;border-radius:10px;background:var(--marigold);display:flex;align-items:center;justify-content:center;color:#fff;font-size:15px;flex:none;">SP</div>
+              <span id="set-btn-upload-logo" style="background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:7px 14px;font-size:12.5px;font-weight:600;color:var(--ink);cursor:pointer;" onclick="console.log('settings: upload new logo clicked')">Upload new logo</span>
+            </div>
+          </div>
+
+          <div style="border-top:1px solid var(--line);padding-top:16px;">
+            <div class="set-flabel" style="margin-bottom:9px;">Color theme</div>
+            <div style="display:flex;gap:11px;align-items:center;">
+              <div class="set-swatch" id="set-swatch-marigold" data-color="var(--marigold)" style="background:var(--marigold);box-shadow:0 0 0 2px var(--card),0 0 0 4px var(--marigold);"></div>
+              <div class="set-swatch" id="set-swatch-teal" data-color="var(--teal)" style="background:var(--teal);"></div>
+              <div class="set-swatch" id="set-swatch-clay" data-color="var(--clay)" style="background:var(--clay);"></div>
+              <div class="set-swatch" id="set-swatch-ink2" data-color="var(--ink2)" style="background:var(--ink2);"></div>
+            </div>
+          </div>
+
+          <div style="border-top:1px solid var(--line);padding-top:16px;flex:1;">
+            <div class="set-flabel" style="margin-bottom:4px;">Section visibility</div>
+            <div class="set-visrow"><span>Hero</span><div class="set-toggle on" id="set-toggle-hero" data-target="set-prev-sec-hero"><div class="set-knob"></div></div></div>
+            <div class="set-visrow"><span>About</span><div class="set-toggle on" id="set-toggle-about" data-target="set-prev-sec-about"><div class="set-knob"></div></div></div>
+            <div class="set-visrow"><span>Admissions CTA</span><div class="set-toggle on" id="set-toggle-admissions" data-target="set-prev-sec-admissions"><div class="set-knob"></div></div></div>
+            <div class="set-visrow"><span>Faculty</span><div class="set-toggle on" id="set-toggle-faculty" data-target="set-prev-sec-faculty"><div class="set-knob"></div></div></div>
+            <div class="set-visrow"><span>Gallery</span><div class="set-toggle off" id="set-toggle-gallery" data-target="set-prev-sec-gallery"><div class="set-knob"></div></div></div>
+            <div class="set-visrow"><span>Contact</span><div class="set-toggle on" id="set-toggle-contact" data-target="set-prev-sec-contact"><div class="set-knob"></div></div></div>
+          </div>
+
+        </div>
+
+        <!-- LIVE PREVIEW -->
+        <div class="card" style="flex:1;padding:14px;display:flex;flex-direction:column;overflow:hidden;">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;flex:none;">
+            <span style="font-size:12px;font-weight:700;color:var(--muted);">Live preview</span>
+            <span style="display:flex;align-items:center;gap:6px;">
+              <span style="width:6px;height:6px;border-radius:50%;background:var(--good);"></span>
+              <span class="mono" style="font-size:10px;font-weight:700;color:var(--good);letter-spacing:.04em;">SYNCED</span>
+            </span>
+          </div>
+
+          <div style="flex:1;border-radius:12px;overflow:hidden;border:1px solid var(--line);display:flex;flex-direction:column;min-height:0;">
+
+            <!-- browser chrome -->
+            <div style="background:var(--sidebar);padding:10px 14px;display:flex;align-items:center;gap:6px;flex:none;">
+              <span style="width:7px;height:7px;border-radius:50%;background:#374056;"></span>
+              <span style="width:7px;height:7px;border-radius:50%;background:#374056;"></span>
+              <span style="width:7px;height:7px;border-radius:50%;background:#374056;"></span>
+              <span class="mono" style="margin-left:8px;font-size:10.5px;color:#AEB8D6;">sunrisepublicschool.vidyayati.in</span>
+            </div>
+
+            <!-- mini public site -->
+            <div style="flex:1;display:flex;flex-direction:column;background:#fff;overflow:hidden;min-height:0;overflow-y:auto;">
+
+              <!-- mini nav -->
+              <div style="display:flex;align-items:center;justify-content:space-between;padding:11px 20px;border-bottom:1px solid var(--line);flex:none;">
+                <div style="display:flex;align-items:center;gap:7px;">
+                  <div class="disp" id="set-prev-navlogo" style="width:18px;height:18px;border-radius:5px;background:var(--marigold);color:#fff;font-size:9px;display:flex;align-items:center;justify-content:center;">S</div>
+                  <span id="set-prev-navname" style="font-size:11px;font-weight:700;">Sunrise Public School</span>
+                </div>
+                <div style="display:flex;gap:13px;font-size:9px;color:var(--muted);font-weight:600;">
+                  <span>About</span><span>Admissions</span><span>Gallery</span><span>Contact</span>
+                </div>
+              </div>
+
+              <!-- hero -->
+              <div id="set-prev-sec-hero" style="text-align:center;padding:28px 24px 22px;background:linear-gradient(135deg, var(--marigold-tint), var(--teal-tint));flex:none;">
+                <div class="disp" id="set-prev-title" style="font-size:21px;color:var(--ink);margin-bottom:6px;">Sunrise Public School</div>
+                <div id="set-prev-tagline" style="font-size:11.5px;color:var(--muted);">Nurturing minds since 1998</div>
+              </div>
+
+              <!-- admissions cta -->
+              <div id="set-prev-sec-admissions" style="text-align:center;padding:14px 24px;border-bottom:1px solid var(--line);flex:none;">
+                <span id="set-prev-cta" style="background:var(--marigold);color:#fff;border-radius:7px;padding:8px 18px;font-size:11px;font-weight:700;display:inline-block;">Apply for Admission</span>
+              </div>
+
+              <!-- about -->
+              <div id="set-prev-sec-about" style="padding:16px 22px;flex:none;">
+                <div style="font-size:9.5px;font-weight:700;color:var(--faint);text-transform:uppercase;letter-spacing:.04em;margin-bottom:6px;">About us</div>
+                <div style="font-size:10.5px;line-height:1.65;color:var(--muted);">Sunrise Public School has served children from nursery to Class 10 with a focus on curiosity-led learning, dedicated teachers and a safe, welcoming campus.</div>
+              </div>
+
+              <!-- faculty -->
+              <div id="set-prev-sec-faculty" style="padding:0 22px 16px;flex:none;">
+                <div style="font-size:9.5px;font-weight:700;color:var(--faint);text-transform:uppercase;letter-spacing:.04em;margin-bottom:9px;">Our faculty</div>
+                <div style="display:flex;gap:16px;">
+                  <div style="text-align:center;">
+                    <div style="width:30px;height:30px;border-radius:50%;background:var(--teal);color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;margin:0 auto 5px;">RS</div>
+                    <div style="font-size:8.5px;color:var(--muted);font-weight:600;">R. Sharma</div>
+                  </div>
+                  <div style="text-align:center;">
+                    <div style="width:30px;height:30px;border-radius:50%;background:var(--marigold);color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;margin:0 auto 5px;">AV</div>
+                    <div style="font-size:8.5px;color:var(--muted);font-weight:600;">A. Verma</div>
+                  </div>
+                  <div style="text-align:center;">
+                    <div style="width:30px;height:30px;border-radius:50%;background:var(--clay);color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;margin:0 auto 5px;">NP</div>
+                    <div style="font-size:8.5px;color:var(--muted);font-weight:600;">N. Patel</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- gallery -->
+              <div id="set-prev-sec-gallery" style="padding:0 22px 16px;flex:none;display:none;">
+                <div style="font-size:9.5px;font-weight:700;color:var(--faint);text-transform:uppercase;letter-spacing:.04em;margin-bottom:9px;">Gallery</div>
+                <div style="display:flex;gap:8px;">
+                  <div style="flex:1;height:34px;border-radius:6px;background:var(--marigold-tint);"></div>
+                  <div style="flex:1;height:34px;border-radius:6px;background:var(--teal-tint);"></div>
+                  <div style="flex:1;height:34px;border-radius:6px;background:var(--clay-tint);"></div>
+                  <div style="flex:1;height:34px;border-radius:6px;background:var(--marigold-tint);"></div>
+                </div>
+              </div>
+
+              <div style="flex:1;background:var(--paper);border-top:1px solid var(--line);border-bottom:1px solid var(--line);"></div>
+
+              <!-- contact strip -->
+              <div id="set-prev-sec-contact" style="background:var(--ink2);color:#fff;padding:12px 22px;display:flex;justify-content:space-between;font-size:9px;flex:none;">
+                <span>📍 Bengaluru</span>
+                <span>📞 +91 80XXX XXXXX</span>
+                <span>✉️ info@sunrisepublicschool.in</span>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- GENERAL -->
+      <div id="set-panel-general" class="card set-panel">
+        <div style="max-width:600px;display:flex;flex-direction:column;gap:18px;">
+          <div>
+            <div class="mono" style="font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);margin-bottom:2px;">School information</div>
+            <div style="font-size:13px;color:var(--muted);">Basic details used across report cards, ID cards and communication.</div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+            <div class="field"><label>School name</label><input class="in" id="set-gen-name" type="text" value="Sunrise Public School"></div>
+            <div class="field"><label>Phone</label><input class="in mono" id="set-gen-phone" type="text" value="+91 80 4567 1200"></div>
+            <div class="field" style="grid-column:1 / -1;"><label>Address</label><input class="in" id="set-gen-address" type="text" value="14 Lakeview Road, Indiranagar, Bengaluru 560038"></div>
+            <div class="field"><label>Email</label><input class="in" id="set-gen-email" type="email" value="office@sunrisepublicschool.in"></div>
+            <div class="field"><label>Academic board</label>
+              <select class="in" id="set-gen-board">
+                <option>CBSE</option><option>ICSE</option><option selected>State Board</option><option>IB</option>
+              </select>
+            </div>
+            <div class="field"><label>Timezone</label>
+              <select class="in" id="set-gen-timezone">
+                <option selected>Asia/Kolkata (GMT+5:30)</option><option>Asia/Dubai (GMT+4:00)</option><option>Asia/Kathmandu (GMT+5:45)</option>
+              </select>
+            </div>
+            <div class="field"><label>Currency</label>
+              <select class="in" id="set-gen-currency">
+                <option selected>₹ Indian Rupee (INR)</option><option>$ US Dollar (USD)</option><option>Rf Nepalese Rupee (NPR)</option>
+              </select>
+            </div>
+          </div>
+          <div style="border-top:1px solid var(--line);padding-top:18px;display:flex;align-items:center;gap:14px;">
+            <span id="set-btn-savegeneral" style="background:var(--marigold);color:#fff;border-radius:8px;padding:9px 18px;font-size:13px;font-weight:600;cursor:pointer;">Save changes</span>
+            <span id="set-savegeneral-confirm" class="mono" style="font-size:12px;font-weight:700;color:var(--good);display:none;">✓ Saved</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ACADEMIC YEARS -->
+      <div id="set-panel-years" class="card set-panel">
+        <div style="max-width:640px;width:100%;">
+          <div style="margin-bottom:16px;">
+            <div class="mono" style="font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);margin-bottom:2px;">Academic years</div>
+            <div style="font-size:13px;color:var(--muted);">Manage the academic sessions used for admissions, promotions and fee cycles. Click a year to view or edit its dates.</div>
+          </div>
+
+          <div class="set-years-list" id="set-years-list">
+            <div class="set-years-row" data-status="closed">
+              <div class="set-years-row-main">
+                <div>
+                  <div style="font-weight:700;font-size:14.5px;">2024–25</div>
+                  <div class="mono set-years-range" style="font-size:11px;color:var(--faint);margin-top:2px;">01 Apr 2024 – 31 Mar 2025</div>
+                </div>
+                <div style="display:flex;align-items:center;gap:16px;">
+                  <span class="pill set-years-pill" style="background:var(--line);color:var(--faint);">Closed</span>
+                  <span class="set-years-setactive" style="display:none;">Set as active</span>
+                  <span class="set-years-editlink">Edit</span>
+                </div>
+              </div>
+              <div class="set-years-edit">
+                <div class="field"><label>Start date</label><input class="in mono set-years-start" type="text" value="01 Apr 2024"></div>
+                <div class="field"><label>End date</label><input class="in mono set-years-end" type="text" value="31 Mar 2025"></div>
+                <span class="set-years-save">Save</span>
+                <span class="set-years-savemsg mono">✓ Updated</span>
+              </div>
+            </div>
+
+            <div class="set-years-row" data-status="active">
+              <div class="set-years-row-main">
+                <div>
+                  <div style="font-weight:700;font-size:14.5px;">2025–26</div>
+                  <div class="mono set-years-range" style="font-size:11px;color:var(--faint);margin-top:2px;">01 Apr 2025 – 31 Mar 2026</div>
+                </div>
+                <div style="display:flex;align-items:center;gap:16px;">
+                  <span class="pill set-years-pill" style="background:var(--good-tint);color:var(--good);">Active</span>
+                  <span class="set-years-setactive" style="display:none;">Set as active</span>
+                  <span class="set-years-editlink">Edit</span>
+                </div>
+              </div>
+              <div class="set-years-edit">
+                <div class="field"><label>Start date</label><input class="in mono set-years-start" type="text" value="01 Apr 2025"></div>
+                <div class="field"><label>End date</label><input class="in mono set-years-end" type="text" value="31 Mar 2026"></div>
+                <span class="set-years-save">Save</span>
+                <span class="set-years-savemsg mono">✓ Updated</span>
+              </div>
+            </div>
+
+            <div class="set-years-row" data-status="upcoming">
+              <div class="set-years-row-main">
+                <div>
+                  <div style="font-weight:700;font-size:14.5px;">2026–27</div>
+                  <div class="mono set-years-range" style="font-size:11px;color:var(--faint);margin-top:2px;">01 Apr 2026 – 31 Mar 2027</div>
+                </div>
+                <div style="display:flex;align-items:center;gap:16px;">
+                  <span class="pill set-years-pill" style="background:var(--info-tint);color:var(--info);">Upcoming</span>
+                  <span class="set-years-setactive">Set as active</span>
+                  <span class="set-years-editlink">Edit</span>
+                </div>
+              </div>
+              <div class="set-years-edit">
+                <div class="field"><label>Start date</label><input class="in mono set-years-start" type="text" value="01 Apr 2026"></div>
+                <div class="field"><label>End date</label><input class="in mono set-years-end" type="text" value="31 Mar 2027"></div>
+                <span class="set-years-save">Save</span>
+                <span class="set-years-savemsg mono">✓ Updated</span>
+              </div>
+            </div>
+          </div>
+
+          <span id="set-btn-addyear" class="set-add-btn">+ Add academic year</span>
+        </div>
+      </div>
+
+      <!-- ID CARD TEMPLATES -->
+      <div id="set-panel-idcards" class="card set-panel">
+        <div style="margin-bottom:18px;">
+          <div class="mono" style="font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);margin-bottom:2px;">ID card templates</div>
+          <div style="font-size:13px;color:var(--muted);">Choose the design printed on student and staff ID cards. Click a template to select it.</div>
+        </div>
+        <div id="set-idcard-gallery" style="display:flex;gap:20px;flex-wrap:wrap;">
+
+          <div class="set-idcard-tile set-idcard-selected" data-tpl="marigold">
+            <div class="set-idcard-mock" style="background:linear-gradient(160deg,var(--marigold),var(--marigold-deep));">
+              <div class="set-idcard-badge">✓</div>
+              <div class="set-idcard-photo"></div>
+              <div class="set-idcard-mockname">Aarav Mehta</div>
+              <div class="set-idcard-mockid mono">STU-2026-0417</div>
+              <div class="set-idcard-qr"></div>
+            </div>
+            <div style="margin-top:10px;">
+              <div style="font-weight:700;font-size:13px;">Classic Marigold</div>
+              <div style="font-size:11.5px;color:var(--muted);">Student ID card</div>
+            </div>
+            <span class="set-idcard-selectbtn">Selected</span>
+          </div>
+
+          <div class="set-idcard-tile" data-tpl="teal">
+            <div class="set-idcard-mock" style="background:linear-gradient(160deg,var(--teal),#1f7a70);">
+              <div class="set-idcard-badge">✓</div>
+              <div class="set-idcard-photo"></div>
+              <div class="set-idcard-mockname">R. Sharma</div>
+              <div class="set-idcard-mockid mono">STF-0092</div>
+              <div class="set-idcard-qr"></div>
+            </div>
+            <div style="margin-top:10px;">
+              <div style="font-weight:700;font-size:13px;">Teal Minimal</div>
+              <div style="font-size:11.5px;color:var(--muted);">Staff ID card</div>
+            </div>
+            <span class="set-idcard-selectbtn">Select</span>
+          </div>
+
+          <div class="set-idcard-tile" data-tpl="clay">
+            <div class="set-idcard-mock" style="background:linear-gradient(160deg,var(--clay),#8a4a2d);">
+              <div class="set-idcard-badge">✓</div>
+              <div class="set-idcard-photo"></div>
+              <div class="set-idcard-mockname">Ishita Rao</div>
+              <div class="set-idcard-mockid mono">STU-2026-0658</div>
+              <div class="set-idcard-qr"></div>
+            </div>
+            <div style="margin-top:10px;">
+              <div style="font-weight:700;font-size:13px;">Clay Bold</div>
+              <div style="font-size:11.5px;color:var(--muted);">Student ID card</div>
+            </div>
+            <span class="set-idcard-selectbtn">Select</span>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- FIELDS MANAGER -->
+      <div id="set-panel-fields" class="card set-panel">
+        <div style="max-width:640px;width:100%;">
+          <div style="margin-bottom:16px;">
+            <div class="mono" style="font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);margin-bottom:2px;">Fields manager</div>
+            <div style="font-size:13px;color:var(--muted);">Custom fields collected on student and staff profiles, in addition to the standard fields.</div>
+          </div>
+
+          <div class="set-fields-head"><div>Field name</div><div>Type</div><div>Required</div><div></div></div>
+          <div class="set-fields-list" id="set-fields-list">
+            <div class="set-field-row">
+              <input class="in set-field-nameinput" type="text" value="Blood Group">
+              <select class="in mono set-field-type">
+                <option>Text</option><option selected>Dropdown</option><option>Date</option><option>Number</option>
+              </select>
+              <div class="set-field-required"><span>Required</span><div class="set-toggle on"><div class="set-knob"></div></div></div>
+              <span class="set-field-remove" title="Remove field">✕</span>
+            </div>
+            <div class="set-field-row">
+              <input class="in set-field-nameinput" type="text" value="Transport Route">
+              <select class="in mono set-field-type">
+                <option>Text</option><option selected>Dropdown</option><option>Date</option><option>Number</option>
+              </select>
+              <div class="set-field-required"><span>Required</span><div class="set-toggle off"><div class="set-knob"></div></div></div>
+              <span class="set-field-remove" title="Remove field">✕</span>
+            </div>
+            <div class="set-field-row">
+              <input class="in set-field-nameinput" type="text" value="Aadhar Number">
+              <select class="in mono set-field-type">
+                <option>Text</option><option>Dropdown</option><option>Date</option><option selected>Number</option>
+              </select>
+              <div class="set-field-required"><span>Required</span><div class="set-toggle off"><div class="set-knob"></div></div></div>
+              <span class="set-field-remove" title="Remove field">✕</span>
+            </div>
+          </div>
+
+          <span id="set-btn-addfield" class="set-add-btn">+ Add custom field</span>
+        </div>
+      </div>
+
+      <!-- LIST VIEW SETTINGS -->
+      <div id="set-panel-listview" class="card set-panel">
+        <div style="max-width:600px;">
+          <div style="margin-bottom:16px;">
+            <div class="mono" style="font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);margin-bottom:2px;">List view settings</div>
+            <div style="font-size:13px;color:var(--muted);">Choose which columns appear in the Students list view.</div>
+          </div>
+          <div class="set-listview-cols">
+            <div class="set-listview-row"><div class="set-toggle on" data-col="Roll No"><div class="set-knob"></div></div><span>Roll No</span></div>
+            <div class="set-listview-row"><div class="set-toggle on" data-col="Class"><div class="set-knob"></div></div><span>Class</span></div>
+            <div class="set-listview-row"><div class="set-toggle on" data-col="Section"><div class="set-knob"></div></div><span>Section</span></div>
+            <div class="set-listview-row"><div class="set-toggle on" data-col="Attendance %"><div class="set-knob"></div></div><span>Attendance %</span></div>
+            <div class="set-listview-row"><div class="set-toggle on" data-col="Fee Status"><div class="set-knob"></div></div><span>Fee status</span></div>
+            <div class="set-listview-row"><div class="set-toggle off" data-col="Guardian Phone"><div class="set-knob"></div></div><span>Guardian phone</span></div>
+            <div class="set-listview-row"><div class="set-toggle off" data-col="Transport Route"><div class="set-knob"></div></div><span>Transport route</span></div>
+            <div class="set-listview-row"><div class="set-toggle off" data-col="Blood Group"><div class="set-knob"></div></div><span>Blood group</span></div>
+          </div>
+          <div style="border-top:1px solid var(--line);margin-top:20px;padding-top:16px;">
+            <div class="set-flabel" style="margin-bottom:9px;">Preview — Students list header</div>
+            <div class="set-listview-preview" id="set-listview-preview"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PROFILE VIEW EDITOR -->
+      <div id="set-panel-profileview" class="card set-panel">
+        <div style="max-width:600px;">
+          <div style="margin-bottom:16px;">
+            <div class="mono" style="font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);margin-bottom:2px;">Profile view editor</div>
+            <div style="font-size:13px;color:var(--muted);">Choose which tabs appear on a student's detail profile.</div>
+          </div>
+          <div class="set-profiletab-list">
+            <div class="set-visrow"><span>Profile</span><div class="set-toggle on" data-tab="Profile"><div class="set-knob"></div></div></div>
+            <div class="set-visrow"><span>Attendance</span><div class="set-toggle on" data-tab="Attendance"><div class="set-knob"></div></div></div>
+            <div class="set-visrow"><span>Fees</span><div class="set-toggle on" data-tab="Fees"><div class="set-knob"></div></div></div>
+            <div class="set-visrow"><span>Exams</span><div class="set-toggle on" data-tab="Exams"><div class="set-knob"></div></div></div>
+            <div class="set-visrow"><span>Timetable</span><div class="set-toggle off" data-tab="Timetable"><div class="set-knob"></div></div></div>
+            <div class="set-visrow"><span>Documents</span><div class="set-toggle off" data-tab="Documents"><div class="set-knob"></div></div></div>
+          </div>
+          <div style="border-top:1px solid var(--line);margin-top:6px;padding-top:16px;">
+            <div class="set-flabel" style="margin-bottom:9px;">Preview — profile tab strip</div>
+            <div class="set-profiletab-preview" id="set-profiletab-preview"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- USERS & ROLES -->
+      <div id="set-panel-users" class="card set-panel">
+        <div style="max-width:680px;width:100%;">
+          <div style="margin-bottom:16px;">
+            <div class="mono" style="font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);margin-bottom:2px;">Users &amp; roles</div>
+            <div style="font-size:13px;color:var(--muted);">Manage staff access to the admin console. Click a role to change it.</div>
+          </div>
+
+          <div class="set-users-head"><div>Name</div><div>Email</div><div>Role</div><div></div></div>
+          <div class="set-users-table" id="set-users-list">
+            <div class="set-user-row">
+              <div class="set-user-name"><div class="set-user-avatar" style="background:var(--marigold);">PK</div>Priya Kapoor</div>
+              <div class="mono" style="font-size:12.5px;color:var(--muted);">priya.kapoor@sunrisepublicschool.in</div>
+              <span class="pill set-user-role" data-states="Admin|Staff|Viewer" data-state-idx="0" style="background:var(--good-tint);color:var(--good);">Admin</span>
+              <span class="set-user-remove" title="Remove user">✕</span>
+            </div>
+            <div class="set-user-row">
+              <div class="set-user-name"><div class="set-user-avatar" style="background:var(--teal);">AV</div>Ananya Verma</div>
+              <div class="mono" style="font-size:12.5px;color:var(--muted);">ananya.verma@sunrisepublicschool.in</div>
+              <span class="pill set-user-role" data-states="Admin|Staff|Viewer" data-state-idx="1" style="background:var(--teal-tint);color:var(--teal);">Staff</span>
+              <span class="set-user-remove" title="Remove user">✕</span>
+            </div>
+            <div class="set-user-row">
+              <div class="set-user-name"><div class="set-user-avatar" style="background:var(--clay);">NP</div>Nikhil Patel</div>
+              <div class="mono" style="font-size:12.5px;color:var(--muted);">nikhil.patel@sunrisepublicschool.in</div>
+              <span class="pill set-user-role" data-states="Admin|Staff|Viewer" data-state-idx="1" style="background:var(--teal-tint);color:var(--teal);">Staff</span>
+              <span class="set-user-remove" title="Remove user">✕</span>
+            </div>
+          </div>
+
+          <span id="set-btn-invite" style="display:inline-block;margin-top:16px;background:var(--marigold);color:#fff;border-radius:8px;padding:9px 16px;font-size:13px;font-weight:600;cursor:pointer;">+ Invite user</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+<script>
+(function(){
+  var root = document.getElementById('view-Settings');
+  if (!root) return;
+
+  // ---------- Generic toggle switch behavior (reused by every panel) ----------
+  function bindToggle(tg){
+    if (!tg) return;
+    tg.addEventListener('click', function(){
+      var targetId = tg.getAttribute('data-target');
+      var target = targetId ? root.querySelector('#' + targetId) : null;
+      var isOn = tg.classList.contains('on');
+      if (isOn) {
+        tg.classList.remove('on');
+        tg.classList.add('off');
+        if (target) target.style.display = 'none';
+      } else {
+        tg.classList.remove('off');
+        tg.classList.add('on');
+        if (target) target.style.display = '';
+      }
+    });
+  }
+
+  // ---------- Sub-nav switching ----------
+  var subnavItems = root.querySelectorAll('.set-subnav-item');
+  var panels = {
+    general: root.querySelector('#set-panel-general'),
+    years: root.querySelector('#set-panel-years'),
+    idcards: root.querySelector('#set-panel-idcards'),
+    fields: root.querySelector('#set-panel-fields'),
+    listview: root.querySelector('#set-panel-listview'),
+    profileview: root.querySelector('#set-panel-profileview'),
+    website: root.querySelector('#set-panel-website'),
+    users: root.querySelector('#set-panel-users')
+  };
+  var headerSubtitle = root.querySelector('#set-header-subtitle');
+  var subtitleMap = {
+    general: 'General — core school details used across the app',
+    years: 'Academic Years — manage the sessions used for admissions, promotions and fee cycles',
+    idcards: 'ID Card Templates — choose the design printed on student and staff ID cards',
+    fields: 'Fields Manager — add custom fields collected on student and staff profiles',
+    listview: 'List View Settings — choose which columns appear in list views',
+    profileview: "Profile View Editor — choose which tabs appear on a student's detail profile",
+    website: "Website Builder — customize your school's public website, no developer needed",
+    users: 'Users & Roles — manage staff access to the admin console'
+  };
+
+  function showPanel(key){
+    Object.keys(panels).forEach(function(k){
+      if (panels[k]) panels[k].style.display = (k === key) ? 'flex' : 'none';
+    });
+    if (headerSubtitle) headerSubtitle.textContent = subtitleMap[key] || '';
+  }
+
+  subnavItems.forEach(function(item){
+    item.addEventListener('click', function(){
+      subnavItems.forEach(function(it){ it.classList.remove('active'); });
+      item.classList.add('active');
+      showPanel(item.getAttribute('data-panel'));
+    });
+  });
+
+  // ---------- Helpers ----------
+  function initials(name){
+    var parts = name.trim().split(/\s+/).filter(Boolean);
+    if (!parts.length) return 'S';
+    if (parts.length === 1) return parts[0].slice(0,2).toUpperCase();
+    return (parts[0][0] + parts[1][0]).toUpperCase();
+  }
+
+  // ---------- Live text: school name / tagline ----------
+  var nameInput = root.querySelector('#set-input-schoolname');
+  var taglineInput = root.querySelector('#set-input-tagline');
+  var prevTitle = root.querySelector('#set-prev-title');
+  var prevNavName = root.querySelector('#set-prev-navname');
+  var prevTagline = root.querySelector('#set-prev-tagline');
+  var logoBadge = root.querySelector('#set-logo-badge');
+  var prevNavLogo = root.querySelector('#set-prev-navlogo');
+
+  nameInput.addEventListener('input', function(){
+    var val = nameInput.value || 'Your School';
+    prevTitle.textContent = val;
+    prevNavName.textContent = val;
+    var ini = initials(val);
+    logoBadge.textContent = ini;
+    prevNavLogo.textContent = ini.charAt(0);
+  });
+
+  taglineInput.addEventListener('input', function(){
+    prevTagline.textContent = taglineInput.value;
+  });
+
+  // ---------- Color theme swatches ----------
+  var swatches = root.querySelectorAll('.set-swatch');
+  var accentTargets = [logoBadge, prevNavLogo, root.querySelector('#set-prev-cta')];
+
+  swatches.forEach(function(sw){
+    sw.addEventListener('click', function(){
+      var color = sw.getAttribute('data-color');
+      swatches.forEach(function(s){ s.style.boxShadow = 'none'; });
+      sw.style.boxShadow = '0 0 0 2px var(--card), 0 0 0 4px ' + color;
+      accentTargets.forEach(function(el){ if (el) el.style.background = color; });
+    });
+  });
+
+  // ---------- Section visibility toggles (Website Builder) + every other
+  // static .set-toggle in the module (Fields Manager, List View Settings,
+  // Profile View Editor rows already present at load) ----------
+  var toggles = root.querySelectorAll('.set-toggle');
+  toggles.forEach(bindToggle);
+
+  // ---------- GENERAL: save changes confirmation flash ----------
+  var saveGeneralBtn = root.querySelector('#set-btn-savegeneral');
+  var saveGeneralConfirm = root.querySelector('#set-savegeneral-confirm');
+  if (saveGeneralBtn) {
+    saveGeneralBtn.addEventListener('click', function(){
+      saveGeneralConfirm.style.display = 'inline';
+      clearTimeout(saveGeneralBtn._t);
+      saveGeneralBtn._t = setTimeout(function(){ saveGeneralConfirm.style.display = 'none'; }, 2500);
+    });
+  }
+
+  // ---------- ACADEMIC YEARS ----------
+  var yearsList = root.querySelector('#set-years-list');
+  var yearStatusStyle = {
+    active: { label: 'Active', bg: 'var(--good-tint)', fg: 'var(--good)' },
+    closed: { label: 'Closed', bg: 'var(--line)', fg: 'var(--faint)' },
+    upcoming: { label: 'Upcoming', bg: 'var(--info-tint)', fg: 'var(--info)' }
+  };
+
+  function applyYearStatus(row, status){
+    row.setAttribute('data-status', status);
+    var pill = row.querySelector('.set-years-pill');
+    var setBtn = row.querySelector('.set-years-setactive');
+    var m = yearStatusStyle[status];
+    if (!m) return;
+    pill.textContent = m.label;
+    pill.style.background = m.bg;
+    pill.style.color = m.fg;
+    if (setBtn) setBtn.style.display = (status === 'active') ? 'none' : 'inline-block';
+  }
+
+  function setActiveYear(targetRow){
+    var rows = yearsList.querySelectorAll('.set-years-row');
+    rows.forEach(function(r){
+      if (r === targetRow) {
+        applyYearStatus(r, 'active');
+      } else if (r.getAttribute('data-status') === 'active') {
+        applyYearStatus(r, 'closed');
+      }
+    });
+  }
+
+  function saveYearDates(row){
+    var startInput = row.querySelector('.set-years-start');
+    var endInput = row.querySelector('.set-years-end');
+    var range = row.querySelector('.set-years-range');
+    if (range) range.textContent = startInput.value + ' – ' + endInput.value;
+    var msg = row.querySelector('.set-years-savemsg');
+    if (msg) {
+      msg.style.display = 'inline';
+      clearTimeout(row._saveT);
+      row._saveT = setTimeout(function(){ msg.style.display = 'none'; }, 2200);
+    }
+    var editPanel = row.querySelector('.set-years-edit');
+    if (editPanel) editPanel.classList.remove('open');
+  }
+
+  if (yearsList) {
+    yearsList.addEventListener('click', function(e){
+      var setActiveBtn = e.target.closest('.set-years-setactive');
+      if (setActiveBtn) {
+        e.stopPropagation();
+        setActiveYear(setActiveBtn.closest('.set-years-row'));
+        return;
+      }
+      var saveBtn = e.target.closest('.set-years-save');
+      if (saveBtn) {
+        e.stopPropagation();
+        saveYearDates(saveBtn.closest('.set-years-row'));
+        return;
+      }
+      var mainRow = e.target.closest('.set-years-row-main');
+      if (mainRow) {
+        var row = mainRow.closest('.set-years-row');
+        var editPanel = row.querySelector('.set-years-edit');
+        if (editPanel) editPanel.classList.toggle('open');
+      }
+    });
+  }
+
+  var addYearBtn = root.querySelector('#set-btn-addyear');
+  var nextYearStart = 2027;
+  if (addYearBtn) {
+    addYearBtn.addEventListener('click', function(){
+      var startYear = nextYearStart;
+      var endYear = nextYearStart + 1;
+      nextYearStart += 1;
+      var label = startYear + '–' + String(endYear).slice(-2);
+      var startStr = '01 Apr ' + startYear;
+      var endStr = '31 Mar ' + endYear;
+      var row = document.createElement('div');
+      row.className = 'set-years-row';
+      row.setAttribute('data-status', 'upcoming');
+      row.innerHTML =
+        '<div class="set-years-row-main">' +
+          '<div>' +
+            '<div style="font-weight:700;font-size:14.5px;">' + label + '</div>' +
+            '<div class="mono set-years-range" style="font-size:11px;color:var(--faint);margin-top:2px;">' + startStr + ' – ' + endStr + '</div>' +
+          '</div>' +
+          '<div style="display:flex;align-items:center;gap:16px;">' +
+            '<span class="pill set-years-pill" style="background:var(--info-tint);color:var(--info);">Upcoming</span>' +
+            '<span class="set-years-setactive">Set as active</span>' +
+            '<span class="set-years-editlink">Edit</span>' +
+          '</div>' +
+        '</div>' +
+        '<div class="set-years-edit">' +
+          '<div class="field"><label>Start date</label><input class="in mono set-years-start" type="text" value="' + startStr + '"></div>' +
+          '<div class="field"><label>End date</label><input class="in mono set-years-end" type="text" value="' + endStr + '"></div>' +
+          '<span class="set-years-save">Save</span>' +
+          '<span class="set-years-savemsg mono">✓ Updated</span>' +
+        '</div>';
+      yearsList.appendChild(row);
+    });
+  }
+
+  // ---------- ID CARD TEMPLATES ----------
+  var idGallery = root.querySelector('#set-idcard-gallery');
+  if (idGallery) {
+    idGallery.addEventListener('click', function(e){
+      var tile = e.target.closest('.set-idcard-tile');
+      if (!tile) return;
+      var tiles = idGallery.querySelectorAll('.set-idcard-tile');
+      tiles.forEach(function(t){
+        t.classList.remove('set-idcard-selected');
+        var btn = t.querySelector('.set-idcard-selectbtn');
+        if (btn) btn.textContent = 'Select';
+      });
+      tile.classList.add('set-idcard-selected');
+      var selBtn = tile.querySelector('.set-idcard-selectbtn');
+      if (selBtn) selBtn.textContent = 'Selected';
+    });
+  }
+
+  // ---------- FIELDS MANAGER ----------
+  var fieldsList = root.querySelector('#set-fields-list');
+  if (fieldsList) {
+    fieldsList.addEventListener('click', function(e){
+      var rm = e.target.closest('.set-field-remove');
+      if (rm) {
+        var row = rm.closest('.set-field-row');
+        if (row) row.remove();
+      }
+    });
+  }
+
+  var addFieldBtn = root.querySelector('#set-btn-addfield');
+  var fieldCounter = 1;
+  if (addFieldBtn) {
+    addFieldBtn.addEventListener('click', function(){
+      var row = document.createElement('div');
+      row.className = 'set-field-row';
+      row.innerHTML =
+        '<input class="in set-field-nameinput" type="text" value="New field ' + fieldCounter + '">' +
+        '<select class="in mono set-field-type"><option selected>Text</option><option>Dropdown</option><option>Date</option><option>Number</option></select>' +
+        '<div class="set-field-required"><span>Required</span><div class="set-toggle off"><div class="set-knob"></div></div></div>' +
+        '<span class="set-field-remove" title="Remove field">✕</span>';
+      fieldsList.appendChild(row);
+      bindToggle(row.querySelector('.set-toggle'));
+      fieldCounter += 1;
+    });
+  }
+
+  // ---------- LIST VIEW SETTINGS: live header preview ----------
+  var listviewToggles = root.querySelectorAll('#set-panel-listview .set-toggle');
+  var listviewPreview = root.querySelector('#set-listview-preview');
+  function refreshListPreview(){
+    if (!listviewPreview) return;
+    var html = '';
+    listviewToggles.forEach(function(tg){
+      if (tg.classList.contains('on')) html += '<span>' + tg.getAttribute('data-col') + '</span>';
+    });
+    listviewPreview.innerHTML = html || '<span style="color:var(--faint);font-weight:600;text-transform:none;letter-spacing:normal;">No columns selected</span>';
+  }
+  listviewToggles.forEach(function(tg){ tg.addEventListener('click', refreshListPreview); });
+  refreshListPreview();
+
+  // ---------- PROFILE VIEW EDITOR: live tab strip preview ----------
+  var profileToggles = root.querySelectorAll('#set-panel-profileview .set-toggle');
+  var profilePreview = root.querySelector('#set-profiletab-preview');
+  function refreshProfilePreview(){
+    if (!profilePreview) return;
+    var html = '';
+    profileToggles.forEach(function(tg){
+      if (tg.classList.contains('on')) html += '<span>' + tg.getAttribute('data-tab') + '</span>';
+    });
+    profilePreview.innerHTML = html || '<span style="color:var(--faint);">No tabs selected</span>';
+  }
+  profileToggles.forEach(function(tg){ tg.addEventListener('click', refreshProfilePreview); });
+  refreshProfilePreview();
+
+  // ---------- USERS & ROLES ----------
+  var usersList = root.querySelector('#set-users-list');
+  function roleColor(label){
+    if (label === 'Admin') return { bg: 'var(--good-tint)', fg: 'var(--good)' };
+    if (label === 'Staff') return { bg: 'var(--teal-tint)', fg: 'var(--teal)' };
+    return { bg: 'var(--line)', fg: 'var(--faint)' }; // Viewer
+  }
+  function cycleRolePill(pill){
+    var states = pill.getAttribute('data-states').split('|');
+    var idx = parseInt(pill.getAttribute('data-state-idx'), 10);
+    idx = (idx + 1) % states.length;
+    pill.setAttribute('data-state-idx', idx);
+    var label = states[idx];
+    pill.textContent = label;
+    var c = roleColor(label);
+    pill.style.background = c.bg;
+    pill.style.color = c.fg;
+  }
+  if (usersList) {
+    usersList.addEventListener('click', function(e){
+      var pill = e.target.closest('.set-user-role');
+      if (pill) {
+        cycleRolePill(pill);
+        return;
+      }
+      var rm = e.target.closest('.set-user-remove');
+      if (rm) {
+        var row = rm.closest('.set-user-row');
+        if (row) row.remove();
+      }
+    });
+  }
+
+  var inviteBtn = root.querySelector('#set-btn-invite');
+  var inviteCandidates = [
+    { name: 'Rohan Iyer', initials: 'RI', email: 'rohan.iyer@sunrisepublicschool.in' },
+    { name: 'Sneha Deshpande', initials: 'SD', email: 'sneha.deshpande@sunrisepublicschool.in' },
+    { name: 'Farhan Ali', initials: 'FA', email: 'farhan.ali@sunrisepublicschool.in' },
+    { name: 'Meera Pillai', initials: 'MP', email: 'meera.pillai@sunrisepublicschool.in' }
+  ];
+  var inviteAvatarColors = ['var(--clay)', 'var(--marigold)', 'var(--teal)', 'var(--ink2)'];
+  var inviteIdx = 0;
+  if (inviteBtn) {
+    inviteBtn.addEventListener('click', function(){
+      var person = inviteCandidates[inviteIdx % inviteCandidates.length];
+      var avatarColor = inviteAvatarColors[inviteIdx % inviteAvatarColors.length];
+      inviteIdx += 1;
+      var row = document.createElement('div');
+      row.className = 'set-user-row';
+      row.innerHTML =
+        '<div class="set-user-name"><div class="set-user-avatar" style="background:' + avatarColor + ';">' + person.initials + '</div>' + person.name + '</div>' +
+        '<div class="mono" style="font-size:12.5px;color:var(--muted);">' + person.email + '</div>' +
+        '<span class="pill set-user-role" data-states="Admin|Staff|Viewer" data-state-idx="1" style="background:var(--teal-tint);color:var(--teal);">Staff</span>' +
+        '<span class="set-user-remove" title="Remove user">✕</span>';
+      usersList.appendChild(row);
+    });
+  }
+})();
+</script>

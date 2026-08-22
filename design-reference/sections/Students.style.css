@@ -1,0 +1,68 @@
+/* Students module — bespoke styles beyond the shared common set */
+
+#view-Students .avatar{
+  width:34px;height:34px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:12px;font-weight:700;color:#fff;flex:none;
+}
+
+/* Student list row selection */
+#view-Students .stu-row{cursor:pointer;}
+#view-Students .stu-row-selected{background:var(--marigold-tint);}
+#view-Students .stu-row:hover:not(.stu-row-selected){background:var(--paper);}
+
+/* Detail panel tabs */
+#view-Students .stu-tab{
+  flex:1;text-align:center;padding:7px;font-size:12.5px;
+  color:var(--muted);border-radius:6px;cursor:pointer;user-select:none;
+}
+#view-Students .stu-tab.stu-tab-active{
+  background:var(--card);font-weight:700;color:var(--ink);
+  box-shadow:0 1px 2px rgba(0,0,0,.06);
+}
+
+/* Detail panel tab content */
+#view-Students .stu-panel{display:none;}
+#view-Students .stu-panel.stu-panel-active{display:contents;}
+
+/* Shared summary stat tile (Attendance / Fees / Exams tabs) */
+#view-Students .stu-stat-box{background:var(--paper);border-radius:8px;padding:12px;}
+#view-Students .stu-stat-label{font-size:10.5px;color:var(--faint);margin-bottom:3px;}
+#view-Students .stu-stat-value{font-size:16px;font-weight:700;}
+
+/* Attendance tab — last-15-days grid */
+#view-Students .stu-att-grid{
+  display:grid;grid-template-columns:repeat(5,1fr);gap:6px;
+}
+#view-Students .stu-att-day{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;
+  border-radius:6px;padding:7px 0;
+}
+#view-Students .stu-att-date{font-size:12px;font-weight:700;}
+#view-Students .stu-att-mark{font-size:9px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;opacity:.85;}
+#view-Students .stu-att-present{background:var(--good-tint);color:var(--good);}
+#view-Students .stu-att-late{background:var(--warn-tint);color:var(--warn);}
+#view-Students .stu-att-absent{background:var(--critical-tint);color:var(--critical);}
+#view-Students .stu-att-dot{width:8px;height:8px;border-radius:50%;display:inline-block;flex:none;}
+
+/* Fees tab — installment list */
+#view-Students .stu-fee-list{display:flex;flex-direction:column;gap:8px;overflow-y:auto;flex:1;min-height:0;}
+#view-Students .stu-fee-row{
+  display:grid;grid-template-columns:1.6fr 0.9fr auto;align-items:center;gap:10px;
+  padding:10px 12px;background:var(--paper);border-radius:8px;
+}
+#view-Students .stu-fee-row-overdue{box-shadow:inset 3px 0 0 var(--critical);}
+#view-Students .stu-fee-name{font-size:12.5px;font-weight:600;}
+#view-Students .stu-fee-sub{font-size:10.5px;color:var(--faint);margin-top:1px;}
+#view-Students .stu-fee-amt{font-size:12.5px;font-weight:700;text-align:right;}
+
+/* Exams tab — recent results list */
+#view-Students .stu-exam-list{display:flex;flex-direction:column;gap:8px;overflow-y:auto;flex:1;min-height:0;}
+#view-Students .stu-exam-item{
+  display:grid;grid-template-columns:1.7fr 0.9fr 0.6fr auto;align-items:center;gap:10px;
+  padding:10px 12px;background:var(--paper);border-radius:8px;
+}
+#view-Students .stu-exam-name{font-size:12.5px;font-weight:600;}
+#view-Students .stu-exam-sub{font-size:10.5px;color:var(--faint);margin-top:1px;}
+#view-Students .stu-exam-score{font-size:12.5px;font-weight:700;text-align:right;}
+#view-Students .stu-exam-pct{font-size:12.5px;font-weight:700;text-align:right;}

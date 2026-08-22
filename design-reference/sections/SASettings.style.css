@@ -1,0 +1,34 @@
+/* Bespoke classes from SASettings.section.html (Super Admin's own Platform
+   Settings screen), prefixed saset- to avoid collisions with the School
+   Admin's Settings.section.html (which already uses a set- prefix for the
+   same generic patterns: subnav item, toggle, field label/box) and with the
+   ~20 other screens sharing this prototype shell.
+   Shared common set (tokens, .mono, .disp, .card, .pill, .navitem/
+   .navitem.active/.icon/.navgroup, .field/.in) is provided by the shell and
+   NOT redefined here. */
+
+/* settings sub-nav */
+.saset-subnav-item{padding:9px 13px;border-radius:8px;font-size:13px;font-weight:600;color:var(--muted);cursor:pointer;}
+.saset-subnav-item.active{background:var(--marigold-tint);color:var(--marigold-deep);}
+
+/* form field label */
+.saset-flabel{font-size:10.5px;color:var(--faint);margin-bottom:6px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;}
+
+/* real <input> field box, matches School Admin Settings' .set-field-box
+   visual style but kept as its own class to stay within the saset- prefix */
+.saset-field-box{background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:9px 12px;font-size:13.5px;font-weight:600;color:var(--ink);outline:none;}
+.saset-field-box:focus{border-color:var(--marigold);box-shadow:0 0 0 2px var(--marigold-tint);}
+
+/* pricing table's compact numeric field */
+.saset-price-input{text-align:right;}
+
+/* toggle switch */
+.saset-toggle{width:32px;height:18px;border-radius:100px;position:relative;flex:none;cursor:pointer;transition:background .15s ease;}
+.saset-toggle.on{background:var(--teal);}
+.saset-toggle.off{background:var(--line);}
+.saset-toggle .saset-knob{position:absolute;top:2px;width:14px;height:14px;border-radius:50%;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.25);transition:left .15s ease;}
+.saset-toggle.on .saset-knob{left:16px;}
+.saset-toggle.off .saset-knob{left:2px;}
+
+.saset-visrow{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:12px 0;border-bottom:1px solid var(--line);font-size:13.5px;font-weight:600;}
+.saset-visrow:last-child{border-bottom:none;}

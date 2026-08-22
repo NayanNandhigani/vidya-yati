@@ -1,0 +1,235 @@
+<section class="view" id="view-Library" data-view="Library">
+  <!-- MAIN -->
+  <div style="flex:1;overflow:hidden;padding:26px 34px;display:flex;flex-direction:column;gap:16px;">
+
+    <div style="display:flex;align-items:center;justify-content:space-between;">
+      <div>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div class="disp" style="font-size:21px;">Library</div>
+          <span style="font-size:11px;font-weight:700;color:var(--muted);background:var(--line);padding:3px 9px;border-radius:100px;">Illustrative data</span>
+        </div>
+        <div style="font-size:13px;color:var(--muted);margin-top:2px;">Friday, 21 August 2026 · Term 2</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:12px;">
+        <span style="background:var(--card);border:1px solid var(--line);border-radius:8px;padding:8px 15px;font-size:13px;font-weight:600;">+ Add title</span>
+        <div style="width:32px;height:32px;border-radius:50%;background:var(--ink2);color:#fff;display:flex;align-items:center;justify-content:center;font-size:12.5px;font-weight:700;">SK</div>
+      </div>
+    </div>
+
+    <!-- STAT TILES -->
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:13px;">
+      <div class="card" style="padding:14px 17px;"><div style="font-size:11.5px;color:var(--muted);margin-bottom:6px;">Titles in catalogue</div><div class="mono" style="font-size:21px;font-weight:700;">1,284</div></div>
+      <div class="card" style="padding:14px 17px;"><div style="font-size:11.5px;color:var(--muted);margin-bottom:6px;">Total copies</div><div class="mono" style="font-size:21px;font-weight:700;">4,960</div></div>
+      <div class="card" style="padding:14px 17px;"><div style="font-size:11.5px;color:var(--muted);margin-bottom:6px;">Currently issued</div><div class="mono" id="lib-stat-issued" style="font-size:21px;font-weight:700;color:var(--teal);">312</div></div>
+      <div class="card" style="padding:14px 17px;"><div style="font-size:11.5px;color:var(--muted);margin-bottom:6px;">Overdue</div><div class="mono" style="font-size:21px;font-weight:700;color:var(--bad);">2</div></div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1.7fr 1fr;gap:16px;flex:1;min-height:0;">
+
+      <!-- CATALOGUE TABLE -->
+      <div class="card" style="padding:0;display:flex;flex-direction:column;overflow:hidden;">
+        <div style="display:grid;grid-template-columns:2fr 1.4fr 1.1fr 1fr 1fr 1fr;padding:13px 20px;border-bottom:1px solid var(--line);font-size:10.5px;color:var(--faint);text-transform:uppercase;letter-spacing:.05em;">
+          <div>Title</div><div>Author</div><div>Accession no.</div><div>Category</div><div>Copies (total/avail.)</div><div>Status</div>
+        </div>
+
+        <div class="lib-row">
+          <div style="font-weight:600;">Wings of Fire</div>
+          <div style="color:var(--muted);">A.P.J. Abdul Kalam</div>
+          <div class="mono" style="color:var(--muted);">ACC-01123</div>
+          <div style="color:var(--muted);">Biography</div>
+          <div class="mono">6 / 2</div>
+          <div><span class="pill" style="background:var(--good-tint);color:var(--good);">Available</span></div>
+        </div>
+        <div class="lib-row">
+          <div style="font-weight:600;">The Discovery of India</div>
+          <div style="color:var(--muted);">Jawaharlal Nehru</div>
+          <div class="mono" style="color:var(--muted);">ACC-00847</div>
+          <div style="color:var(--muted);">History</div>
+          <div class="mono" style="color:var(--warn);">4 / 0</div>
+          <div><span class="pill" style="background:var(--warn-tint);color:var(--warn);">All issued</span></div>
+        </div>
+        <div class="lib-row">
+          <div style="font-weight:600;">NCERT Mathematics IX</div>
+          <div style="color:var(--muted);">NCERT</div>
+          <div class="mono" style="color:var(--muted);">ACC-02290</div>
+          <div style="color:var(--muted);">Textbook</div>
+          <div class="mono">40 / 12</div>
+          <div><span class="pill" style="background:var(--good-tint);color:var(--good);">Available</span></div>
+        </div>
+        <div class="lib-row">
+          <div style="font-weight:600;">Malgudi Days</div>
+          <div style="color:var(--muted);">R.K. Narayan</div>
+          <div class="mono" style="color:var(--muted);">ACC-01560</div>
+          <div style="color:var(--muted);">Fiction</div>
+          <div class="mono">5 / 3</div>
+          <div><span class="pill" style="background:var(--good-tint);color:var(--good);">Available</span></div>
+        </div>
+        <div class="lib-row">
+          <div style="font-weight:600;">A Brief History of Time</div>
+          <div style="color:var(--muted);">Stephen Hawking</div>
+          <div class="mono" style="color:var(--muted);">ACC-00932</div>
+          <div style="color:var(--muted);">Science</div>
+          <div class="mono">3 / 1</div>
+          <div><span class="pill" style="background:var(--good-tint);color:var(--good);">Available</span></div>
+        </div>
+        <div class="lib-row">
+          <div style="font-weight:600;">Panchatantra Tales</div>
+          <div style="color:var(--muted);">Vishnu Sharma</div>
+          <div class="mono" style="color:var(--muted);">ACC-01778</div>
+          <div style="color:var(--muted);">Fiction</div>
+          <div class="mono">8 / 5</div>
+          <div><span class="pill" style="background:var(--good-tint);color:var(--good);">Available</span></div>
+        </div>
+        <div class="lib-row" style="border-bottom:none;">
+          <div style="font-weight:600;">Atlas of the World</div>
+          <div style="color:var(--muted);">Various</div>
+          <div class="mono" style="color:var(--muted);">ACC-00456</div>
+          <div style="color:var(--muted);">Reference</div>
+          <div class="mono" style="color:var(--warn);">2 / 0</div>
+          <div><span class="pill" style="background:var(--warn-tint);color:var(--warn);">All issued</span></div>
+        </div>
+      </div>
+
+      <!-- CIRCULATION PANEL -->
+      <div class="card" style="padding:22px;display:flex;flex-direction:column;gap:14px;overflow:hidden;">
+        <div>
+          <div style="font-size:13.5px;font-weight:700;margin-bottom:10px;">Issue a book</div>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <div class="field"><label>Student</label><input class="in" id="lib-issue-student" type="text" placeholder="Search by name or admission no."></div>
+            <div class="field"><label>Book</label><input class="in" id="lib-issue-book" type="text" placeholder="Search by title or accession no."></div>
+          </div>
+          <span id="lib-issue-btn" style="display:block;background:var(--marigold);color:#fff;border-radius:8px;padding:9px;text-align:center;font-size:13px;font-weight:700;margin-top:10px;cursor:pointer;">Issue Book</span>
+        </div>
+
+        <div style="border-top:1px solid var(--line);padding-top:14px;margin-top:2px;flex:1;overflow-y:auto;">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+            <div style="font-size:11.5px;color:var(--faint);text-transform:uppercase;letter-spacing:.05em;">Currently issued</div>
+            <span class="pill" style="background:var(--bad-tint);color:var(--bad);">2 overdue</span>
+          </div>
+
+          <div id="lib-issued-list" style="display:flex;flex-direction:column;gap:10px;">
+
+            <div style="border:1px solid var(--bad);background:var(--bad-tint);border-radius:8px;padding:10px 12px;">
+              <div style="display:flex;justify-content:space-between;align-items:flex-start;">
+                <div style="font-size:13px;font-weight:700;">Ananya Rao</div>
+                <span class="pill" style="background:#fff;color:var(--bad);">Overdue · 2d</span>
+              </div>
+              <div style="font-size:12px;color:var(--ink2);margin:2px 0 4px;">The Discovery of India</div>
+              <div class="mono" style="font-size:11px;color:var(--muted);">Issued 05 Aug &nbsp;·&nbsp; Due 19 Aug</div>
+            </div>
+
+            <div style="border:1px solid var(--bad);background:var(--bad-tint);border-radius:8px;padding:10px 12px;">
+              <div style="display:flex;justify-content:space-between;align-items:flex-start;">
+                <div style="font-size:13px;font-weight:700;">Yash Patel</div>
+                <span class="pill" style="background:#fff;color:var(--bad);">Overdue · 6d</span>
+              </div>
+              <div style="font-size:12px;color:var(--ink2);margin:2px 0 4px;">Atlas of the World</div>
+              <div class="mono" style="font-size:11px;color:var(--muted);">Issued 01 Aug &nbsp;·&nbsp; Due 15 Aug</div>
+            </div>
+
+            <div style="border:1px solid var(--line);border-radius:8px;padding:10px 12px;">
+              <div style="display:flex;justify-content:space-between;align-items:flex-start;">
+                <div style="font-size:13px;font-weight:700;">Kabir Verma</div>
+                <span class="pill" style="background:var(--good-tint);color:var(--good);">On time</span>
+              </div>
+              <div style="font-size:12px;color:var(--muted);margin:2px 0 4px;">Wings of Fire</div>
+              <div class="mono" style="font-size:11px;color:var(--faint);">Issued 12 Aug &nbsp;·&nbsp; Due 26 Aug</div>
+            </div>
+
+            <div style="border:1px solid var(--line);border-radius:8px;padding:10px 12px;">
+              <div style="display:flex;justify-content:space-between;align-items:flex-start;">
+                <div style="font-size:13px;font-weight:700;">Meera Iyer</div>
+                <span class="pill" style="background:var(--good-tint);color:var(--good);">On time</span>
+              </div>
+              <div style="font-size:12px;color:var(--muted);margin:2px 0 4px;">A Brief History of Time</div>
+              <div class="mono" style="font-size:11px;color:var(--faint);">Issued 14 Aug &nbsp;·&nbsp; Due 28 Aug</div>
+            </div>
+
+            <div style="border:1px solid var(--line);border-radius:8px;padding:10px 12px;">
+              <div style="display:flex;justify-content:space-between;align-items:flex-start;">
+                <div style="font-size:13px;font-weight:700;">Diya Sharma</div>
+                <span class="pill" style="background:var(--good-tint);color:var(--good);">On time</span>
+              </div>
+              <div style="font-size:12px;color:var(--muted);margin:2px 0 4px;">Panchatantra Tales</div>
+              <div class="mono" style="font-size:11px;color:var(--faint);">Issued 18 Aug &nbsp;·&nbsp; Due 01 Sep</div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+<script>
+(function(){
+  var root = document.getElementById('view-Library');
+  if (!root) return;
+
+  // Catalogue row selection — clicking a row visually selects it.
+  var rows = root.querySelectorAll('.lib-row');
+  rows.forEach(function(row){
+    row.addEventListener('click', function(){
+      rows.forEach(function(r){ r.classList.remove('lib-row-selected'); });
+      row.classList.add('lib-row-selected');
+    });
+  });
+
+  // "Issue a book" quick action — prepends a new entry to the circulation list.
+  var bookInput = root.querySelector('#lib-issue-book');
+  var issueBtn = root.querySelector('#lib-issue-btn');
+  var issuedList = root.querySelector('#lib-issued-list');
+  var statIssued = root.querySelector('#lib-stat-issued');
+
+  function buildIssuedEntry(title){
+    var entry = document.createElement('div');
+    entry.style.cssText = 'border:1px solid var(--line);border-radius:8px;padding:10px 12px;';
+
+    var topRow = document.createElement('div');
+    topRow.style.cssText = 'display:flex;justify-content:space-between;align-items:flex-start;';
+
+    var nameEl = document.createElement('div');
+    nameEl.style.cssText = 'font-size:13px;font-weight:700;';
+    nameEl.textContent = 'Aarav Mehta';
+
+    var pillEl = document.createElement('span');
+    pillEl.className = 'pill';
+    pillEl.style.cssText = 'background:var(--good-tint);color:var(--good);';
+    pillEl.textContent = 'On time';
+
+    topRow.appendChild(nameEl);
+    topRow.appendChild(pillEl);
+
+    var titleEl = document.createElement('div');
+    titleEl.style.cssText = 'font-size:12px;color:var(--muted);margin:2px 0 4px;';
+    titleEl.textContent = title;
+
+    var datesEl = document.createElement('div');
+    datesEl.className = 'mono';
+    datesEl.style.cssText = 'font-size:11px;color:var(--faint);';
+    // Reuses this screen's own illustrative "today" (Fri 21 Aug 2026, per the header)
+    // rather than the real clock date, so it stays consistent with the other
+    // issued/due dates and overdue-day counts already on this panel.
+    datesEl.textContent = 'Issued 21 Aug  ·  Due 04 Sep';
+
+    entry.appendChild(topRow);
+    entry.appendChild(titleEl);
+    entry.appendChild(datesEl);
+    return entry;
+  }
+
+  if (issueBtn) {
+    issueBtn.addEventListener('click', function(){
+      var title = bookInput ? bookInput.value.trim() : '';
+      if (!title) {
+        if (bookInput) bookInput.focus();
+        return;
+      }
+      var entry = buildIssuedEntry(title);
+      if (issuedList) issuedList.insertBefore(entry, issuedList.firstChild);
+      if (statIssued) statIssued.textContent = (parseInt(statIssued.textContent.replace(/,/g, ''), 10) + 1).toLocaleString();
+      if (bookInput) bookInput.value = '';
+    });
+  }
+})();
+</script>

@@ -1,0 +1,68 @@
+/* Fees screen — bespoke rules beyond the shared common set */
+
+.fee-row {
+  cursor: pointer;
+  position: relative;
+  transition: background .12s ease, box-shadow .12s ease;
+}
+.fee-row:hover {
+  background: var(--paper);
+}
+.fee-row-selected {
+  box-shadow: inset 3px 0 0 var(--marigold);
+}
+
+.fee-panel-close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  line-height: 1;
+  color: var(--muted);
+  cursor: pointer;
+  transition: background .12s ease, color .12s ease;
+}
+.fee-panel-close:hover {
+  background: var(--paper);
+  color: var(--ink);
+}
+
+.fee-save-btn {
+  transition: filter .12s ease;
+}
+.fee-save-btn:hover {
+  filter: brightness(1.06);
+}
+.fee-save-btn:active {
+  filter: brightness(.94);
+}
+
+/* real <select>/<input> elements dropped into the shared .field/.in pattern
+   need a couple of resets so they still read as the same "fake input" look */
+.field select.in {
+  appearance: none;
+  -webkit-appearance: none;
+  cursor: pointer;
+}
+.field input.in {
+  outline: none;
+}
+.field input.in:focus,
+.field select.in:focus {
+  border-color: var(--marigold);
+}
+
+@keyframes fee-flash-anim {
+  0%   { background: var(--good-tint); }
+  100% { background: transparent; }
+}
+.fee-flash {
+  animation: fee-flash-anim 1.2s ease;
+  border-radius: 6px;
+}

@@ -1,0 +1,114 @@
+<section class="view" id="view-SADashboard" data-view="SADashboard">
+  <!-- MAIN -->
+  <div style="flex:1;overflow:hidden;padding:28px 36px;display:flex;flex-direction:column;gap:22px;">
+
+    <div style="display:flex;align-items:center;justify-content:space-between;">
+      <div>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div class="disp" style="font-size:22px;">Platform overview</div>
+          <span style="font-size:11px;font-weight:700;color:var(--muted);background:var(--line);padding:3px 9px;border-radius:100px;">Illustrative data</span>
+        </div>
+        <div style="font-size:13.5px;color:var(--muted);margin-top:2px;">Friday, 21 August 2026</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:12px;">
+        <span id="sadash-onboard-school" style="background:var(--card);border:1px solid var(--line);border-radius:8px;padding:9px 16px;font-size:13.5px;font-weight:600;cursor:pointer;" onclick="console.log('sadash: onboard a school clicked')">+ Onboard a school</span>
+        <div style="width:34px;height:34px;border-radius:50%;background:var(--ink2);color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;">VY</div>
+      </div>
+    </div>
+
+    <!-- STAT TILES -->
+    <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:14px;">
+      <div class="card" style="padding:16px 18px;">
+        <div style="font-size:12px;color:var(--muted);margin-bottom:8px;">Schools onboarded</div>
+        <div class="mono" style="font-size:25px;font-weight:600;">18</div>
+      </div>
+      <div class="card" style="padding:16px 18px;">
+        <div style="font-size:12px;color:var(--muted);margin-bottom:8px;">Active subscriptions</div>
+        <div class="mono" style="font-size:25px;font-weight:600;color:var(--good);">16</div>
+      </div>
+      <div class="card" style="padding:16px 18px;">
+        <div style="font-size:12px;color:var(--muted);margin-bottom:8px;">Students platform-wide</div>
+        <div class="mono" style="font-size:25px;font-weight:600;">9,240</div>
+      </div>
+      <div class="card" style="padding:16px 18px;">
+        <div style="font-size:12px;color:var(--muted);margin-bottom:8px;">Revenue collected — FY26</div>
+        <div class="mono" style="font-size:25px;font-weight:600;color:var(--marigold-deep);">₹1.24Cr</div>
+      </div>
+      <div class="card" style="padding:16px 18px;border-color:#EED9B4;background:var(--warn-tint);">
+        <div style="font-size:12px;color:var(--warn);margin-bottom:8px;font-weight:600;">Expiring in 30 days</div>
+        <div class="mono" style="font-size:25px;font-weight:600;color:var(--warn);">3</div>
+      </div>
+    </div>
+
+    <!-- ALERT -->
+    <div style="background:var(--warn-tint);border:1px solid #EED9B4;border-radius:10px;padding:13px 18px;display:flex;align-items:center;justify-content:space-between;">
+      <div style="font-size:13.5px;color:#7A5407;"><b>3 subscriptions</b> renew within 30 days — Bright Minds Academy (14 Sep), Silver Oak Convent School (20 Sep), Green Valley International (30 Sep).</div>
+      <span id="sadash-review-renewals" style="font-size:13px;font-weight:700;color:var(--warn);white-space:nowrap;cursor:pointer;" onclick="console.log('sadash: review renewals clicked')">Review renewals →</span>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1.1fr 1.4fr;gap:18px;flex:1;min-height:0;">
+
+      <!-- REVENUE CHART -->
+      <div class="card" style="padding:22px;display:flex;flex-direction:column;">
+        <div style="font-size:14px;font-weight:700;margin-bottom:2px;">Subscription revenue</div>
+        <div style="font-size:12px;color:var(--muted);margin-bottom:18px;">Last 12 months, ₹ lakhs</div>
+        <div style="flex:1;display:flex;align-items:flex-end;gap:7px;border-bottom:1px solid var(--line);padding-bottom:2px;">
+          <div style="width:8%;height:57%;background:var(--marigold-tint);border-radius:3px 3px 0 0;"></div>
+          <div style="width:8%;height:61%;background:var(--marigold-tint);border-radius:3px 3px 0 0;"></div>
+          <div style="width:8%;height:64%;background:var(--marigold-tint);border-radius:3px 3px 0 0;"></div>
+          <div style="width:8%;height:67%;background:var(--marigold-tint);border-radius:3px 3px 0 0;"></div>
+          <div style="width:8%;height:70%;background:var(--marigold-tint);border-radius:3px 3px 0 0;"></div>
+          <div style="width:8%;height:73%;background:var(--marigold-tint);border-radius:3px 3px 0 0;"></div>
+          <div style="width:8%;height:76%;background:var(--marigold-tint);border-radius:3px 3px 0 0;"></div>
+          <div style="width:8%;height:79%;background:var(--marigold-tint);border-radius:3px 3px 0 0;"></div>
+          <div style="width:8%;height:81%;background:var(--marigold-tint);border-radius:3px 3px 0 0;"></div>
+          <div style="width:8%;height:85%;background:var(--marigold-tint);border-radius:3px 3px 0 0;"></div>
+          <div style="width:8%;height:90%;background:var(--marigold-tint);border-radius:3px 3px 0 0;"></div>
+          <div style="width:8%;height:100%;background:var(--marigold);border-radius:3px 3px 0 0;position:relative;">
+            <div class="mono" style="position:absolute;top:-22px;left:50%;transform:translateX(-50%);font-size:11.5px;font-weight:700;color:var(--marigold-deep);white-space:nowrap;">₹14.2L</div>
+          </div>
+        </div>
+        <div style="display:flex;justify-content:space-between;margin-top:8px;font-size:10.5px;color:var(--faint);">
+          <span>Sep</span><span>Oct</span><span>Nov</span><span>Dec</span><span>Jan</span><span>Feb</span><span>Mar</span><span>Apr</span><span>May</span><span>Jun</span><span>Jul</span><span>Aug</span>
+        </div>
+      </div>
+
+      <!-- SCHOOLS TABLE -->
+      <div class="card" style="padding:22px;display:flex;flex-direction:column;overflow:hidden;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+          <div style="font-size:14px;font-weight:700;">Schools</div>
+          <div style="font-size:12.5px;color:var(--muted);">Showing 6 of 18 · <span id="sadash-view-all-schools" style="color:var(--marigold-deep);font-weight:600;cursor:pointer;" onclick="console.log('sadash: view all schools clicked')">View all</span></div>
+        </div>
+        <div style="display:grid;grid-template-columns:2.1fr 1fr 0.8fr 1.1fr 1.2fr;font-size:11.5px;color:var(--faint);text-transform:uppercase;letter-spacing:.04em;padding-bottom:10px;border-bottom:1px solid var(--line);">
+          <div>School</div><div>Plan</div><div>Students</div><div>Status</div><div>Renewal</div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:2.1fr 1fr 0.8fr 1.1fr 1.2fr;align-items:center;padding:13px 0;border-bottom:1px solid var(--line);font-size:13.5px;">
+          <div style="font-weight:600;">Sunrise Public School</div><div style="color:var(--muted);">Standard</div><div class="mono">642</div>
+          <div><span class="pill" style="background:var(--good-tint);color:var(--good);">Active</span></div><div class="mono" style="color:var(--muted);">12 Mar 2027</div>
+        </div>
+        <div style="display:grid;grid-template-columns:2.1fr 1fr 0.8fr 1.1fr 1.2fr;align-items:center;padding:13px 0;border-bottom:1px solid var(--line);font-size:13.5px;">
+          <div style="font-weight:600;">Little Sparrows Kindergarten</div><div style="color:var(--muted);">Standard</div><div class="mono">118</div>
+          <div><span class="pill" style="background:var(--good-tint);color:var(--good);">Active</span></div><div class="mono" style="color:var(--muted);">04 Feb 2027</div>
+        </div>
+        <div style="display:grid;grid-template-columns:2.1fr 1fr 0.8fr 1.1fr 1.2fr;align-items:center;padding:13px 0;border-bottom:1px solid var(--line);font-size:13.5px;">
+          <div style="font-weight:600;">Green Valley International</div><div style="color:var(--muted);">Premium</div><div class="mono">1,240</div>
+          <div><span class="pill" style="background:var(--warn-tint);color:var(--warn);">Expiring soon</span></div><div class="mono" style="color:var(--muted);">30 Sep 2026</div>
+        </div>
+        <div style="display:grid;grid-template-columns:2.1fr 1fr 0.8fr 1.1fr 1.2fr;align-items:center;padding:13px 0;border-bottom:1px solid var(--line);font-size:13.5px;">
+          <div style="font-weight:600;">Bright Minds Academy</div><div style="color:var(--muted);">Standard</div><div class="mono">386</div>
+          <div><span class="pill" style="background:var(--warn-tint);color:var(--warn);">Expiring soon</span></div><div class="mono" style="color:var(--muted);">14 Sep 2026</div>
+        </div>
+        <div style="display:grid;grid-template-columns:2.1fr 1fr 0.8fr 1.1fr 1.2fr;align-items:center;padding:13px 0;border-bottom:1px solid var(--line);font-size:13.5px;">
+          <div style="font-weight:600;">Silver Oak Convent School</div><div style="color:var(--muted);">Standard</div><div class="mono">275</div>
+          <div><span class="pill" style="background:var(--warn-tint);color:var(--warn);">Expiring soon</span></div><div class="mono" style="color:var(--muted);">20 Sep 2026</div>
+        </div>
+        <div style="display:grid;grid-template-columns:2.1fr 1fr 0.8fr 1.1fr 1.2fr;align-items:center;padding:13px 0;font-size:13.5px;">
+          <div style="font-weight:600;">Rosewood Public School</div><div style="color:var(--muted);">Standard</div><div class="mono">94</div>
+          <div><span class="pill" style="background:var(--info-tint);color:var(--info);">Trial</span></div><div class="mono" style="color:var(--muted);">Ends 02 Sep 2026</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>

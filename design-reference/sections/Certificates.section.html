@@ -1,0 +1,311 @@
+<section class="view" id="view-Certificates" data-view="Certificates">
+  <!-- MAIN -->
+  <div style="flex:1;overflow:hidden;padding:26px 34px;display:flex;flex-direction:column;gap:16px;">
+
+    <div style="display:flex;align-items:center;justify-content:space-between;">
+      <div>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div class="disp" style="font-size:21px;">Certificate generator</div>
+          <span style="font-size:11px;font-weight:700;color:var(--muted);background:var(--line);padding:3px 9px;border-radius:100px;">Illustrative data</span>
+        </div>
+        <div style="font-size:13px;color:var(--muted);margin-top:2px;">Friday, 21 August 2026 · Term 2</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:12px;">
+        <span class="mono" style="font-size:12.5px;color:var(--muted);">250 issued this year</span>
+        <span style="background:var(--card);border:1px solid var(--line);border-radius:8px;padding:8px 14px;font-size:13px;font-weight:600;">Issued log</span>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:298px 1fr;gap:16px;flex:1;min-height:0;">
+
+      <!-- TEMPLATE LIST -->
+      <div id="cert-tmpl-list" style="display:flex;flex-direction:column;gap:11px;overflow-y:auto;">
+        <div style="font-size:12px;color:var(--muted);font-weight:600;margin-bottom:1px;">4 templates</div>
+
+        <!-- Bonafide / Study — selected -->
+        <div class="card tmpl cert-selected" id="cert-tmpl-bonafide" data-cert-key="bonafide">
+          <div class="thumb">
+            <div style="width:100%;height:2px;background:var(--marigold);border-radius:2px;"></div>
+            <div style="display:flex;align-items:center;gap:3px;margin-top:2px;">
+              <div style="width:8px;height:8px;border-radius:50%;background:var(--marigold-tint);border:1px solid var(--marigold);flex:none;"></div>
+              <div class="tline" style="flex:1;"></div>
+            </div>
+            <div class="tline" style="width:90%;margin-top:3px;"></div>
+            <div class="tline" style="width:75%;"></div>
+            <div class="tline" style="width:85%;"></div>
+            <div class="tline" style="width:60%;"></div>
+            <div class="tline" style="width:55%;background:var(--marigold-tint);margin-top:auto;"></div>
+          </div>
+          <div style="flex:1;min-width:0;">
+            <div style="display:flex;align-items:center;gap:6px;">
+              <svg class="tmini" viewBox="0 0 20 20" style="color:var(--marigold-deep);"><circle cx="10" cy="7" r="4"/><path d="M7.5 10.3L6 17l4-2 4 2-1.5-6.7"/></svg>
+              <span style="font-weight:700;font-size:12.5px;">Bonafide / Study Certificate</span>
+            </div>
+            <div style="font-size:11px;color:var(--muted);margin-top:4px;">Confirms current class &amp; enrolment</div>
+            <div class="mono" style="font-size:10px;color:var(--faint);margin-top:5px;">142 issued this year</div>
+          </div>
+        </div>
+
+        <!-- Transfer Certificate -->
+        <div class="card tmpl" id="cert-tmpl-transfer" data-cert-key="transfer">
+          <div class="thumb">
+            <div style="width:100%;height:2px;background:var(--marigold);border-radius:2px;"></div>
+            <div style="display:flex;align-items:center;gap:3px;margin-top:2px;">
+              <div style="width:8px;height:8px;border-radius:50%;background:var(--marigold-tint);border:1px solid var(--marigold);flex:none;"></div>
+              <div class="tline" style="flex:1;"></div>
+            </div>
+            <div class="tline" style="width:90%;margin-top:3px;"></div>
+            <div class="tline" style="width:70%;"></div>
+            <div class="tline" style="width:80%;"></div>
+            <div class="tline" style="width:65%;"></div>
+            <div class="tline" style="width:55%;background:var(--marigold-tint);margin-top:auto;"></div>
+          </div>
+          <div style="flex:1;min-width:0;">
+            <div style="display:flex;align-items:center;gap:6px;">
+              <svg class="tmini" viewBox="0 0 20 20" style="color:var(--muted);"><path d="M3 7h11M11 4l3 3-3 3"/><path d="M17 13H6M9 16l-3-3 3-3"/></svg>
+              <span style="font-weight:700;font-size:12.5px;">Transfer Certificate</span>
+            </div>
+            <div style="font-size:11px;color:var(--muted);margin-top:4px;">For students leaving the school</div>
+            <div class="mono" style="font-size:10px;color:var(--faint);margin-top:5px;">18 issued this year</div>
+          </div>
+        </div>
+
+        <!-- Character Certificate -->
+        <div class="card tmpl" id="cert-tmpl-character" data-cert-key="character">
+          <div class="thumb">
+            <div style="width:100%;height:2px;background:var(--marigold);border-radius:2px;"></div>
+            <div style="display:flex;align-items:center;gap:3px;margin-top:2px;">
+              <div style="width:8px;height:8px;border-radius:50%;background:var(--marigold-tint);border:1px solid var(--marigold);flex:none;"></div>
+              <div class="tline" style="flex:1;"></div>
+            </div>
+            <div class="tline" style="width:90%;margin-top:3px;"></div>
+            <div class="tline" style="width:78%;"></div>
+            <div class="tline" style="width:85%;"></div>
+            <div class="tline" style="width:60%;"></div>
+            <div class="tline" style="width:55%;background:var(--marigold-tint);margin-top:auto;"></div>
+          </div>
+          <div style="flex:1;min-width:0;">
+            <div style="display:flex;align-items:center;gap:6px;">
+              <svg class="tmini" viewBox="0 0 20 20" style="color:var(--muted);"><path d="M10 2.5l6 2.2v4.6c0 4-2.6 6.8-6 8.2-3.4-1.4-6-4.2-6-8.2V4.7L10 2.5z"/><path d="M7.3 10l1.8 1.8L13 8"/></svg>
+              <span style="font-weight:700;font-size:12.5px;">Character Certificate</span>
+            </div>
+            <div style="font-size:11px;color:var(--muted);margin-top:4px;">Conduct &amp; discipline record</div>
+            <div class="mono" style="font-size:10px;color:var(--faint);margin-top:5px;">34 issued this year</div>
+          </div>
+        </div>
+
+        <!-- Achievement Certificate -->
+        <div class="card tmpl" id="cert-tmpl-achievement" data-cert-key="achievement">
+          <div class="thumb">
+            <div style="width:100%;height:2px;background:var(--marigold);border-radius:2px;"></div>
+            <div style="display:flex;align-items:center;gap:3px;margin-top:2px;">
+              <div style="width:8px;height:8px;border-radius:50%;background:var(--marigold-tint);border:1px solid var(--marigold);flex:none;"></div>
+              <div class="tline" style="flex:1;"></div>
+            </div>
+            <div class="tline" style="width:90%;margin-top:3px;"></div>
+            <div class="tline" style="width:72%;"></div>
+            <div class="tline" style="width:82%;"></div>
+            <div class="tline" style="width:58%;"></div>
+            <div class="tline" style="width:55%;background:var(--marigold-tint);margin-top:auto;"></div>
+          </div>
+          <div style="flex:1;min-width:0;">
+            <div style="display:flex;align-items:center;gap:6px;">
+              <svg class="tmini" viewBox="0 0 20 20" style="color:var(--muted);"><path d="M6 3h8v3a4 4 0 0 1-8 0V3z"/><path d="M6 4H3.5a1 1 0 0 0-1 1.3C3 7.5 4.5 9 6 9"/><path d="M14 4h2.5a1 1 0 0 1 1 1.3C17 7.5 15.5 9 14 9"/><path d="M10 10v3M7.5 16.5h5l-.7-2.5h-3.6z"/></svg>
+              <span style="font-weight:700;font-size:12.5px;">Achievement Certificate</span>
+            </div>
+            <div style="font-size:11px;color:var(--muted);margin-top:4px;">Recognises academic / co-curricular merit</div>
+            <div class="mono" style="font-size:10px;color:var(--faint);margin-top:5px;">56 issued this year</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- GENERATION PANEL -->
+      <div class="card" style="padding:22px 26px;display:flex;flex-direction:column;gap:16px;overflow-y:auto;">
+
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+          <div style="font-size:13.5px;font-weight:700;">Generate certificate</div>
+          <span class="pill" id="cert-panel-pill" style="background:var(--marigold-tint);color:var(--marigold-deep);">Bonafide / Study Certificate</span>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1.3fr 1fr 1fr;gap:12px;">
+          <div class="field">
+            <label>Student</label>
+            <div class="in" style="display:flex;align-items:center;gap:8px;">
+              <div class="avatar" id="cert-input-avatar" style="width:20px;height:20px;font-size:9px;background:var(--marigold);">AM</div>
+              <input type="text" id="cert-input-student" value="Aarav Mehta" style="border:none;background:transparent;padding:0;margin:0;font:inherit;color:inherit;outline:none;flex:1;min-width:0;">
+            </div>
+          </div>
+          <div class="field">
+            <label>Class &amp; section</label>
+            <select id="cert-select-class" class="in">
+              <option value="Class 5, Section A">Class 5, Section A</option>
+              <option value="Class 6, Section B" selected>Class 6, Section B</option>
+              <option value="Class 6, Section C">Class 6, Section C</option>
+              <option value="Class 7, Section A">Class 7, Section A</option>
+              <option value="Class 8, Section B">Class 8, Section B</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Academic year</label>
+            <select id="cert-select-year" class="in mono">
+              <option value="2024–25">2024–25</option>
+              <option value="2025–26">2025–26</option>
+              <option value="2026–27" selected>2026–27</option>
+              <option value="2027–28">2027–28</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- CERTIFICATE PREVIEW -->
+        <div style="border:1px solid var(--marigold-tint);border-radius:12px;padding:4px;">
+          <div style="border:1px solid var(--line);border-radius:9px;padding:22px 28px 24px;background:#FFFEFB;">
+
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;">
+              <div style="display:flex;align-items:center;gap:11px;">
+                <svg width="34" height="34" viewBox="0 0 30 30" style="flex:none;"><rect x="1" y="1" width="28" height="28" rx="7" fill="var(--marigold)"/><path d="M8 20 L15 9 L22 20" stroke="#fff" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/><line x1="11.3" y1="15" x2="18.7" y2="15" stroke="#fff" stroke-width="2.2" stroke-linecap="round"/></svg>
+                <div>
+                  <div class="disp" style="font-size:17px;">Sunrise Public School</div>
+                  <div style="font-size:9.5px;color:var(--muted);margin-top:1px;">Bengaluru · Affiliated to State Board · Estd. 1998</div>
+                </div>
+              </div>
+              <div style="text-align:right;font-size:9.5px;color:var(--muted);">
+                <div class="mono">Ref: SPS/BC/2026/0143</div>
+                <div class="mono">Date: 21 Aug 2026</div>
+              </div>
+            </div>
+
+            <div style="height:2px;background:linear-gradient(90deg,var(--marigold),var(--marigold-tint));margin:15px 0 16px;"></div>
+
+            <div style="text-align:center;margin-bottom:14px;">
+              <div class="disp" id="cert-preview-title" style="font-size:15px;letter-spacing:.05em;text-transform:uppercase;">Bonafide Certificate</div>
+            </div>
+
+            <div id="cert-preview-body" style="font-size:12.5px;line-height:1.8;color:var(--ink2);text-align:justify;">
+              This is to certify that <b>Master Aarav Mehta</b>, son of Mr. Rohit Mehta, is a bona fide student of <b>Sunrise Public School</b>, bearing Admission No. <b class="mono">AD-2041</b>. He is currently studying in <b>Class&nbsp;6, Section&nbsp;B</b>, for the academic year <b>2026–27</b>.
+              <br><br>
+              His conduct and academic progress during this period have been found to be satisfactory. This certificate is issued at the request of the parent / guardian for whatever purpose it may serve.
+            </div>
+
+            <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-top:26px;">
+              <div style="width:56px;height:56px;border-radius:50%;border:1.5px dashed var(--marigold);display:flex;align-items:center;justify-content:center;font-size:6.5px;color:var(--marigold-deep);font-weight:700;letter-spacing:.03em;text-align:center;line-height:1.3;">OFFICIAL<br>SEAL</div>
+              <div style="text-align:center;">
+                <div style="width:140px;border-top:1px solid var(--ink);padding-top:5px;font-size:11px;font-weight:700;">Principal</div>
+                <div style="font-size:9.5px;color:var(--muted);">Sunrise Public School</div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <div style="display:flex;gap:10px;">
+          <span style="flex:1;text-align:center;background:var(--marigold);color:#fff;border-radius:8px;padding:10px;font-size:13px;font-weight:700;">Generate PDF</span>
+          <span style="flex:1;text-align:center;background:var(--card);border:1px solid var(--line);border-radius:8px;padding:10px;font-size:13px;font-weight:600;">Print</span>
+          <span style="flex:1;text-align:center;background:var(--card);border:1px solid var(--line);border-radius:8px;padding:10px;font-size:13px;font-weight:600;">Email to parent</span>
+        </div>
+
+        <div style="border-top:1px solid var(--line);padding-top:12px;">
+          <div style="font-size:10.5px;color:var(--faint);text-transform:uppercase;letter-spacing:.05em;margin-bottom:9px;">Recently generated</div>
+          <div style="display:flex;justify-content:space-between;align-items:center;font-size:12px;padding:6px 0;border-bottom:1px solid var(--line);">
+            <span><span style="font-weight:600;">Diya Sharma</span><span style="color:var(--muted);"> · Bonafide Certificate</span></span>
+            <span class="mono" style="color:var(--faint);">19 Aug · SPS/BC/2026/0142</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;font-size:12px;padding:6px 0;border-bottom:1px solid var(--line);">
+            <span><span style="font-weight:600;">Vivaan Shah</span><span style="color:var(--muted);"> · Transfer Certificate</span></span>
+            <span class="mono" style="color:var(--faint);">12 Aug · SPS/TC/2026/0021</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;font-size:12px;padding:6px 0;">
+            <span><span style="font-weight:600;">Neha Singh</span><span style="color:var(--muted);"> · Achievement Certificate</span></span>
+            <span class="mono" style="color:var(--faint);">05 Aug · SPS/AC/2026/0056</span>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</section>
+<script>
+(function(){
+  var root = document.getElementById('view-Certificates');
+  if(!root) return;
+
+  // Each template's own, correct body copy — this is what fixes the old bug
+  // where selecting a different template still showed the Study Certificate's text.
+  var templates = {
+    bonafide: {
+      listLabel: 'Bonafide / Study Certificate',
+      title: 'Bonafide Certificate',
+      body: function(ctx){
+        return 'This is to certify that <b>Master ' + ctx.name + '</b>, son of Mr. Rohit Mehta, is a bona fide student of <b>Sunrise Public School</b>, bearing Admission No. <b class="mono">AD-2041</b>. He is currently studying in <b>' + ctx.cls + '</b>, for the academic year <b>' + ctx.year + '</b>.<br><br>His conduct and academic progress during this period have been found to be satisfactory. This certificate is issued at the request of the parent / guardian for whatever purpose it may serve.';
+      }
+    },
+    transfer: {
+      listLabel: 'Transfer Certificate',
+      title: 'Transfer Certificate',
+      body: function(ctx){
+        return 'This is to certify that <b>Master ' + ctx.name + '</b>, Admission No. <b class="mono">AD-2041</b>, a student of <b>' + ctx.cls + '</b>, <b>Sunrise Public School</b>, is relieved from the rolls of this school in good standing, all dues cleared, at the close of the academic year <b>' + ctx.year + '</b>.';
+      }
+    },
+    character: {
+      listLabel: 'Character Certificate',
+      title: 'Character Certificate',
+      body: function(ctx){
+        return 'This is to certify that <b>Master ' + ctx.name + '</b>, a student of <b>' + ctx.cls + '</b>, <b>Sunrise Public School</b>, has borne a good moral character throughout his stay here. His conduct, discipline, and behaviour towards peers and staff have been commendable.';
+      }
+    },
+    achievement: {
+      listLabel: 'Achievement Certificate',
+      title: 'Achievement Certificate',
+      body: function(ctx){
+        return 'This is to certify that <b>Master ' + ctx.name + '</b>, a student of <b>' + ctx.cls + '</b>, <b>Sunrise Public School</b>, has been awarded this certificate in recognition of outstanding achievement and dedication during the academic year <b>' + ctx.year + '</b>.';
+      }
+    }
+  };
+
+  var cards = root.querySelectorAll('[data-cert-key]');
+  var pillEl = root.querySelector('#cert-panel-pill');
+  var titleEl = root.querySelector('#cert-preview-title');
+  var bodyEl = root.querySelector('#cert-preview-body');
+  var studentInput = root.querySelector('#cert-input-student');
+  var avatarEl = root.querySelector('#cert-input-avatar');
+  var classSelect = root.querySelector('#cert-select-class');
+  var yearSelect = root.querySelector('#cert-select-year');
+
+  var currentKey = 'bonafide';
+
+  function getCtx(){
+    var name = (studentInput.value || '').trim() || 'Aarav Mehta';
+    return { name: name, cls: classSelect.value, year: yearSelect.value };
+  }
+
+  function updateAvatar(name){
+    var parts = name.trim().split(/\s+/).filter(Boolean);
+    var initials = parts.slice(0, 2).map(function(p){ return p.charAt(0).toUpperCase(); }).join('');
+    avatarEl.textContent = initials || 'AM';
+  }
+
+  function render(){
+    var tpl = templates[currentKey];
+    var ctx = getCtx();
+    pillEl.textContent = tpl.listLabel;
+    titleEl.textContent = tpl.title;
+    bodyEl.innerHTML = tpl.body(ctx);
+    updateAvatar(ctx.name);
+  }
+
+  cards.forEach(function(card){
+    card.addEventListener('click', function(){
+      cards.forEach(function(c){ c.classList.remove('cert-selected'); });
+      card.classList.add('cert-selected');
+      currentKey = card.getAttribute('data-cert-key');
+      render();
+    });
+  });
+
+  studentInput.addEventListener('input', render);
+  classSelect.addEventListener('change', render);
+  yearSelect.addEventListener('change', render);
+
+  render();
+})();
+</script>

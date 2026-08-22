@@ -1,0 +1,20 @@
+/* Timetable module — bespoke rules from Timetable.dc.html's <style> block,
+   beyond the shared common set (tokens, .mono, .disp, .card, .pill,
+   .navitem/.navitem.active/.icon/.navgroup). The source's own .tt-row /
+   .tt-period / .tt-cell / .tt-chip / .tt-today classes already carry a
+   module prefix and are kept as-is; only the generic .legend-dot is
+   re-prefixed to .tt-legend-dot to avoid collisions with other modules. */
+
+.tt-legend-dot{display:inline-block;width:8px;height:8px;border-radius:2px;margin-right:5px;}
+
+.tt-row{display:grid;grid-template-columns:84px repeat(6,1fr);flex:1;min-height:0;border-bottom:1px solid var(--line);}
+.tt-row:last-child{border-bottom:none;}
+.tt-period{display:flex;flex-direction:column;justify-content:center;padding:0 12px;border-right:1px solid var(--line);}
+.tt-cell{display:flex;flex-direction:column;justify-content:center;gap:2px;padding:6px 9px;border-right:1px solid var(--line);transition:background-color .12s ease;cursor:pointer;}
+.tt-cell:last-child{border-right:none;}
+.tt-chip{border-radius:7px;padding:6px 8px;height:100%;display:flex;flex-direction:column;justify-content:center;gap:2px;transition:box-shadow .12s ease;}
+.tt-today{background:var(--marigold-tint);}
+
+/* interactivity: hover affordance + click-to-toggle selection outline */
+.tt-cell:hover{background:var(--line);}
+.tt-cell.tt-cell-selected .tt-chip{box-shadow:0 0 0 2px var(--marigold);}

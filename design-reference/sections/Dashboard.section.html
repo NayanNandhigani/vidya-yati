@@ -1,0 +1,121 @@
+<section class="view" id="view-Dashboard" data-view="Dashboard">
+  <!-- MAIN -->
+  <div style="flex:1;overflow:hidden;padding:26px 34px;display:flex;flex-direction:column;gap:18px;">
+
+    <div style="display:flex;align-items:center;justify-content:space-between;">
+      <div>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div class="disp" style="font-size:21px;">Good morning, Mrs. Kapoor</div>
+          <span style="font-size:11px;font-weight:700;color:var(--muted);background:var(--line);padding:3px 9px;border-radius:100px;">Illustrative data</span>
+        </div>
+        <div style="font-size:13px;color:var(--muted);margin-top:2px;">Friday, 21 August 2026 · Term 2</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:12px;">
+        <span id="dash-quick-add" style="background:var(--card);border:1px solid var(--line);border-radius:8px;padding:8px 15px;font-size:13px;font-weight:600;cursor:pointer;" onclick="console.log('dash: quick add clicked')">+ Quick add</span>
+        <div style="width:32px;height:32px;border-radius:50%;background:var(--ink2);color:#fff;display:flex;align-items:center;justify-content:center;font-size:12.5px;font-weight:700;">SK</div>
+      </div>
+    </div>
+
+    <!-- STAT TILES -->
+    <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:13px;">
+      <div class="card" style="padding:15px 17px;">
+        <div style="font-size:11.5px;color:var(--muted);margin-bottom:7px;">Total students</div>
+        <div class="mono" style="font-size:23px;font-weight:600;">642</div>
+      </div>
+      <div class="card" style="padding:15px 17px;">
+        <div style="font-size:11.5px;color:var(--muted);margin-bottom:7px;">Attendance today</div>
+        <div class="mono" style="font-size:23px;font-weight:600;color:var(--teal);">94%</div>
+      </div>
+      <div class="card" style="padding:15px 17px;">
+        <div style="font-size:11.5px;color:var(--muted);margin-bottom:7px;">Fees this month</div>
+        <div class="mono" style="font-size:23px;font-weight:600;color:var(--marigold-deep);">₹8.4L<span style="font-size:13px;color:var(--faint);font-weight:500;"> / 11L</span></div>
+      </div>
+      <div class="card" style="padding:15px 17px;">
+        <div style="font-size:11.5px;color:var(--muted);margin-bottom:7px;">New enquiries this week</div>
+        <div class="mono" style="font-size:23px;font-weight:600;">12</div>
+      </div>
+      <div class="card" style="padding:15px 17px;">
+        <div style="font-size:11.5px;color:var(--muted);margin-bottom:7px;">Upcoming exam</div>
+        <div style="font-size:15px;font-weight:700;margin-top:2px;">Mid-Term <span style="font-weight:500;color:var(--muted);font-size:13px;">in 6 days</span></div>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:0.85fr 0.85fr 1.5fr;gap:16px;flex:1;min-height:0;">
+
+      <!-- ADMISSIONS FUNNEL -->
+      <div class="card" style="padding:20px;display:flex;flex-direction:column;">
+        <div style="font-size:13.5px;font-weight:700;margin-bottom:16px;">Admissions this month</div>
+        <div style="display:flex;flex-direction:column;gap:14px;flex:1;justify-content:center;">
+          <div>
+            <div style="display:flex;justify-content:space-between;font-size:12.5px;margin-bottom:5px;"><span style="color:var(--muted);">Enquiries</span><span class="mono" style="font-weight:700;">46</span></div>
+            <div style="height:9px;border-radius:5px;background:var(--marigold-tint);"><div style="height:100%;width:100%;border-radius:5px;background:var(--marigold);opacity:.45;"></div></div>
+          </div>
+          <div>
+            <div style="display:flex;justify-content:space-between;font-size:12.5px;margin-bottom:5px;"><span style="color:var(--muted);">Applications</span><span class="mono" style="font-weight:700;">28</span></div>
+            <div style="height:9px;border-radius:5px;background:var(--marigold-tint);"><div style="height:100%;width:61%;border-radius:5px;background:var(--marigold);opacity:.7;"></div></div>
+          </div>
+          <div>
+            <div style="display:flex;justify-content:space-between;font-size:12.5px;margin-bottom:5px;"><span style="color:var(--muted);">Admitted</span><span class="mono" style="font-weight:700;">15</span></div>
+            <div style="height:9px;border-radius:5px;background:var(--marigold-tint);"><div style="height:100%;width:33%;border-radius:5px;background:var(--marigold);"></div></div>
+          </div>
+        </div>
+        <div style="font-size:11.5px;color:var(--faint);margin-top:8px;">33% enquiry-to-admission rate</div>
+      </div>
+
+      <!-- FEE PROGRESS -->
+      <div class="card" style="padding:20px;display:flex;flex-direction:column;">
+        <div style="font-size:13.5px;font-weight:700;margin-bottom:16px;">Fee collection — Term 2</div>
+        <div style="flex:1;display:flex;flex-direction:column;justify-content:center;gap:14px;">
+          <div class="mono" style="font-size:32px;font-weight:600;color:var(--marigold-deep);">76%</div>
+          <div style="height:12px;border-radius:6px;background:var(--marigold-tint);overflow:hidden;">
+            <div style="height:100%;width:76%;background:var(--marigold);border-radius:6px;"></div>
+          </div>
+          <div style="font-size:12.5px;color:var(--muted);">₹8.4L collected of ₹11L billed</div>
+        </div>
+        <div style="border-top:1px solid var(--line);padding-top:12px;margin-top:4px;font-size:12px;color:var(--faint);">128 students with a pending balance</div>
+      </div>
+
+      <!-- CASH FLOW -->
+      <div class="card" style="padding:20px;display:flex;flex-direction:column;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:2px;">
+          <div style="font-size:13.5px;font-weight:700;">Cash flow — Accounts</div>
+          <div style="display:flex;gap:14px;font-size:11.5px;color:var(--muted);">
+            <span><span style="display:inline-block;width:8px;height:8px;border-radius:2px;background:var(--teal);margin-right:5px;"></span>Income</span>
+            <span><span style="display:inline-block;width:8px;height:8px;border-radius:2px;background:var(--clay);margin-right:5px;"></span>Expense</span>
+          </div>
+        </div>
+        <div style="font-size:12px;color:var(--muted);margin-bottom:16px;">Last 6 months, ₹ lakhs · net this month <span style="color:var(--good);font-weight:700;">+₹1.6L</span></div>
+        <div style="flex:1;display:flex;align-items:flex-end;gap:22px;border-bottom:1px solid var(--line);padding-bottom:2px;">
+          <div style="flex:1;display:flex;align-items:flex-end;gap:4px;height:100%;">
+            <div style="flex:1;height:78%;background:var(--teal);border-radius:3px 3px 0 0;"></div>
+            <div style="flex:1;height:57%;background:var(--clay);border-radius:3px 3px 0 0;"></div>
+          </div>
+          <div style="flex:1;display:flex;align-items:flex-end;gap:4px;height:100%;">
+            <div style="flex:1;height:81%;background:var(--teal);border-radius:3px 3px 0 0;"></div>
+            <div style="flex:1;height:59%;background:var(--clay);border-radius:3px 3px 0 0;"></div>
+          </div>
+          <div style="flex:1;display:flex;align-items:flex-end;gap:4px;height:100%;">
+            <div style="flex:1;height:71%;background:var(--teal);border-radius:3px 3px 0 0;"></div>
+            <div style="flex:1;height:61%;background:var(--clay);border-radius:3px 3px 0 0;"></div>
+          </div>
+          <div style="flex:1;display:flex;align-items:flex-end;gap:4px;height:100%;">
+            <div style="flex:1;height:91%;background:var(--teal);border-radius:3px 3px 0 0;"></div>
+            <div style="flex:1;height:63%;background:var(--clay);border-radius:3px 3px 0 0;"></div>
+          </div>
+          <div style="flex:1;display:flex;align-items:flex-end;gap:4px;height:100%;">
+            <div style="flex:1;height:76%;background:var(--teal);border-radius:3px 3px 0 0;"></div>
+            <div style="flex:1;height:65%;background:var(--clay);border-radius:3px 3px 0 0;"></div>
+          </div>
+          <div style="flex:1;display:flex;align-items:flex-end;gap:4px;height:100%;">
+            <div style="flex:1;height:67%;background:var(--teal);border-radius:3px 3px 0 0;"></div>
+            <div style="flex:1;height:54%;background:var(--clay);border-radius:3px 3px 0 0;"></div>
+          </div>
+        </div>
+        <div style="display:flex;margin-top:8px;font-size:10.5px;color:var(--faint);">
+          <span style="flex:1;text-align:center;">Mar</span><span style="flex:1;text-align:center;">Apr</span><span style="flex:1;text-align:center;">May</span><span style="flex:1;text-align:center;">Jun</span><span style="flex:1;text-align:center;">Jul</span><span style="flex:1;text-align:center;">Aug</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>

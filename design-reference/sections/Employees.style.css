@@ -1,0 +1,103 @@
+/* Employees module — bespoke styles beyond the shared common set */
+
+#view-Employees .avatar{
+  width:34px;height:34px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:12px;font-weight:700;color:#fff;flex:none;
+}
+
+#view-Employees .permrow{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:10.5px 0;border-bottom:1px solid var(--line);
+}
+#view-Employees .permrow:last-child{border-bottom:none;}
+
+/* Staff list row selection */
+#view-Employees .emp-row{cursor:pointer;}
+#view-Employees .emp-row-selected{background:var(--marigold-tint);}
+#view-Employees .emp-row:hover:not(.emp-row-selected){background:var(--paper);}
+
+/* Detail panel tabs */
+#view-Employees .emp-tab{
+  flex:1;text-align:center;padding:7px 2px;font-size:12px;
+  color:var(--muted);border-radius:6px;cursor:pointer;user-select:none;
+}
+#view-Employees .emp-tab.emp-tab-active{
+  background:var(--card);font-weight:700;color:var(--ink);
+  box-shadow:0 1px 2px rgba(0,0,0,.06);
+}
+/* Access & Permissions tab label is wider in the source layout */
+#view-Employees #emp-tab-access{flex:1.4;}
+
+/* Detail panel tab content */
+#view-Employees .emp-panel{display:none;}
+#view-Employees .emp-panel.emp-panel-active{display:contents;}
+
+/* Clickable per-module permission pills (Access & Permissions tab) */
+#view-Employees .emp-perm-pill{
+  cursor:pointer;user-select:none;
+  transition:background .12s ease,color .12s ease;
+}
+#view-Employees .emp-perm-pill:hover{filter:brightness(0.97);}
+
+/* Section headers shared by the Profile / Attendance / Payroll tabs */
+#view-Employees .emp-section-title{
+  font-size:11px;font-weight:700;color:var(--muted);
+  text-transform:uppercase;letter-spacing:.05em;
+  margin:18px 0 10px;
+}
+#view-Employees .emp-section-title:first-child{margin-top:0;}
+
+/* Profile tab — label/value grid */
+#view-Employees .emp-field-grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:14px 18px;
+}
+#view-Employees .emp-field-full{grid-column:1 / -1;}
+#view-Employees .emp-field-label{
+  font-size:10.5px;color:var(--faint);text-transform:uppercase;
+  letter-spacing:.04em;margin-bottom:4px;
+}
+#view-Employees .emp-field-value{font-size:13px;font-weight:600;color:var(--ink);line-height:1.4;}
+
+/* Attendance tab — stat tiles */
+#view-Employees .emp-stat-grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:4px;
+}
+#view-Employees .emp-stat-tile{
+  background:var(--paper);border:1px solid var(--line);border-radius:8px;
+  padding:11px 13px;
+}
+#view-Employees .emp-stat-tile-label{font-size:10.5px;color:var(--muted);margin-bottom:5px;}
+#view-Employees .emp-stat-tile-value{font-size:18px;font-weight:700;}
+
+/* Attendance tab — last-10-days list */
+#view-Employees .emp-att-row{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:8px 0;border-bottom:1px solid var(--line);font-size:12.5px;
+}
+#view-Employees .emp-att-row:last-child{border-bottom:none;}
+#view-Employees .emp-att-date{color:var(--ink2);font-weight:600;}
+#view-Employees .emp-att-day{color:var(--faint);font-size:11.5px;margin-left:6px;}
+
+/* Payroll tab — salary breakdown rows */
+#view-Employees .emp-pay-row{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:8px 0;border-bottom:1px solid var(--line);font-size:13px;
+}
+#view-Employees .emp-pay-row:last-child{border-bottom:none;}
+#view-Employees .emp-pay-row-total{font-weight:700;}
+#view-Employees .emp-pay-net{
+  display:flex;align-items:center;justify-content:space-between;
+  background:var(--good-tint);border-radius:8px;padding:12px 14px;margin:12px 0 18px;
+}
+#view-Employees .emp-pay-net-label{font-size:13px;font-weight:700;color:var(--good);}
+#view-Employees .emp-pay-net-value{font-size:19px;font-weight:700;color:var(--good);}
+
+/* Payroll tab — recent payslips list */
+#view-Employees .emp-payslip-row{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:9px 0;border-bottom:1px solid var(--line);
+}
+#view-Employees .emp-payslip-row:last-child{border-bottom:none;}
+#view-Employees .emp-payslip-month{font-size:13px;font-weight:600;}
+#view-Employees .emp-payslip-right{display:flex;align-items:center;gap:10px;}

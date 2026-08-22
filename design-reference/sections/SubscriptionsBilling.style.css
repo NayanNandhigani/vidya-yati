@@ -1,0 +1,21 @@
+/* Bespoke classes from SubscriptionsBilling.dc.html, prefixed sub- to avoid
+   collisions with other modules' equally-generic names (field-label, field-input).
+   Shared common set (tokens, .mono, .disp, .card, .pill, .navitem/.navitem.active/
+   .icon/.navgroup, .field/.in) is provided by the shell and NOT redefined here. */
+
+.sub-field-label{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;margin-bottom:6px;display:block;}
+.sub-field-input{width:100%;border:1px solid var(--line);border-radius:8px;padding:9px 12px;font-family:'Plus Jakarta Sans',system-ui,sans-serif;font-size:13.5px;color:var(--ink);background:#fff;outline:none;}
+.sub-field-input::placeholder{color:var(--faint);}
+.sub-field-input:focus{border-color:var(--marigold);box-shadow:0 0 0 2px var(--marigold-tint);}
+select.sub-field-input{appearance:auto;-webkit-appearance:auto;}
+
+/* interactive ledger rows */
+.sub-ledger-row{transition:background .2s ease;}
+.sub-ledger-row:hover{background:var(--paper);}
+.sub-row-selected{box-shadow:inset 3px 0 0 var(--marigold);}
+
+@keyframes sub-row-flash-anim{
+  0%{background:var(--good-tint);}
+  100%{background:transparent;}
+}
+.sub-row-flash{animation:sub-row-flash-anim 1.3s ease;}

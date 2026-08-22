@@ -1,0 +1,160 @@
+<section class="view" id="view-Fees" data-view="Fees">
+  <!-- MAIN -->
+  <div style="flex:1;overflow:hidden;padding:26px 34px;display:flex;flex-direction:column;gap:16px;">
+
+    <div class="disp" style="font-size:21px;">Fees — Term 2</div>
+
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:13px;">
+      <div class="card" style="padding:14px 17px;"><div style="font-size:11.5px;color:var(--muted);margin-bottom:6px;">Total billed</div><div class="mono" style="font-size:21px;font-weight:700;">₹11.0L</div></div>
+      <div class="card" style="padding:14px 17px;"><div style="font-size:11.5px;color:var(--muted);margin-bottom:6px;">Collected</div><div id="fee-stat-collected" class="mono" style="font-size:21px;font-weight:700;color:var(--good);">₹8.4L</div></div>
+      <div class="card" style="padding:14px 17px;"><div style="font-size:11.5px;color:var(--muted);margin-bottom:6px;">Pending</div><div id="fee-stat-pending" class="mono" style="font-size:21px;font-weight:700;color:var(--warn);">₹2.6L</div></div>
+      <div class="card" style="padding:14px 17px;"><div style="font-size:11.5px;color:var(--muted);margin-bottom:6px;">Overdue accounts</div><div class="mono" style="font-size:21px;font-weight:700;color:var(--critical);">18</div></div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1.7fr 1fr;gap:16px;flex:1;min-height:0;">
+
+      <div class="card" style="padding:0;display:flex;flex-direction:column;overflow:hidden;">
+        <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1fr 1fr;padding:13px 20px;border-bottom:1px solid var(--line);font-size:10.5px;color:var(--faint);text-transform:uppercase;letter-spacing:.05em;">
+          <div>Student</div><div>Class</div><div>Total</div><div>Paid</div><div>Pending</div><div>Status</div>
+        </div>
+        <div id="fee-table-body" style="overflow-y:auto;">
+          <div class="fee-row" data-name="Aarav Mehta" data-cls="6-B" data-pending="₹0" style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1fr 1fr;align-items:center;padding:12px 20px;border-bottom:1px solid var(--line);font-size:13px;">
+            <div style="font-weight:600;">Aarav Mehta</div><div style="color:var(--muted);">6-B</div><div class="mono">₹58,000</div><div class="mono" style="color:var(--good);">₹58,000</div><div class="mono" style="color:var(--faint);">₹0</div><div><span class="pill" style="background:var(--good-tint);color:var(--good);">Paid</span></div>
+          </div>
+          <div class="fee-row" data-name="Diya Sharma" data-cls="6-B" data-pending="₹18,000" style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1fr 1fr;align-items:center;padding:12px 20px;border-bottom:1px solid var(--line);font-size:13px;">
+            <div style="font-weight:600;">Diya Sharma</div><div style="color:var(--muted);">6-B</div><div class="mono">₹58,000</div><div class="mono">₹40,000</div><div class="mono" style="color:var(--warn);">₹18,000</div><div><span class="pill" style="background:var(--warn-tint);color:var(--warn);">Pending</span></div>
+          </div>
+          <div class="fee-row fee-row-selected" data-name="Yash Patel" data-cls="5-A" data-pending="₹34,000" style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1fr 1fr;align-items:center;padding:12px 20px;border-bottom:1px solid var(--line);font-size:13px;background:var(--critical-tint);">
+            <div style="font-weight:700;">Yash Patel</div><div style="color:var(--muted);">5-A</div><div class="mono">₹52,000</div><div class="mono">₹18,000</div><div class="mono" style="color:var(--critical);font-weight:700;">₹34,000</div><div><span class="pill" style="background:#fff;color:var(--critical);">Overdue</span></div>
+          </div>
+          <div class="fee-row" data-name="Meera Iyer" data-cls="6-A" data-pending="₹0" style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1fr 1fr;align-items:center;padding:12px 20px;border-bottom:1px solid var(--line);font-size:13px;">
+            <div style="font-weight:600;">Meera Iyer</div><div style="color:var(--muted);">6-A</div><div class="mono">₹58,000</div><div class="mono" style="color:var(--good);">₹58,000</div><div class="mono" style="color:var(--faint);">₹0</div><div><span class="pill" style="background:var(--good-tint);color:var(--good);">Paid</span></div>
+          </div>
+          <div class="fee-row" data-name="Kabir Verma" data-cls="5-A" data-pending="₹0" style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1fr 1fr;align-items:center;padding:12px 20px;border-bottom:1px solid var(--line);font-size:13px;">
+            <div style="font-weight:600;">Kabir Verma</div><div style="color:var(--muted);">5-A</div><div class="mono">₹52,000</div><div class="mono">₹52,000</div><div class="mono" style="color:var(--faint);">₹0</div><div><span class="pill" style="background:var(--good-tint);color:var(--good);">Paid</span></div>
+          </div>
+          <div class="fee-row" data-name="Ishaan Rao" data-cls="5-A" data-pending="₹22,000" style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1fr 1fr;align-items:center;padding:12px 20px;font-size:13px;">
+            <div style="font-weight:600;">Ishaan Rao</div><div style="color:var(--muted);">5-A</div><div class="mono">₹52,000</div><div class="mono">₹30,000</div><div class="mono" style="color:var(--warn);">₹22,000</div><div><span class="pill" style="background:var(--warn-tint);color:var(--warn);">Pending</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RECORD PAYMENT -->
+      <div class="card fee-panel" id="fee-panel" style="padding:22px;display:flex;flex-direction:column;gap:16px;position:relative;">
+        <span class="fee-panel-close" id="fee-panel-close" title="Close">&times;</span>
+        <div>
+          <div style="font-size:13.5px;font-weight:700;margin-bottom:2px;">Record a payment</div>
+          <div style="font-size:12px;color:var(--muted);" id="fee-panel-sub">Yash Patel · 5-A · ₹34,000 pending</div>
+        </div>
+        <div class="field"><label>Amount received</label><input class="in mono" id="fee-amount" type="number" min="0" step="1" value="20000" placeholder="0" /></div>
+        <div class="field"><label>Payment method</label>
+          <select class="in" id="fee-method">
+            <option>Bank Transfer</option>
+            <option>UPI</option>
+            <option>Cash</option>
+            <option>Cheque</option>
+            <option>Card</option>
+          </select>
+        </div>
+        <div class="field"><label>Reference / receipt no.</label><input class="in mono" id="fee-ref" type="text" value="TXN-88213" placeholder="TXN-88213" /></div>
+        <div class="field"><label>Date received</label><input class="in mono" id="fee-date" type="text" value="21 Aug 2026" /></div>
+        <span id="fee-save-btn" class="fee-save-btn" style="background:var(--marigold);color:#fff;border-radius:8px;padding:10px;text-align:center;font-size:13.5px;font-weight:700;cursor:pointer;">Record Payment</span>
+        <div style="border-top:1px solid var(--line);padding-top:14px;margin-top:2px;">
+          <div style="font-size:11.5px;color:var(--faint);text-transform:uppercase;letter-spacing:.05em;margin-bottom:10px;">Recent payments</div>
+          <div id="fee-recent-list">
+            <div style="display:flex;justify-content:space-between;font-size:12.5px;margin-bottom:8px;"><span style="color:var(--muted);">18 Jul · Bank Transfer</span><span class="mono" style="font-weight:600;">₹18,000</span></div>
+            <div style="display:flex;justify-content:space-between;font-size:12.5px;"><span style="color:var(--muted);">02 May · UPI</span><span class="mono" style="font-weight:600;">₹18,000</span></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+<script>
+(function(){
+  var root = document.getElementById('view-Fees');
+  if (!root) return;
+
+  var panel = root.querySelector('#fee-panel');
+  var closeBtn = root.querySelector('#fee-panel-close');
+  var sub = root.querySelector('#fee-panel-sub');
+  var amountInput = root.querySelector('#fee-amount');
+  var methodSelect = root.querySelector('#fee-method');
+  var refInput = root.querySelector('#fee-ref');
+  var dateInput = root.querySelector('#fee-date');
+  var saveBtn = root.querySelector('#fee-save-btn');
+  var recentList = root.querySelector('#fee-recent-list');
+  var collectedStat = root.querySelector('#fee-stat-collected');
+  var rows = root.querySelectorAll('.fee-row');
+
+  var collectedLakhs = 8.4; // matches "Collected" stat tile authored value
+
+  function formatINR(n) {
+    n = Math.round(n);
+    var neg = n < 0;
+    n = Math.abs(n);
+    var s = n.toString();
+    var lastThree = s.substring(s.length - 3);
+    var other = s.substring(0, s.length - 3);
+    if (other !== '') lastThree = ',' + lastThree;
+    var otherFormatted = other.replace(/\B(?=(\d{2})+(?!\d))/g, ',');
+    return (neg ? '−' : '') + '₹' + otherFormatted + lastThree;
+  }
+
+  function selectRow(row) {
+    rows.forEach(function (r) { r.classList.remove('fee-row-selected'); });
+    row.classList.add('fee-row-selected');
+  }
+
+  function openPanelFor(row) {
+    var name = row.getAttribute('data-name');
+    var cls = row.getAttribute('data-cls');
+    var pending = row.getAttribute('data-pending');
+    sub.textContent = name + ' · ' + cls + ' · ' + pending + ' pending';
+    amountInput.value = '';
+    refInput.value = '';
+    selectRow(row);
+    panel.style.display = 'flex';
+  }
+
+  rows.forEach(function (row) {
+    row.addEventListener('click', function () { openPanelFor(row); });
+  });
+
+  closeBtn.addEventListener('click', function (e) {
+    e.stopPropagation();
+    panel.style.display = 'none';
+  });
+
+  saveBtn.addEventListener('click', function () {
+    var amount = parseFloat(amountInput.value);
+    if (!amount || amount <= 0) {
+      amountInput.focus();
+      return;
+    }
+    var method = methodSelect.value;
+    var dateVal = (dateInput.value || '').trim() || '21 Aug 2026';
+    // build a short "DD Mon" style label from whatever the date field says
+    var shortDate = dateVal.split(' ').slice(0, 2).join(' ');
+
+    var entry = document.createElement('div');
+    entry.className = 'fee-recent-entry fee-flash';
+    entry.style.cssText = 'display:flex;justify-content:space-between;font-size:12.5px;margin-bottom:8px;';
+    entry.innerHTML =
+      '<span style="color:var(--muted);">' + shortDate + ' · ' + method + '</span>' +
+      '<span class="mono" style="font-weight:600;">' + formatINR(amount) + '</span>';
+    recentList.insertBefore(entry, recentList.firstChild);
+    setTimeout(function () { entry.classList.remove('fee-flash'); }, 1200);
+
+    // nudge the "Collected" stat tile up by the entered amount
+    collectedLakhs += amount / 100000;
+    collectedStat.textContent = '₹' + collectedLakhs.toFixed(1) + 'L';
+
+    // reset the form
+    amountInput.value = '';
+    refInput.value = '';
+    methodSelect.selectedIndex = 0;
+  });
+})();
+</script>

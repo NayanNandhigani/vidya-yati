@@ -1,0 +1,1 @@
+/* no extra rules needed — SuperAdmin.dc.html's <style> block only defined :root tokens, .mono, .disp, .navitem, .navitem.active, .icon, .card, and .pill, all of which are already part of the shared shell's common CSS set. */

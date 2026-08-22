@@ -1,0 +1,15 @@
+/* Bespoke classes from Certificates.dc.html, scoped to #view-Certificates so they
+   can never collide with same-named classes in other converted screens.
+   .field / .in are part of the shared common set and are intentionally NOT redefined here. */
+#view-Certificates .avatar{border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff;flex:none;}
+#view-Certificates .tmpl{display:flex;gap:12px;align-items:center;padding:13px 14px;cursor:pointer;transition:box-shadow .12s ease,border-color .12s ease;}
+#view-Certificates .tmpl:hover{border-color:var(--marigold-tint);}
+#view-Certificates .tmpl.cert-selected{border-color:var(--marigold);border-width:1.5px;box-shadow:0 0 0 3px var(--marigold-tint);}
+#view-Certificates .thumb{width:52px;height:70px;background:#FFFDF9;border:1px solid var(--marigold-tint);border-radius:6px;padding:6px 5px;display:flex;flex-direction:column;gap:3px;flex:none;}
+#view-Certificates .tline{height:2px;background:var(--line);border-radius:2px;}
+#view-Certificates .tmini{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;flex:none;}
+
+/* Normalize the picker fields, which are now genuine form controls rather than static text */
+#view-Certificates select.in{width:100%;appearance:none;-webkit-appearance:none;-moz-appearance:none;cursor:pointer;}
+#view-Certificates input.in,
+#view-Certificates .in input{width:100%;}

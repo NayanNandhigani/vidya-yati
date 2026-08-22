@@ -1,0 +1,291 @@
+<section class="view" id="view-Exams" data-view="Exams">
+  <!-- MAIN -->
+  <div style="flex:1;overflow:hidden;padding:26px 34px;display:flex;flex-direction:column;gap:14px;">
+
+    <div style="display:flex;align-items:center;justify-content:space-between;">
+      <div style="display:flex;align-items:center;gap:10px;">
+        <div class="disp" style="font-size:21px;">Exams — Term 2</div>
+        <span style="font-size:11px;font-weight:700;color:var(--muted);background:var(--line);padding:3px 9px;border-radius:100px;">Illustrative data</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;">
+        <span style="background:var(--card);border:1px solid var(--line);border-radius:8px;padding:8px 14px;font-size:13px;font-weight:600;">Class 6-B ▾</span>
+        <span style="background:var(--marigold);color:#fff;border-radius:8px;padding:8px 16px;font-size:13px;font-weight:600;">+ Schedule Exam</span>
+        <div style="width:32px;height:32px;border-radius:50%;background:var(--ink2);color:#fff;display:flex;align-items:center;justify-content:center;font-size:12.5px;font-weight:700;">SK</div>
+      </div>
+    </div>
+
+    <!-- EXAM STRIP -->
+    <div id="exam-strip" style="display:grid;grid-template-columns:repeat(3,1fr);gap:13px;">
+      <div class="card exam-card exam-selected" data-exam="ut1" style="padding:13px 17px;">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;">
+          <div style="font-weight:700;font-size:14.5px;">Unit Test 1</div>
+          <span class="pill" style="background:var(--good-tint);color:var(--good);">Completed</span>
+        </div>
+        <div style="font-size:12px;color:var(--ink2);margin-top:4px;font-weight:600;">13–15 Jul 2026 · Classes 1–10</div>
+      </div>
+      <div class="card exam-card" data-exam="midterm" style="padding:13px 17px;">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;">
+          <div style="font-weight:700;font-size:14.5px;">Mid-Term</div>
+          <span class="pill" style="background:var(--marigold-tint);color:var(--marigold-deep);">Upcoming · 6 days</span>
+        </div>
+        <div style="font-size:12px;color:var(--muted);margin-top:4px;">27–31 Aug 2026 · Classes 1–10</div>
+      </div>
+      <div class="card exam-card" data-exam="final" style="padding:13px 17px;">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;">
+          <div style="font-weight:700;font-size:14.5px;">Final</div>
+          <span class="pill" style="background:var(--line);color:var(--faint);">Scheduled</span>
+        </div>
+        <div style="font-size:12px;color:var(--muted);margin-top:4px;">24–30 Nov 2026 · Classes 1–10</div>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1.9fr 1fr;gap:16px;flex:1;min-height:0;">
+
+      <!-- MARKS ENTRY GRID -->
+      <div class="card" style="padding:0;display:flex;flex-direction:column;overflow:hidden;">
+        <div style="padding:16px 20px 12px;border-bottom:1px solid var(--line);">
+          <div id="exam-grid-title" style="font-size:14px;font-weight:700;">Unit Test 1 · Class 6-B · Marks Entry</div>
+          <div style="font-size:11.5px;color:var(--muted);margin-top:2px;">Marks out of 100 per subject · Pass mark 33 · click a mark to edit</div>
+        </div>
+        <div style="display:grid;grid-template-columns:1.75fr 0.8fr 0.8fr 0.8fr 1fr 0.8fr 0.85fr 0.8fr;padding:11px 20px;border-bottom:1px solid var(--line);font-size:10px;color:var(--faint);text-transform:uppercase;letter-spacing:.05em;">
+          <div>Student</div><div class="exam-mcell">English</div><div class="exam-mcell">Maths</div><div class="exam-mcell">Science</div><div class="exam-mcell">Social St.</div><div class="exam-mcell">Hindi</div><div class="exam-mcell">Total</div><div class="exam-mcell">%</div>
+        </div>
+
+        <div id="exam-grid-body-ut1" class="exam-grid-body" data-exam="ut1" style="overflow-y:auto;">
+          <div class="exam-row" data-max="500" style="display:grid;grid-template-columns:1.75fr 0.8fr 0.8fr 0.8fr 1fr 0.8fr 0.85fr 0.8fr;align-items:center;padding:10.5px 20px;border-bottom:1px solid var(--line);background:var(--marigold-tint);">
+            <div style="display:flex;align-items:center;gap:9px;"><div class="exam-avatar" style="width:26px;height:26px;font-size:10.5px;background:var(--marigold);">AM</div><div style="font-weight:700;font-size:13px;">Aarav Mehta</div></div>
+            <div class="mono exam-mcell exam-mark" contenteditable="true" inputmode="numeric">82</div><div class="mono exam-mcell exam-mark" contenteditable="true" inputmode="numeric">91</div><div class="mono exam-mcell exam-mark" contenteditable="true" inputmode="numeric">88</div><div class="mono exam-mcell exam-mark" contenteditable="true" inputmode="numeric">79</div><div class="mono exam-mcell exam-mark" contenteditable="true" inputmode="numeric">85</div>
+            <div class="mono exam-mcell exam-total-cell" style="font-weight:700;">425</div><div class="mono exam-mcell exam-pct-cell" style="font-weight:700;color:var(--marigold-deep);">85.0</div>
+          </div>
+          <div class="exam-row" data-max="500" style="display:grid;grid-template-columns:1.75fr 0.8fr 0.8fr 0.8fr 1fr 0.8fr 0.85fr 0.8fr;align-items:center;padding:10.5px 20px;border-bottom:1px solid var(--line);">
+            <div style="display:flex;align-items:center;gap:9px;"><div class="exam-avatar" style="width:26px;height:26px;font-size:10.5px;background:var(--teal);">DS</div><div style="font-weight:600;font-size:13px;">Diya Sharma</div></div>
+            <div class="mono exam-mcell exam-mark" contenteditable="true" inputmode="numeric">76</div><div class="mono exam-mcell exam-mark" contenteditable="true" inputmode="numeric">68</div><div class="mono exam-mcell exam-mark" contenteditable="true" inputmode="numeric">80</div><div class="mono exam-mcell exam-mark" contenteditable="true" inputmode="numeric">88</div><div class="mono exam-mcell exam-mark" contenteditable="true" inputmode="numeric">74</div>
+            <div class="mono exam-mcell exam-total-cell" style="font-weight:700;">386</div><div class="mono exam-mcell exam-pct-cell" style="font-weight:700;">77.2</div>
+          </div>
+          <div class="exam-row" data-max="500" style="display:grid;grid-template-columns:1.75fr 0.8fr 0.8fr 0.8fr 1fr 0.8fr 0.85fr 0.8fr;align-items:center;padding:10.5px 20px;border-bottom:1px solid var(--line);">
+            <div style="display:flex;align-items:center;gap:9px;"><div class="exam-avatar" style="width:26px;height:26px;font-size:10.5px;background:#4C8FBF;">RK</div><div style="font-weight:600;font-size:13px;">Rohan Kapoor</div></div>
+            <div class="mono exam-mcell exam-mark" contenteditable="true" inputmode="numeric">58</div><div class="mono exam-mcell exam-mark" contenteditable="true" inputmode="numeric">45</div><div class="mono exam-mcell exam-mark" contenteditable="true" inputmode="numeric">62</div><div class="mono exam-mcell exam-mark" contenteditable="true" inputmode="numeric">55</div><div class="mono exam-mcell exam-mark" contenteditable="true" inputmode="numeric">60</div>
+            <div class="mono exam-mcell exam-total-cell" style="font-weight:700;">280</div><div class="mono exam-mcell exam-pct-cell" style="font-weight:700;color:var(--warn);">56.0</div>
+          </div>
+          <div class="exam-row" data-max="500" style="display:grid;grid-template-columns:1.75fr 0.8fr 0.8fr 0.8fr 1fr 0.8fr 0.85fr 0.8fr;align-items:center;padding:10.5px 20px;border-bottom:1px solid var(--line);">
+            <div style="display:flex;align-items:center;gap:9px;"><div class="exam-avatar" style="width:26px;height:26px;font-size:10.5px;background:#8A6FD1;">AD</div><div style="font-weight:600;font-size:13px;">Ananya Desai</div></div>
+            <div class="mono exam-mcell exam-mark" contenteditable="true" inputmode="numeric">91</div><div class="mono exam-mcell exam-mark" contenteditable="true" inputmode="numeric">95</div><div class="mono exam-mcell exam-mark" contenteditable="true" inputmode="numeric">93</div><div class="mono exam-mcell exam-mark" contenteditable="true" inputmode="numeric">89</div><div class="mono exam-mcell exam-mark" contenteditable="true" inputmode="numeric">92</div>
+            <div class="mono exam-mcell exam-total-cell" style="font-weight:700;">460</div><div class="mono exam-mcell exam-pct-cell" style="font-weight:700;color:var(--good);">92.0</div>
+          </div>
+          <div class="exam-row" data-max="500" style="display:grid;grid-template-columns:1.75fr 0.8fr 0.8fr 0.8fr 1fr 0.8fr 0.85fr 0.8fr;align-items:center;padding:10.5px 20px;border-bottom:1px solid var(--line);">
+            <div style="display:flex;align-items:center;gap:9px;"><div class="exam-avatar" style="width:26px;height:26px;font-size:10.5px;background:#C2884A;">VS</div><div style="font-weight:600;font-size:13px;">Vivaan Shah</div></div>
+            <div class="mono exam-mcell exam-mark" contenteditable="true" inputmode="numeric">64</div><div class="mono exam-mcell exam-mark exam-fail" contenteditable="true" inputmode="numeric">28</div><div class="mono exam-mcell exam-mark" contenteditable="true" inputmode="numeric">55</div><div class="mono exam-mcell exam-mark" contenteditable="true" inputmode="numeric">60</div><div class="mono exam-mcell exam-mark" contenteditable="true" inputmode="numeric">58</div>
+            <div class="mono exam-mcell exam-total-cell" style="font-weight:700;">265</div><div class="mono exam-mcell exam-pct-cell" style="font-weight:700;color:var(--bad);">53.0</div>
+          </div>
+          <div class="exam-row" data-max="500" style="display:grid;grid-template-columns:1.75fr 0.8fr 0.8fr 0.8fr 1fr 0.8fr 0.85fr 0.8fr;align-items:center;padding:10.5px 20px;border-bottom:1px solid var(--line);">
+            <div style="display:flex;align-items:center;gap:9px;"><div class="exam-avatar" style="width:26px;height:26px;font-size:10.5px;background:#D16F8A;">ZK</div><div style="font-weight:600;font-size:13px;">Zara Khan</div></div>
+            <div class="mono exam-mcell exam-mark" contenteditable="true" inputmode="numeric">70</div><div class="mono exam-mcell exam-mark" contenteditable="true" inputmode="numeric">72</div><div class="mono exam-mcell exam-mark" contenteditable="true" inputmode="numeric">68</div><div class="mono exam-mcell exam-mark" contenteditable="true" inputmode="numeric">75</div><div class="mono exam-mcell exam-mark" contenteditable="true" inputmode="numeric">71</div>
+            <div class="mono exam-mcell exam-total-cell" style="font-weight:700;">356</div><div class="mono exam-mcell exam-pct-cell" style="font-weight:700;">71.2</div>
+          </div>
+          <div class="exam-row" data-max="500" style="display:grid;grid-template-columns:1.75fr 0.8fr 0.8fr 0.8fr 1fr 0.8fr 0.85fr 0.8fr;align-items:center;padding:10.5px 20px;border-bottom:1px solid var(--line);">
+            <div style="display:flex;align-items:center;gap:9px;"><div class="exam-avatar" style="width:26px;height:26px;font-size:10.5px;background:#3F9B7A;">NS</div><div style="font-weight:600;font-size:13px;">Neha Singh</div></div>
+            <div class="mono exam-mcell exam-mark" contenteditable="true" inputmode="numeric">85</div><div class="mono exam-mcell exam-mark" contenteditable="true" inputmode="numeric">80</div><div class="mono exam-mcell exam-mark" contenteditable="true" inputmode="numeric">90</div><div class="mono exam-mcell exam-mark" contenteditable="true" inputmode="numeric">82</div><div class="mono exam-mcell exam-mark" contenteditable="true" inputmode="numeric">88</div>
+            <div class="mono exam-mcell exam-total-cell" style="font-weight:700;">425</div><div class="mono exam-mcell exam-pct-cell" style="font-weight:700;color:var(--marigold-deep);">85.0</div>
+          </div>
+          <div class="exam-row" data-max="500" style="display:grid;grid-template-columns:1.75fr 0.8fr 0.8fr 0.8fr 1fr 0.8fr 0.85fr 0.8fr;align-items:center;padding:10.5px 20px;">
+            <div style="display:flex;align-items:center;gap:9px;"><div class="exam-avatar" style="width:26px;height:26px;font-size:10.5px;background:#B5624A;">SP</div><div style="font-weight:600;font-size:13px;">Sneha Pillai</div></div>
+            <div class="mono exam-mcell exam-mark" contenteditable="true" inputmode="numeric">62</div><div class="mono exam-mcell exam-mark" contenteditable="true" inputmode="numeric">58</div><div class="mono exam-mcell exam-mark" contenteditable="true" inputmode="numeric">65</div><div class="mono exam-mcell exam-mark" contenteditable="true" inputmode="numeric">60</div><div class="mono exam-mcell exam-mark" contenteditable="true" inputmode="numeric">64</div>
+            <div class="mono exam-mcell exam-total-cell" style="font-weight:700;">309</div><div class="mono exam-mcell exam-pct-cell" style="font-weight:700;">61.8</div>
+          </div>
+        </div>
+
+        <!-- Mid-Term marks — same roster/subjects as UT1, its own plausible values -->
+        <div id="exam-grid-body-midterm" class="exam-grid-body" data-exam="midterm" style="overflow-y:auto;display:none;">
+          <div class="exam-row" data-max="500" style="display:grid;grid-template-columns:1.75fr 0.8fr 0.8fr 0.8fr 1fr 0.8fr 0.85fr 0.8fr;align-items:center;padding:10.5px 20px;border-bottom:1px solid var(--line);background:var(--marigold-tint);">
+            <div style="display:flex;align-items:center;gap:9px;"><div class="exam-avatar" style="width:26px;height:26px;font-size:10.5px;background:var(--marigold);">AM</div><div style="font-weight:700;font-size:13px;">Aarav Mehta</div></div>
+            <div class="mono exam-mcell exam-mark" contenteditable="true" inputmode="numeric">85</div><div class="mono exam-mcell exam-mark" contenteditable="true" inputmode="numeric">88</div><div class="mono exam-mcell exam-mark" contenteditable="true" inputmode="numeric">90</div><div class="mono exam-mcell exam-mark" contenteditable="true" inputmode="numeric">81</div><div class="mono exam-mcell exam-mark" contenteditable="true" inputmode="numeric">87</div>
+            <div class="mono exam-mcell exam-total-cell" style="font-weight:700;">431</div><div class="mono exam-mcell exam-pct-cell" style="font-weight:700;color:var(--marigold-deep);">86.2</div>
+          </div>
+          <div class="exam-row" data-max="500" style="display:grid;grid-template-columns:1.75fr 0.8fr 0.8fr 0.8fr 1fr 0.8fr 0.85fr 0.8fr;align-items:center;padding:10.5px 20px;border-bottom:1px solid var(--line);">
+            <div style="display:flex;align-items:center;gap:9px;"><div class="exam-avatar" style="width:26px;height:26px;font-size:10.5px;background:var(--teal);">DS</div><div style="font-weight:600;font-size:13px;">Diya Sharma</div></div>
+            <div class="mono exam-mcell exam-mark" contenteditable="true" inputmode="numeric">80</div><div class="mono exam-mcell exam-mark" contenteditable="true" inputmode="numeric">72</div><div class="mono exam-mcell exam-mark" contenteditable="true" inputmode="numeric">83</div><div class="mono exam-mcell exam-mark" contenteditable="true" inputmode="numeric">90</div><div class="mono exam-mcell exam-mark" contenteditable="true" inputmode="numeric">78</div>
+            <div class="mono exam-mcell exam-total-cell" style="font-weight:700;">403</div><div class="mono exam-mcell exam-pct-cell" style="font-weight:700;color:var(--marigold-deep);">80.6</div>
+          </div>
+          <div class="exam-row" data-max="500" style="display:grid;grid-template-columns:1.75fr 0.8fr 0.8fr 0.8fr 1fr 0.8fr 0.85fr 0.8fr;align-items:center;padding:10.5px 20px;border-bottom:1px solid var(--line);">
+            <div style="display:flex;align-items:center;gap:9px;"><div class="exam-avatar" style="width:26px;height:26px;font-size:10.5px;background:#4C8FBF;">RK</div><div style="font-weight:600;font-size:13px;">Rohan Kapoor</div></div>
+            <div class="mono exam-mcell exam-mark" contenteditable="true" inputmode="numeric">62</div><div class="mono exam-mcell exam-mark" contenteditable="true" inputmode="numeric">50</div><div class="mono exam-mcell exam-mark" contenteditable="true" inputmode="numeric">65</div><div class="mono exam-mcell exam-mark" contenteditable="true" inputmode="numeric">58</div><div class="mono exam-mcell exam-mark" contenteditable="true" inputmode="numeric">63</div>
+            <div class="mono exam-mcell exam-total-cell" style="font-weight:700;">298</div><div class="mono exam-mcell exam-pct-cell" style="font-weight:700;color:var(--warn);">59.6</div>
+          </div>
+          <div class="exam-row" data-max="500" style="display:grid;grid-template-columns:1.75fr 0.8fr 0.8fr 0.8fr 1fr 0.8fr 0.85fr 0.8fr;align-items:center;padding:10.5px 20px;border-bottom:1px solid var(--line);">
+            <div style="display:flex;align-items:center;gap:9px;"><div class="exam-avatar" style="width:26px;height:26px;font-size:10.5px;background:#8A6FD1;">AD</div><div style="font-weight:600;font-size:13px;">Ananya Desai</div></div>
+            <div class="mono exam-mcell exam-mark" contenteditable="true" inputmode="numeric">93</div><div class="mono exam-mcell exam-mark" contenteditable="true" inputmode="numeric">96</div><div class="mono exam-mcell exam-mark" contenteditable="true" inputmode="numeric">94</div><div class="mono exam-mcell exam-mark" contenteditable="true" inputmode="numeric">91</div><div class="mono exam-mcell exam-mark" contenteditable="true" inputmode="numeric">94</div>
+            <div class="mono exam-mcell exam-total-cell" style="font-weight:700;">468</div><div class="mono exam-mcell exam-pct-cell" style="font-weight:700;color:var(--good);">93.6</div>
+          </div>
+          <div class="exam-row" data-max="500" style="display:grid;grid-template-columns:1.75fr 0.8fr 0.8fr 0.8fr 1fr 0.8fr 0.85fr 0.8fr;align-items:center;padding:10.5px 20px;border-bottom:1px solid var(--line);">
+            <div style="display:flex;align-items:center;gap:9px;"><div class="exam-avatar" style="width:26px;height:26px;font-size:10.5px;background:#C2884A;">VS</div><div style="font-weight:600;font-size:13px;">Vivaan Shah</div></div>
+            <div class="mono exam-mcell exam-mark" contenteditable="true" inputmode="numeric">68</div><div class="mono exam-mcell exam-mark exam-fail" contenteditable="true" inputmode="numeric">30</div><div class="mono exam-mcell exam-mark" contenteditable="true" inputmode="numeric">58</div><div class="mono exam-mcell exam-mark" contenteditable="true" inputmode="numeric">62</div><div class="mono exam-mcell exam-mark" contenteditable="true" inputmode="numeric">60</div>
+            <div class="mono exam-mcell exam-total-cell" style="font-weight:700;">278</div><div class="mono exam-mcell exam-pct-cell" style="font-weight:700;color:var(--warn);">55.6</div>
+          </div>
+          <div class="exam-row" data-max="500" style="display:grid;grid-template-columns:1.75fr 0.8fr 0.8fr 0.8fr 1fr 0.8fr 0.85fr 0.8fr;align-items:center;padding:10.5px 20px;border-bottom:1px solid var(--line);">
+            <div style="display:flex;align-items:center;gap:9px;"><div class="exam-avatar" style="width:26px;height:26px;font-size:10.5px;background:#D16F8A;">ZK</div><div style="font-weight:600;font-size:13px;">Zara Khan</div></div>
+            <div class="mono exam-mcell exam-mark" contenteditable="true" inputmode="numeric">74</div><div class="mono exam-mcell exam-mark" contenteditable="true" inputmode="numeric">76</div><div class="mono exam-mcell exam-mark" contenteditable="true" inputmode="numeric">70</div><div class="mono exam-mcell exam-mark" contenteditable="true" inputmode="numeric">78</div><div class="mono exam-mcell exam-mark" contenteditable="true" inputmode="numeric">74</div>
+            <div class="mono exam-mcell exam-total-cell" style="font-weight:700;">372</div><div class="mono exam-mcell exam-pct-cell" style="font-weight:700;">74.4</div>
+          </div>
+          <div class="exam-row" data-max="500" style="display:grid;grid-template-columns:1.75fr 0.8fr 0.8fr 0.8fr 1fr 0.8fr 0.85fr 0.8fr;align-items:center;padding:10.5px 20px;border-bottom:1px solid var(--line);">
+            <div style="display:flex;align-items:center;gap:9px;"><div class="exam-avatar" style="width:26px;height:26px;font-size:10.5px;background:#3F9B7A;">NS</div><div style="font-weight:600;font-size:13px;">Neha Singh</div></div>
+            <div class="mono exam-mcell exam-mark" contenteditable="true" inputmode="numeric">88</div><div class="mono exam-mcell exam-mark" contenteditable="true" inputmode="numeric">84</div><div class="mono exam-mcell exam-mark" contenteditable="true" inputmode="numeric">92</div><div class="mono exam-mcell exam-mark" contenteditable="true" inputmode="numeric">85</div><div class="mono exam-mcell exam-mark" contenteditable="true" inputmode="numeric">90</div>
+            <div class="mono exam-mcell exam-total-cell" style="font-weight:700;">439</div><div class="mono exam-mcell exam-pct-cell" style="font-weight:700;color:var(--marigold-deep);">87.8</div>
+          </div>
+          <div class="exam-row" data-max="500" style="display:grid;grid-template-columns:1.75fr 0.8fr 0.8fr 0.8fr 1fr 0.8fr 0.85fr 0.8fr;align-items:center;padding:10.5px 20px;">
+            <div style="display:flex;align-items:center;gap:9px;"><div class="exam-avatar" style="width:26px;height:26px;font-size:10.5px;background:#B5624A;">SP</div><div style="font-weight:600;font-size:13px;">Sneha Pillai</div></div>
+            <div class="mono exam-mcell exam-mark" contenteditable="true" inputmode="numeric">66</div><div class="mono exam-mcell exam-mark" contenteditable="true" inputmode="numeric">60</div><div class="mono exam-mcell exam-mark" contenteditable="true" inputmode="numeric">68</div><div class="mono exam-mcell exam-mark" contenteditable="true" inputmode="numeric">63</div><div class="mono exam-mcell exam-mark" contenteditable="true" inputmode="numeric">67</div>
+            <div class="mono exam-mcell exam-total-cell" style="font-weight:700;">324</div><div class="mono exam-mcell exam-pct-cell" style="font-weight:700;">64.8</div>
+          </div>
+        </div>
+
+        <!-- Final marks — same roster/subjects as UT1, its own plausible values -->
+        <div id="exam-grid-body-final" class="exam-grid-body" data-exam="final" style="overflow-y:auto;display:none;">
+          <div class="exam-row" data-max="500" style="display:grid;grid-template-columns:1.75fr 0.8fr 0.8fr 0.8fr 1fr 0.8fr 0.85fr 0.8fr;align-items:center;padding:10.5px 20px;border-bottom:1px solid var(--line);background:var(--marigold-tint);">
+            <div style="display:flex;align-items:center;gap:9px;"><div class="exam-avatar" style="width:26px;height:26px;font-size:10.5px;background:var(--marigold);">AM</div><div style="font-weight:700;font-size:13px;">Aarav Mehta</div></div>
+            <div class="mono exam-mcell exam-mark" contenteditable="true" inputmode="numeric">88</div><div class="mono exam-mcell exam-mark" contenteditable="true" inputmode="numeric">93</div><div class="mono exam-mcell exam-mark" contenteditable="true" inputmode="numeric">91</div><div class="mono exam-mcell exam-mark" contenteditable="true" inputmode="numeric">84</div><div class="mono exam-mcell exam-mark" contenteditable="true" inputmode="numeric">89</div>
+            <div class="mono exam-mcell exam-total-cell" style="font-weight:700;">445</div><div class="mono exam-mcell exam-pct-cell" style="font-weight:700;color:var(--marigold-deep);">89.0</div>
+          </div>
+          <div class="exam-row" data-max="500" style="display:grid;grid-template-columns:1.75fr 0.8fr 0.8fr 0.8fr 1fr 0.8fr 0.85fr 0.8fr;align-items:center;padding:10.5px 20px;border-bottom:1px solid var(--line);">
+            <div style="display:flex;align-items:center;gap:9px;"><div class="exam-avatar" style="width:26px;height:26px;font-size:10.5px;background:var(--teal);">DS</div><div style="font-weight:600;font-size:13px;">Diya Sharma</div></div>
+            <div class="mono exam-mcell exam-mark" contenteditable="true" inputmode="numeric">82</div><div class="mono exam-mcell exam-mark" contenteditable="true" inputmode="numeric">75</div><div class="mono exam-mcell exam-mark" contenteditable="true" inputmode="numeric">85</div><div class="mono exam-mcell exam-mark" contenteditable="true" inputmode="numeric">91</div><div class="mono exam-mcell exam-mark" contenteditable="true" inputmode="numeric">80</div>
+            <div class="mono exam-mcell exam-total-cell" style="font-weight:700;">413</div><div class="mono exam-mcell exam-pct-cell" style="font-weight:700;color:var(--marigold-deep);">82.6</div>
+          </div>
+          <div class="exam-row" data-max="500" style="display:grid;grid-template-columns:1.75fr 0.8fr 0.8fr 0.8fr 1fr 0.8fr 0.85fr 0.8fr;align-items:center;padding:10.5px 20px;border-bottom:1px solid var(--line);">
+            <div style="display:flex;align-items:center;gap:9px;"><div class="exam-avatar" style="width:26px;height:26px;font-size:10.5px;background:#4C8FBF;">RK</div><div style="font-weight:600;font-size:13px;">Rohan Kapoor</div></div>
+            <div class="mono exam-mcell exam-mark" contenteditable="true" inputmode="numeric">65</div><div class="mono exam-mcell exam-mark" contenteditable="true" inputmode="numeric">55</div><div class="mono exam-mcell exam-mark" contenteditable="true" inputmode="numeric">68</div><div class="mono exam-mcell exam-mark" contenteditable="true" inputmode="numeric">62</div><div class="mono exam-mcell exam-mark" contenteditable="true" inputmode="numeric">66</div>
+            <div class="mono exam-mcell exam-total-cell" style="font-weight:700;">316</div><div class="mono exam-mcell exam-pct-cell" style="font-weight:700;">63.2</div>
+          </div>
+          <div class="exam-row" data-max="500" style="display:grid;grid-template-columns:1.75fr 0.8fr 0.8fr 0.8fr 1fr 0.8fr 0.85fr 0.8fr;align-items:center;padding:10.5px 20px;border-bottom:1px solid var(--line);">
+            <div style="display:flex;align-items:center;gap:9px;"><div class="exam-avatar" style="width:26px;height:26px;font-size:10.5px;background:#8A6FD1;">AD</div><div style="font-weight:600;font-size:13px;">Ananya Desai</div></div>
+            <div class="mono exam-mcell exam-mark" contenteditable="true" inputmode="numeric">95</div><div class="mono exam-mcell exam-mark" contenteditable="true" inputmode="numeric">97</div><div class="mono exam-mcell exam-mark" contenteditable="true" inputmode="numeric">96</div><div class="mono exam-mcell exam-mark" contenteditable="true" inputmode="numeric">93</div><div class="mono exam-mcell exam-mark" contenteditable="true" inputmode="numeric">96</div>
+            <div class="mono exam-mcell exam-total-cell" style="font-weight:700;">477</div><div class="mono exam-mcell exam-pct-cell" style="font-weight:700;color:var(--good);">95.4</div>
+          </div>
+          <div class="exam-row" data-max="500" style="display:grid;grid-template-columns:1.75fr 0.8fr 0.8fr 0.8fr 1fr 0.8fr 0.85fr 0.8fr;align-items:center;padding:10.5px 20px;border-bottom:1px solid var(--line);">
+            <div style="display:flex;align-items:center;gap:9px;"><div class="exam-avatar" style="width:26px;height:26px;font-size:10.5px;background:#C2884A;">VS</div><div style="font-weight:600;font-size:13px;">Vivaan Shah</div></div>
+            <div class="mono exam-mcell exam-mark" contenteditable="true" inputmode="numeric">70</div><div class="mono exam-mcell exam-mark" contenteditable="true" inputmode="numeric">40</div><div class="mono exam-mcell exam-mark" contenteditable="true" inputmode="numeric">62</div><div class="mono exam-mcell exam-mark" contenteditable="true" inputmode="numeric">65</div><div class="mono exam-mcell exam-mark" contenteditable="true" inputmode="numeric">64</div>
+            <div class="mono exam-mcell exam-total-cell" style="font-weight:700;">301</div><div class="mono exam-mcell exam-pct-cell" style="font-weight:700;">60.2</div>
+          </div>
+          <div class="exam-row" data-max="500" style="display:grid;grid-template-columns:1.75fr 0.8fr 0.8fr 0.8fr 1fr 0.8fr 0.85fr 0.8fr;align-items:center;padding:10.5px 20px;border-bottom:1px solid var(--line);">
+            <div style="display:flex;align-items:center;gap:9px;"><div class="exam-avatar" style="width:26px;height:26px;font-size:10.5px;background:#D16F8A;">ZK</div><div style="font-weight:600;font-size:13px;">Zara Khan</div></div>
+            <div class="mono exam-mcell exam-mark" contenteditable="true" inputmode="numeric">78</div><div class="mono exam-mcell exam-mark" contenteditable="true" inputmode="numeric">80</div><div class="mono exam-mcell exam-mark" contenteditable="true" inputmode="numeric">74</div><div class="mono exam-mcell exam-mark" contenteditable="true" inputmode="numeric">82</div><div class="mono exam-mcell exam-mark" contenteditable="true" inputmode="numeric">78</div>
+            <div class="mono exam-mcell exam-total-cell" style="font-weight:700;">392</div><div class="mono exam-mcell exam-pct-cell" style="font-weight:700;">78.4</div>
+          </div>
+          <div class="exam-row" data-max="500" style="display:grid;grid-template-columns:1.75fr 0.8fr 0.8fr 0.8fr 1fr 0.8fr 0.85fr 0.8fr;align-items:center;padding:10.5px 20px;border-bottom:1px solid var(--line);">
+            <div style="display:flex;align-items:center;gap:9px;"><div class="exam-avatar" style="width:26px;height:26px;font-size:10.5px;background:#3F9B7A;">NS</div><div style="font-weight:600;font-size:13px;">Neha Singh</div></div>
+            <div class="mono exam-mcell exam-mark" contenteditable="true" inputmode="numeric">90</div><div class="mono exam-mcell exam-mark" contenteditable="true" inputmode="numeric">88</div><div class="mono exam-mcell exam-mark" contenteditable="true" inputmode="numeric">94</div><div class="mono exam-mcell exam-mark" contenteditable="true" inputmode="numeric">89</div><div class="mono exam-mcell exam-mark" contenteditable="true" inputmode="numeric">92</div>
+            <div class="mono exam-mcell exam-total-cell" style="font-weight:700;">453</div><div class="mono exam-mcell exam-pct-cell" style="font-weight:700;color:var(--good);">90.6</div>
+          </div>
+          <div class="exam-row" data-max="500" style="display:grid;grid-template-columns:1.75fr 0.8fr 0.8fr 0.8fr 1fr 0.8fr 0.85fr 0.8fr;align-items:center;padding:10.5px 20px;">
+            <div style="display:flex;align-items:center;gap:9px;"><div class="exam-avatar" style="width:26px;height:26px;font-size:10.5px;background:#B5624A;">SP</div><div style="font-weight:600;font-size:13px;">Sneha Pillai</div></div>
+            <div class="mono exam-mcell exam-mark" contenteditable="true" inputmode="numeric">70</div><div class="mono exam-mcell exam-mark" contenteditable="true" inputmode="numeric">64</div><div class="mono exam-mcell exam-mark" contenteditable="true" inputmode="numeric">72</div><div class="mono exam-mcell exam-mark" contenteditable="true" inputmode="numeric">68</div><div class="mono exam-mcell exam-mark" contenteditable="true" inputmode="numeric">71</div>
+            <div class="mono exam-mcell exam-total-cell" style="font-weight:700;">345</div><div class="mono exam-mcell exam-pct-cell" style="font-weight:700;">69.0</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- REPORT CARD PREVIEW -->
+      <div class="card" style="padding:22px;display:flex;flex-direction:column;overflow:hidden;">
+        <div style="font-size:11px;color:var(--faint);text-transform:uppercase;letter-spacing:.05em;margin-bottom:12px;">Report Card Preview</div>
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
+          <div class="exam-avatar" style="width:44px;height:44px;font-size:14.5px;background:var(--marigold);">AM</div>
+          <div>
+            <div style="font-weight:700;font-size:15px;">Aarav Mehta</div>
+            <div style="font-size:11.5px;color:var(--muted);">Class 6-B · Unit Test 1 · Term 2</div>
+          </div>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:11px;margin-bottom:14px;">
+          <div>
+            <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px;"><span style="color:var(--muted);">English</span><span class="mono" style="font-weight:700;">82</span></div>
+            <div style="height:6px;border-radius:4px;background:var(--marigold-tint);"><div style="height:100%;width:82%;border-radius:4px;background:var(--marigold);"></div></div>
+          </div>
+          <div>
+            <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px;"><span style="color:var(--muted);">Mathematics</span><span class="mono" style="font-weight:700;">91</span></div>
+            <div style="height:6px;border-radius:4px;background:var(--marigold-tint);"><div style="height:100%;width:91%;border-radius:4px;background:var(--marigold);"></div></div>
+          </div>
+          <div>
+            <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px;"><span style="color:var(--muted);">Science</span><span class="mono" style="font-weight:700;">88</span></div>
+            <div style="height:6px;border-radius:4px;background:var(--marigold-tint);"><div style="height:100%;width:88%;border-radius:4px;background:var(--marigold);"></div></div>
+          </div>
+          <div>
+            <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px;"><span style="color:var(--muted);">Social Studies</span><span class="mono" style="font-weight:700;">79</span></div>
+            <div style="height:6px;border-radius:4px;background:var(--marigold-tint);"><div style="height:100%;width:79%;border-radius:4px;background:var(--marigold);"></div></div>
+          </div>
+          <div>
+            <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px;"><span style="color:var(--muted);">Hindi</span><span class="mono" style="font-weight:700;">85</span></div>
+            <div style="height:6px;border-radius:4px;background:var(--marigold-tint);"><div style="height:100%;width:85%;border-radius:4px;background:var(--marigold);"></div></div>
+          </div>
+        </div>
+
+        <div style="border-top:1px solid var(--line);padding-top:14px;display:flex;flex-direction:column;gap:9px;">
+          <div style="display:flex;justify-content:space-between;font-size:13px;"><span style="color:var(--muted);">Total</span><span class="mono" style="font-weight:700;">425 / 500</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:13px;"><span style="color:var(--muted);">Percentage</span><span class="mono" style="font-weight:700;">85.0%</span></div>
+          <div style="display:flex;justify-content:space-between;align-items:center;font-size:13px;"><span style="color:var(--muted);">Grade</span><span class="pill" style="background:var(--good-tint);color:var(--good);font-size:13px;padding:4px 12px;">A</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:13px;"><span style="color:var(--muted);">Rank in class</span><span class="mono" style="font-weight:700;">2 of 8</span></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+<script>
+(function(){
+  var root = document.getElementById('view-Exams');
+  if (!root) return;
+
+  // --- Exam strip selection ---
+  var strip = root.querySelector('#exam-strip');
+  if (strip) {
+    strip.addEventListener('click', function(evt){
+      var card = evt.target.closest('.exam-card');
+      if (!card || !strip.contains(card)) return;
+      strip.querySelectorAll('.exam-card').forEach(function(c){
+        c.classList.remove('exam-selected');
+      });
+      card.classList.add('exam-selected');
+      // Note: the marks grid below is authored only for Unit Test 1's
+      // illustrative data, so selecting a different exam moves the
+      // highlight without fabricating numbers for that exam.
+    });
+  }
+
+  // --- Marks grid: inline-editable cells, live Total/% recalculation ---
+  var gridBody = root.querySelector('#exam-grid-body');
+  if (gridBody) {
+    function recomputeRow(rowEl){
+      var max = parseFloat(rowEl.getAttribute('data-max')) || 0;
+      var marks = rowEl.querySelectorAll('.exam-mark');
+      var total = 0;
+      marks.forEach(function(cell){
+        var v = parseFloat(cell.textContent);
+        if (!isNaN(v)) total += v;
+      });
+      var totalCell = rowEl.querySelector('.exam-total-cell');
+      var pctCell = rowEl.querySelector('.exam-pct-cell');
+      if (totalCell) totalCell.textContent = String(total);
+      if (pctCell) {
+        var pct = max > 0 ? (total / max) * 100 : 0;
+        pctCell.textContent = pct.toFixed(1);
+      }
+    }
+
+    gridBody.addEventListener('input', function(evt){
+      var cell = evt.target.closest('.exam-mark');
+      if (!cell || !gridBody.contains(cell)) return;
+      var rowEl = cell.closest('.exam-row');
+      if (!rowEl) return;
+      recomputeRow(rowEl);
+    });
+
+    // Keep a mark cell to plain single-line numeric text on blur.
+    gridBody.addEventListener('blur', function(evt){
+      var cell = evt.target.closest('.exam-mark');
+      if (!cell || !gridBody.contains(cell)) return;
+      var v = parseFloat(cell.textContent);
+      cell.textContent = isNaN(v) ? '0' : String(v);
+      var rowEl = cell.closest('.exam-row');
+      if (rowEl) recomputeRow(rowEl);
+    }, true);
+  }
+})();
+</script>

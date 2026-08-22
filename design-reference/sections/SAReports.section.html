@@ -1,0 +1,313 @@
+<section class="view" id="view-SAReports" data-view="SAReports">
+  <!-- MAIN -->
+  <div style="flex:1;overflow:hidden;padding:28px 36px;display:flex;flex-direction:column;gap:18px;">
+
+    <div style="display:flex;align-items:center;justify-content:space-between;">
+      <div>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div class="disp" style="font-size:22px;">Platform Reports</div>
+          <span style="font-size:11px;font-weight:700;color:var(--muted);background:var(--line);padding:3px 9px;border-radius:100px;">Illustrative data</span>
+        </div>
+        <div style="font-size:13.5px;color:var(--muted);margin-top:2px;">Friday, 21 August 2026 · Cross-school analytics</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:12px;">
+        <span id="sarpt-schedule-btn" style="background:var(--card);border:1px solid var(--line);border-radius:8px;padding:9px 16px;font-size:13.5px;font-weight:600;cursor:pointer;">+ Schedule report</span>
+        <div style="width:34px;height:34px;border-radius:50%;background:var(--ink2);color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;">VY</div>
+      </div>
+    </div>
+
+    <!-- STAT TILES -->
+    <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:14px;">
+      <div class="card" style="padding:16px 18px;">
+        <div style="font-size:12px;color:var(--muted);margin-bottom:8px;">Reports generated this month</div>
+        <div class="mono" id="sarpt-stat-generated" style="font-size:25px;font-weight:600;">47</div>
+      </div>
+      <div class="card" style="padding:16px 18px;">
+        <div style="font-size:12px;color:var(--muted);margin-bottom:8px;">Total schools onboarded</div>
+        <div class="mono" style="font-size:25px;font-weight:600;">18</div>
+      </div>
+      <div class="card" style="padding:16px 18px;">
+        <div style="font-size:12px;color:var(--muted);margin-bottom:8px;">Platform-wide student count</div>
+        <div class="mono" style="font-size:25px;font-weight:600;">9,240</div>
+      </div>
+      <div class="card" style="padding:16px 18px;">
+        <div style="font-size:12px;color:var(--muted);margin-bottom:8px;">Revenue collected — FY26</div>
+        <div class="mono" style="font-size:25px;font-weight:600;color:var(--marigold-deep);">₹1.24Cr</div>
+      </div>
+      <div class="card" style="padding:16px 18px;">
+        <div style="font-size:12px;color:var(--muted);margin-bottom:8px;">Avg. revenue per school</div>
+        <div class="mono" style="font-size:25px;font-weight:600;color:var(--teal);">₹6.9L</div>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-rows:0.95fr 1.25fr;gap:16px;flex:1;min-height:0;">
+
+      <!-- FEATURED CHART -->
+      <div class="card" style="padding:20px 22px;display:flex;flex-direction:column;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:2px;">
+          <div>
+            <div style="font-size:14px;font-weight:700;" id="sarpt-chart-title">Platform revenue — last 12 months</div>
+            <div style="font-size:12px;color:var(--muted);margin-top:2px;" id="sarpt-chart-sub">Monthly total across all schools, ₹ lakhs</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:9px;">
+            <div style="display:flex;background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:3px;gap:2px;">
+              <span class="sarpt-metric-btn sarpt-metric-active" data-sarpt-metric="revenue" id="sarpt-metric-revenue">Revenue</span>
+              <span class="sarpt-metric-btn" data-sarpt-metric="schools" id="sarpt-metric-schools">Schools onboarded</span>
+            </div>
+            <div class="sarpt-selectbox">FY26 · Sep – Aug<span style="color:var(--faint);">▾</span></div>
+          </div>
+        </div>
+
+        <!-- REVENUE CHART -->
+        <div id="sarpt-chart-revenue" style="flex:1;display:flex;align-items:flex-end;gap:7px;border-bottom:1px solid var(--line);padding:16px 4px 2px;">
+          <div style="width:8%;height:57%;background:var(--marigold-tint);border-radius:3px 3px 0 0;"></div>
+          <div style="width:8%;height:61%;background:var(--marigold-tint);border-radius:3px 3px 0 0;"></div>
+          <div style="width:8%;height:64%;background:var(--marigold-tint);border-radius:3px 3px 0 0;"></div>
+          <div style="width:8%;height:67%;background:var(--marigold-tint);border-radius:3px 3px 0 0;"></div>
+          <div style="width:8%;height:70%;background:var(--marigold-tint);border-radius:3px 3px 0 0;"></div>
+          <div style="width:8%;height:73%;background:var(--marigold-tint);border-radius:3px 3px 0 0;"></div>
+          <div style="width:8%;height:76%;background:var(--marigold-tint);border-radius:3px 3px 0 0;"></div>
+          <div style="width:8%;height:79%;background:var(--marigold-tint);border-radius:3px 3px 0 0;"></div>
+          <div style="width:8%;height:81%;background:var(--marigold-tint);border-radius:3px 3px 0 0;"></div>
+          <div style="width:8%;height:85%;background:var(--marigold-tint);border-radius:3px 3px 0 0;"></div>
+          <div style="width:8%;height:90%;background:var(--marigold-tint);border-radius:3px 3px 0 0;"></div>
+          <div style="width:8%;height:100%;background:var(--marigold);border-radius:3px 3px 0 0;position:relative;">
+            <div class="mono" style="position:absolute;top:-22px;left:50%;transform:translateX(-50%);font-size:11.5px;font-weight:700;color:var(--marigold-deep);white-space:nowrap;">₹14.2L</div>
+          </div>
+        </div>
+
+        <!-- SCHOOLS ONBOARDED CHART -->
+        <div id="sarpt-chart-schools" style="display:none;flex:1;align-items:flex-end;gap:7px;border-bottom:1px solid var(--line);padding:16px 4px 2px;">
+          <div style="width:8%;height:30%;background:var(--teal-tint);border-radius:3px 3px 0 0;"></div>
+          <div style="width:8%;height:30%;background:var(--teal-tint);border-radius:3px 3px 0 0;"></div>
+          <div style="width:8%;height:60%;background:var(--teal-tint);border-radius:3px 3px 0 0;"></div>
+          <div style="width:8%;height:30%;background:var(--teal-tint);border-radius:3px 3px 0 0;"></div>
+          <div style="width:8%;height:60%;background:var(--teal-tint);border-radius:3px 3px 0 0;"></div>
+          <div style="width:8%;height:30%;background:var(--teal-tint);border-radius:3px 3px 0 0;"></div>
+          <div style="width:8%;height:60%;background:var(--teal-tint);border-radius:3px 3px 0 0;"></div>
+          <div style="width:8%;height:30%;background:var(--teal-tint);border-radius:3px 3px 0 0;"></div>
+          <div style="width:8%;height:60%;background:var(--teal-tint);border-radius:3px 3px 0 0;"></div>
+          <div style="width:8%;height:30%;background:var(--teal-tint);border-radius:3px 3px 0 0;"></div>
+          <div style="width:8%;height:30%;background:var(--teal-tint);border-radius:3px 3px 0 0;"></div>
+          <div style="width:8%;height:100%;background:var(--teal);border-radius:3px 3px 0 0;position:relative;">
+            <div class="mono" style="position:absolute;top:-22px;left:50%;transform:translateX(-50%);font-size:11.5px;font-weight:700;color:var(--teal);white-space:nowrap;">+3</div>
+          </div>
+        </div>
+
+        <div style="display:flex;justify-content:space-between;margin-top:8px;font-size:10.5px;color:var(--faint);">
+          <span>Sep</span><span>Oct</span><span>Nov</span><span>Dec</span><span>Jan</span><span>Feb</span><span>Mar</span><span>Apr</span><span>May</span><span>Jun</span><span>Jul</span><span>Aug</span>
+        </div>
+      </div>
+
+      <!-- REPORT CATALOGUE -->
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(2,1fr);gap:14px;min-height:0;">
+
+        <div class="card sarpt-card" data-sarpt-report="revenue" style="padding:16px 18px;display:flex;flex-direction:column;cursor:pointer;">
+          <div style="display:flex;align-items:center;gap:9px;margin-bottom:6px;">
+            <div style="width:28px;height:28px;border-radius:7px;background:var(--marigold-tint);display:flex;align-items:center;justify-content:center;flex:none;">
+              <svg class="sarpt-icon" style="color:var(--marigold-deep);" viewBox="0 0 20 20"><circle cx="10" cy="10" r="7.5"/><path d="M10 5.5v9M12.7 7.7c0-1.1-1.2-1.7-2.7-1.7-1.7 0-2.7.8-2.7 1.9 0 2.6 5.4 1.3 5.4 3.9 0 1.1-1.2 1.9-2.9 1.9-1.5 0-2.7-.6-2.7-1.7"/></svg>
+            </div>
+            <div style="font-size:13.5px;font-weight:700;">Subscription Revenue</div>
+          </div>
+          <div style="font-size:11.5px;color:var(--muted);margin-bottom:10px;">Collections, plan mix &amp; revenue by school across the platform</div>
+          <div style="display:flex;align-items:flex-end;gap:3px;height:26px;margin-bottom:10px;">
+            <div style="flex:1;height:52%;background:var(--marigold-tint);border-radius:2px;"></div>
+            <div style="flex:1;height:60%;background:var(--marigold-tint);border-radius:2px;"></div>
+            <div style="flex:1;height:66%;background:var(--marigold-tint);border-radius:2px;"></div>
+            <div style="flex:1;height:74%;background:var(--marigold-tint);border-radius:2px;"></div>
+            <div style="flex:1;height:81%;background:var(--marigold-tint);border-radius:2px;"></div>
+            <div style="flex:1;height:94%;background:var(--marigold);border-radius:2px;"></div>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-top:auto;">
+            <span class="sarpt-lastrun" style="font-size:10.5px;color:var(--faint);">Last run 21 Aug</span>
+            <div style="display:flex;gap:6px;"><span class="sarpt-btnline sarpt-gen-btn">Generate</span><span class="sarpt-btnline">Export</span></div>
+          </div>
+        </div>
+
+        <div class="card sarpt-card" data-sarpt-report="growth" style="padding:16px 18px;display:flex;flex-direction:column;cursor:pointer;">
+          <div style="display:flex;align-items:center;gap:9px;margin-bottom:6px;">
+            <div style="width:28px;height:28px;border-radius:7px;background:var(--good-tint);display:flex;align-items:center;justify-content:center;flex:none;">
+              <svg class="sarpt-icon" style="color:var(--good);" viewBox="0 0 20 20"><path d="M3 14.5l4-4.3 3 2.7 6.5-7.4"/><path d="M13 5.5h3.5V9"/></svg>
+            </div>
+            <div style="font-size:13.5px;font-weight:700;">School Growth</div>
+          </div>
+          <div style="font-size:11.5px;color:var(--muted);margin-bottom:10px;">New onboards &amp; activation timeline, month over month</div>
+          <div style="display:flex;align-items:flex-end;gap:3px;height:26px;margin-bottom:10px;">
+            <div style="flex:1;height:35%;background:var(--good-tint);border-radius:2px;"></div>
+            <div style="flex:1;height:50%;background:var(--good-tint);border-radius:2px;"></div>
+            <div style="flex:1;height:40%;background:var(--good-tint);border-radius:2px;"></div>
+            <div style="flex:1;height:65%;background:var(--good-tint);border-radius:2px;"></div>
+            <div style="flex:1;height:55%;background:var(--good-tint);border-radius:2px;"></div>
+            <div style="flex:1;height:100%;background:var(--good);border-radius:2px;"></div>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-top:auto;">
+            <span class="sarpt-lastrun" style="font-size:10.5px;color:var(--faint);">Last run 20 Aug</span>
+            <div style="display:flex;gap:6px;"><span class="sarpt-btnline sarpt-gen-btn">Generate</span><span class="sarpt-btnline">Export</span></div>
+          </div>
+        </div>
+
+        <div class="card sarpt-card" data-sarpt-report="planmix" style="padding:16px 18px;display:flex;flex-direction:column;cursor:pointer;">
+          <div style="display:flex;align-items:center;gap:9px;margin-bottom:6px;">
+            <div style="width:28px;height:28px;border-radius:7px;background:var(--info-tint);display:flex;align-items:center;justify-content:center;flex:none;">
+              <svg class="sarpt-icon" style="color:var(--info);" viewBox="0 0 20 20"><circle cx="10" cy="10" r="7.2"/><path d="M10 2.8v7.2h7.2"/></svg>
+            </div>
+            <div style="font-size:13.5px;font-weight:700;">Plan Mix</div>
+          </div>
+          <div style="font-size:11.5px;color:var(--muted);margin-bottom:10px;">Standard vs. Premium split across active schools</div>
+          <div style="display:flex;align-items:flex-end;gap:3px;height:26px;margin-bottom:10px;">
+            <div style="flex:1;height:70%;background:var(--info-tint);border-radius:2px;"></div>
+            <div style="flex:1;height:70%;background:var(--info-tint);border-radius:2px;"></div>
+            <div style="flex:1;height:70%;background:var(--info-tint);border-radius:2px;"></div>
+            <div style="flex:1;height:38%;background:var(--info-tint);border-radius:2px;"></div>
+            <div style="flex:1;height:38%;background:var(--info-tint);border-radius:2px;"></div>
+            <div style="flex:1;height:38%;background:var(--info);border-radius:2px;"></div>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-top:auto;">
+            <span class="sarpt-lastrun" style="font-size:10.5px;color:var(--faint);">Last run 16 Aug</span>
+            <div style="display:flex;gap:6px;"><span class="sarpt-btnline sarpt-gen-btn">Generate</span><span class="sarpt-btnline">Export</span></div>
+          </div>
+        </div>
+
+        <div class="card sarpt-card" data-sarpt-report="churn" style="padding:16px 18px;display:flex;flex-direction:column;cursor:pointer;">
+          <div style="display:flex;align-items:center;gap:9px;margin-bottom:6px;">
+            <div style="width:28px;height:28px;border-radius:7px;background:var(--warn-tint);display:flex;align-items:center;justify-content:center;flex:none;">
+              <svg class="sarpt-icon" style="color:var(--warn);" viewBox="0 0 20 20"><path d="M10 3l7.8 13.5H2.2z"/><path d="M10 8.2v3.6M10 14.3h.01"/></svg>
+            </div>
+            <div style="font-size:13.5px;font-weight:700;">Renewal &amp; Churn Risk</div>
+          </div>
+          <div style="font-size:11.5px;color:var(--muted);margin-bottom:10px;">Schools expiring soon or overdue on renewal</div>
+          <div style="display:flex;align-items:flex-end;gap:3px;height:26px;margin-bottom:10px;">
+            <div style="flex:1;height:45%;background:var(--warn-tint);border-radius:2px;"></div>
+            <div style="flex:1;height:38%;background:var(--warn-tint);border-radius:2px;"></div>
+            <div style="flex:1;height:58%;background:var(--warn-tint);border-radius:2px;"></div>
+            <div style="flex:1;height:50%;background:var(--warn-tint);border-radius:2px;"></div>
+            <div style="flex:1;height:72%;background:var(--warn-tint);border-radius:2px;"></div>
+            <div style="flex:1;height:85%;background:var(--warn);border-radius:2px;"></div>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-top:auto;">
+            <span class="sarpt-lastrun" style="font-size:10.5px;color:var(--faint);">Last run 21 Aug</span>
+            <div style="display:flex;gap:6px;"><span class="sarpt-btnline sarpt-gen-btn">Generate</span><span class="sarpt-btnline">Export</span></div>
+          </div>
+        </div>
+
+        <div class="card sarpt-card" data-sarpt-report="usage" style="padding:16px 18px;display:flex;flex-direction:column;cursor:pointer;">
+          <div style="display:flex;align-items:center;gap:9px;margin-bottom:6px;">
+            <div style="width:28px;height:28px;border-radius:7px;background:var(--teal-tint);display:flex;align-items:center;justify-content:center;flex:none;">
+              <svg class="sarpt-icon" style="color:var(--teal);" viewBox="0 0 20 20"><path d="M2.5 10.5h3l1.8-4.8 3 9 2.2-6.4 1.3 2.2h3.7"/></svg>
+            </div>
+            <div style="font-size:13.5px;font-weight:700;">Platform Usage</div>
+          </div>
+          <div style="font-size:11.5px;color:var(--muted);margin-bottom:10px;">Active users, logins &amp; module adoption across all schools</div>
+          <div style="display:flex;align-items:flex-end;gap:3px;height:26px;margin-bottom:10px;">
+            <div style="flex:1;height:58%;background:var(--teal-tint);border-radius:2px;"></div>
+            <div style="flex:1;height:64%;background:var(--teal-tint);border-radius:2px;"></div>
+            <div style="flex:1;height:72%;background:var(--teal-tint);border-radius:2px;"></div>
+            <div style="flex:1;height:68%;background:var(--teal-tint);border-radius:2px;"></div>
+            <div style="flex:1;height:80%;background:var(--teal-tint);border-radius:2px;"></div>
+            <div style="flex:1;height:91%;background:var(--teal);border-radius:2px;"></div>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-top:auto;">
+            <span class="sarpt-lastrun" style="font-size:10.5px;color:var(--faint);">Last run 19 Aug</span>
+            <div style="display:flex;gap:6px;"><span class="sarpt-btnline sarpt-gen-btn">Generate</span><span class="sarpt-btnline">Export</span></div>
+          </div>
+        </div>
+
+        <div class="card sarpt-card" data-sarpt-report="topschools" style="padding:16px 18px;display:flex;flex-direction:column;cursor:pointer;">
+          <div style="display:flex;align-items:center;gap:9px;margin-bottom:6px;">
+            <div style="width:28px;height:28px;border-radius:7px;background:var(--clay-tint);display:flex;align-items:center;justify-content:center;flex:none;">
+              <svg class="sarpt-icon" style="color:var(--clay);" viewBox="0 0 20 20"><rect x="2.5" y="11" width="4" height="6"/><rect x="8" y="6.5" width="4" height="10.5"/><rect x="13.5" y="9" width="4" height="8"/></svg>
+            </div>
+            <div style="font-size:13.5px;font-weight:700;">Top Schools by Size</div>
+          </div>
+          <div style="font-size:11.5px;color:var(--muted);margin-bottom:10px;">Ranked by enrolled students &amp; account value</div>
+          <div style="display:flex;align-items:flex-end;gap:3px;height:26px;margin-bottom:10px;">
+            <div style="flex:1;height:96%;background:var(--clay);border-radius:2px;"></div>
+            <div style="flex:1;height:78%;background:var(--clay-tint);border-radius:2px;"></div>
+            <div style="flex:1;height:64%;background:var(--clay-tint);border-radius:2px;"></div>
+            <div style="flex:1;height:52%;background:var(--clay-tint);border-radius:2px;"></div>
+            <div style="flex:1;height:40%;background:var(--clay-tint);border-radius:2px;"></div>
+            <div style="flex:1;height:30%;background:var(--clay-tint);border-radius:2px;"></div>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-top:auto;">
+            <span class="sarpt-lastrun" style="font-size:10.5px;color:var(--faint);">Last run 17 Aug</span>
+            <div style="display:flex;gap:6px;"><span class="sarpt-btnline sarpt-gen-btn">Generate</span><span class="sarpt-btnline">Export</span></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+<script>
+(function(){
+  var root = document.getElementById('view-SAReports');
+  if(!root) return;
+
+  // Report card selection highlight
+  root.querySelectorAll('.sarpt-card').forEach(function(card){
+    card.addEventListener('click', function(){
+      root.querySelectorAll('.sarpt-card').forEach(function(c){ c.style.boxShadow=''; c.style.borderColor='var(--line)'; });
+      card.style.borderColor = 'var(--marigold)';
+      card.style.boxShadow = '0 0 0 1px var(--marigold)';
+    });
+  });
+
+  // Generate button: brief "Generating…" state, then bump the running counter + last-run stamp
+  var genCount = parseInt((root.querySelector('#sarpt-stat-generated')||{}).textContent || '47', 10);
+  root.querySelectorAll('.sarpt-gen-btn').forEach(function(btn){
+    btn.addEventListener('click', function(e){
+      e.stopPropagation();
+      if(btn.getAttribute('data-busy') === '1') return;
+      btn.setAttribute('data-busy','1');
+      var original = btn.textContent;
+      btn.textContent = 'Generating…';
+      btn.style.opacity = '0.6';
+      setTimeout(function(){
+        btn.textContent = original;
+        btn.style.opacity = '1';
+        btn.removeAttribute('data-busy');
+        genCount += 1;
+        var stat = root.querySelector('#sarpt-stat-generated');
+        if(stat) stat.textContent = genCount;
+        var card = btn.closest('.sarpt-card');
+        var lastRun = card ? card.querySelector('.sarpt-lastrun') : null;
+        if(lastRun) lastRun.textContent = 'Last run just now';
+      }, 600);
+    });
+  });
+
+  // Schedule report button
+  var scheduleBtn = root.querySelector('#sarpt-schedule-btn');
+  if(scheduleBtn){
+    scheduleBtn.addEventListener('click', function(){
+      scheduleBtn.textContent = '✓ Scheduled';
+      setTimeout(function(){ scheduleBtn.textContent = '+ Schedule report'; }, 1200);
+    });
+  }
+
+  // Featured chart metric toggle: Revenue <-> Schools onboarded
+  var revenueChart = root.querySelector('#sarpt-chart-revenue');
+  var schoolsChart = root.querySelector('#sarpt-chart-schools');
+  var titleEl = root.querySelector('#sarpt-chart-title');
+  var subEl = root.querySelector('#sarpt-chart-sub');
+  var metricBtns = root.querySelectorAll('.sarpt-metric-btn');
+  metricBtns.forEach(function(btn){
+    btn.addEventListener('click', function(){
+      metricBtns.forEach(function(b){ b.classList.remove('sarpt-metric-active'); });
+      btn.classList.add('sarpt-metric-active');
+      var metric = btn.getAttribute('data-sarpt-metric');
+      if(metric === 'schools'){
+        revenueChart.style.display = 'none';
+        schoolsChart.style.display = 'flex';
+        if(titleEl) titleEl.textContent = 'Schools onboarded — last 12 months';
+        if(subEl) subEl.textContent = 'New schools activated platform-wide, by month';
+      } else {
+        schoolsChart.style.display = 'none';
+        revenueChart.style.display = 'flex';
+        if(titleEl) titleEl.textContent = 'Platform revenue — last 12 months';
+        if(subEl) subEl.textContent = 'Monthly total across all schools, ₹ lakhs';
+      }
+    });
+  });
+})();
+</script>

@@ -1,0 +1,9 @@
+/* SAReports module — bespoke rules beyond the shared common set (tokens, .mono, .disp, .card, .pill, .navitem/.icon/.navgroup) */
+.sarpt-icon{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;flex:none;}
+.sarpt-selectbox{display:flex;align-items:center;gap:7px;background:var(--card);border:1px solid var(--line);border-radius:8px;padding:8px 13px;font-size:12.5px;font-weight:600;color:var(--ink2);}
+.sarpt-btnline{font-size:11.5px;font-weight:700;border:1px solid var(--line);border-radius:7px;padding:6px 12px;color:var(--ink2);cursor:pointer;}
+.sarpt-btnline:hover{background:var(--paper);}
+.sarpt-card{transition:border-color .15s ease, box-shadow .15s ease;}
+.sarpt-metric-btn{font-size:12px;font-weight:600;color:var(--muted);padding:6px 12px;border-radius:6px;cursor:pointer;white-space:nowrap;}
+.sarpt-metric-btn:hover{color:var(--ink2);}
+.sarpt-metric-btn.sarpt-metric-active{background:var(--card);color:var(--ink);box-shadow:0 1px 2px rgba(0,0,0,.06);}

@@ -1,0 +1,493 @@
+<section class="view" id="view-SASchools" data-view="SASchools">
+  <!-- MAIN -->
+  <div style="flex:1;overflow:hidden;padding:28px 36px;display:flex;flex-direction:column;gap:18px;">
+
+    <div style="display:flex;align-items:center;justify-content:space-between;">
+      <div>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div class="disp" style="font-size:22px;">Schools</div>
+          <span style="font-size:11px;font-weight:700;color:var(--muted);background:var(--line);padding:3px 9px;border-radius:100px;">Illustrative data</span>
+        </div>
+        <div style="font-size:13.5px;color:var(--muted);margin-top:2px;">Every school onboarded onto the Vidya Yati platform</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:12px;">
+        <span id="sasch-btn-onboard" style="background:var(--marigold);color:#fff;border-radius:8px;padding:9px 16px;font-size:13.5px;font-weight:600;cursor:pointer;">+ Onboard a school</span>
+        <div style="width:34px;height:34px;border-radius:50%;background:var(--ink2);color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;">VY</div>
+      </div>
+    </div>
+
+    <!-- STAT TILES -->
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;">
+      <div class="card" style="padding:16px 18px;">
+        <div style="font-size:12px;color:var(--muted);margin-bottom:8px;">Total schools</div>
+        <div class="mono" id="sasch-stat-total" style="font-size:25px;font-weight:600;">0</div>
+      </div>
+      <div class="card" style="padding:16px 18px;">
+        <div style="font-size:12px;color:var(--muted);margin-bottom:8px;">Active</div>
+        <div class="mono" id="sasch-stat-active" style="font-size:25px;font-weight:600;color:var(--good);">0</div>
+      </div>
+      <div class="card" style="padding:16px 18px;">
+        <div style="font-size:12px;color:var(--muted);margin-bottom:8px;">Trial</div>
+        <div class="mono" id="sasch-stat-trial" style="font-size:25px;font-weight:600;color:var(--info);">0</div>
+      </div>
+      <div class="card" style="padding:16px 18px;border-color:#EED9B4;background:var(--warn-tint);">
+        <div style="font-size:12px;color:var(--warn);margin-bottom:8px;font-weight:600;">Expiring / overdue</div>
+        <div class="mono" id="sasch-stat-issues" style="font-size:25px;font-weight:600;color:var(--warn);">0</div>
+      </div>
+    </div>
+
+    <!-- ATTENTION ALERT -->
+    <div id="sasch-alert" style="background:var(--warn-tint);border:1px solid #EED9B4;border-radius:10px;padding:13px 18px;display:flex;align-items:center;justify-content:space-between;">
+      <div style="font-size:13.5px;color:#7A5407;" id="sasch-alert-text"><b>0 schools</b> need attention — renewals expiring soon or payments overdue.</div>
+      <span id="sasch-alert-dismiss" style="font-size:13px;font-weight:700;color:var(--warn);white-space:nowrap;cursor:pointer;">Dismiss ×</span>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 360px;gap:18px;flex:1;min-height:0;">
+
+      <!-- SCHOOLS TABLE -->
+      <div class="card" style="padding:22px;display:flex;flex-direction:column;overflow:hidden;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+          <div style="font-size:14px;font-weight:700;">Schools directory</div>
+          <div style="font-size:12.5px;color:var(--muted);">Showing <span id="sasch-count" class="mono">0</span> schools</div>
+        </div>
+        <div style="display:grid;grid-template-columns:2.2fr 1.2fr 1fr 0.85fr 1.15fr 1.15fr;font-size:11px;color:var(--faint);text-transform:uppercase;letter-spacing:.04em;padding-bottom:10px;border-bottom:1px solid var(--line);">
+          <div>School</div><div>City</div><div>Plan</div><div>Students</div><div>Status</div><div>Onboarded</div>
+        </div>
+
+        <div id="sasch-table-body" style="flex:1;overflow-y:auto;">
+
+          <div class="sasch-row" id="sasch-row-sunrise"
+               data-school="Sunrise Public School" data-city="Bengaluru, Karnataka" data-plan="Standard" data-students="642"
+               data-status="active" data-onboarded="12 Mar 2024" data-status-detail="Renews 12 Mar 2027"
+               data-address="14 MG Road, Bengaluru, Karnataka 560001"
+               data-contact="Radhika Menon" data-phone="+91 98450 11223" data-email="radhika.menon@sunrisepublic.in"
+               data-activity="Fee collection: ₹8.4L this term|642 students enrolled|Last login: today, 9:12 AM"
+               style="display:grid;grid-template-columns:2.2fr 1.2fr 1fr 0.85fr 1.15fr 1.15fr;align-items:center;padding:13px 0;border-bottom:1px solid var(--line);font-size:13.5px;cursor:pointer;">
+            <div style="font-weight:600;">Sunrise Public School</div><div style="color:var(--muted);">Bengaluru</div><div style="color:var(--muted);">Standard</div><div class="mono">642</div>
+            <div><span class="pill sasch-status-pill" style="background:var(--good-tint);color:var(--good);">Active</span></div><div class="mono" style="color:var(--muted);">12 Mar 2024</div>
+          </div>
+
+          <div class="sasch-row" id="sasch-row-littlesparrows"
+               data-school="Little Sparrows Kindergarten" data-city="Pune, Maharashtra" data-plan="Standard" data-students="118"
+               data-status="active" data-onboarded="04 Feb 2024" data-status-detail="Renews 04 Feb 2027"
+               data-address="27 Baner Road, Pune, Maharashtra 411045"
+               data-contact="Ananya Deshpande" data-phone="+91 98221 34455" data-email="ananya.d@littlesparrows.edu.in"
+               data-activity="Fee collection: ₹1.2L this term|118 students enrolled|New admission enquiry received"
+               style="display:grid;grid-template-columns:2.2fr 1.2fr 1fr 0.85fr 1.15fr 1.15fr;align-items:center;padding:13px 0;border-bottom:1px solid var(--line);font-size:13.5px;cursor:pointer;">
+            <div style="font-weight:600;">Little Sparrows Kindergarten</div><div style="color:var(--muted);">Pune</div><div style="color:var(--muted);">Standard</div><div class="mono">118</div>
+            <div><span class="pill sasch-status-pill" style="background:var(--good-tint);color:var(--good);">Active</span></div><div class="mono" style="color:var(--muted);">04 Feb 2024</div>
+          </div>
+
+          <div class="sasch-row" id="sasch-row-greenvalley"
+               data-school="Green Valley International" data-city="Chennai, Tamil Nadu" data-plan="Premium" data-students="1,240"
+               data-status="expiring" data-onboarded="15 Sep 2022" data-status-detail="Renewal due 30 Sep 2026"
+               data-address="9 ECR Main Road, Chennai, Tamil Nadu 600041"
+               data-contact="Vishnu Prasad" data-phone="+91 98400 55667" data-email="vishnu.prasad@greenvalley.edu.in"
+               data-activity="Fee collection: ₹18.6L this term|1,240 students enrolled|Renewal reminder sent"
+               style="display:grid;grid-template-columns:2.2fr 1.2fr 1fr 0.85fr 1.15fr 1.15fr;align-items:center;padding:13px 0;border-bottom:1px solid var(--line);font-size:13.5px;cursor:pointer;">
+            <div style="font-weight:600;">Green Valley International</div><div style="color:var(--muted);">Chennai</div><div style="color:var(--muted);">Premium</div><div class="mono">1,240</div>
+            <div><span class="pill sasch-status-pill" style="background:var(--warn-tint);color:var(--warn);">Expiring soon</span></div><div class="mono" style="color:var(--muted);">15 Sep 2022</div>
+          </div>
+
+          <div class="sasch-row" id="sasch-row-brightminds"
+               data-school="Bright Minds Academy" data-city="Hyderabad, Telangana" data-plan="Standard" data-students="386"
+               data-status="expiring" data-onboarded="01 Sep 2023" data-status-detail="Renewal due 14 Sep 2026"
+               data-address="Road No. 12, Banjara Hills, Hyderabad, Telangana 500034"
+               data-contact="Kavya Reddy" data-phone="+91 90000 22110" data-email="kavya.reddy@brightminds.in"
+               data-activity="Fee collection: ₹4.1L this term|386 students enrolled|Renewal reminder sent"
+               style="display:grid;grid-template-columns:2.2fr 1.2fr 1fr 0.85fr 1.15fr 1.15fr;align-items:center;padding:13px 0;border-bottom:1px solid var(--line);font-size:13.5px;cursor:pointer;">
+            <div style="font-weight:600;">Bright Minds Academy</div><div style="color:var(--muted);">Hyderabad</div><div style="color:var(--muted);">Standard</div><div class="mono">386</div>
+            <div><span class="pill sasch-status-pill" style="background:var(--warn-tint);color:var(--warn);">Expiring soon</span></div><div class="mono" style="color:var(--muted);">01 Sep 2023</div>
+          </div>
+
+          <div class="sasch-row" id="sasch-row-silveroak"
+               data-school="Silver Oak Convent School" data-city="Kochi, Kerala" data-plan="Standard" data-students="275"
+               data-status="expiring" data-onboarded="10 Sep 2023" data-status-detail="Renewal due 20 Sep 2026"
+               data-address="Convent Road, Kochi, Kerala 682018"
+               data-contact="Elizabeth Thomas" data-phone="+91 94470 33221" data-email="e.thomas@silveroakconvent.in"
+               data-activity="Fee collection: ₹2.9L this term|275 students enrolled|Renewal reminder sent"
+               style="display:grid;grid-template-columns:2.2fr 1.2fr 1fr 0.85fr 1.15fr 1.15fr;align-items:center;padding:13px 0;border-bottom:1px solid var(--line);font-size:13.5px;cursor:pointer;">
+            <div style="font-weight:600;">Silver Oak Convent School</div><div style="color:var(--muted);">Kochi</div><div style="color:var(--muted);">Standard</div><div class="mono">275</div>
+            <div><span class="pill sasch-status-pill" style="background:var(--warn-tint);color:var(--warn);">Expiring soon</span></div><div class="mono" style="color:var(--muted);">10 Sep 2023</div>
+          </div>
+
+          <div class="sasch-row" id="sasch-row-rosewood"
+               data-school="Rosewood Public School" data-city="Nagpur, Maharashtra" data-plan="Standard" data-students="94"
+               data-status="trial" data-onboarded="03 Aug 2026" data-status-detail="Trial ends 02 Sep 2026"
+               data-address="18 Civil Lines, Nagpur, Maharashtra 440001"
+               data-contact="Nilesh Kulkarni" data-phone="+91 98230 44556" data-email="nilesh.k@rosewoodpublic.in"
+               data-activity="Trial started 03 Aug 2026|94 students enrolled|Onboarding checklist 60% complete"
+               style="display:grid;grid-template-columns:2.2fr 1.2fr 1fr 0.85fr 1.15fr 1.15fr;align-items:center;padding:13px 0;border-bottom:1px solid var(--line);font-size:13.5px;cursor:pointer;">
+            <div style="font-weight:600;">Rosewood Public School</div><div style="color:var(--muted);">Nagpur</div><div style="color:var(--muted);">Standard</div><div class="mono">94</div>
+            <div><span class="pill sasch-status-pill" style="background:var(--info-tint);color:var(--info);">Trial</span></div><div class="mono" style="color:var(--muted);">03 Aug 2026</div>
+          </div>
+
+          <div class="sasch-row" id="sasch-row-foothill"
+               data-school="Foothill Academy" data-city="Dehradun, Uttarakhand" data-plan="Standard" data-students="410"
+               data-status="overdue" data-onboarded="28 Jul 2025" data-status-detail="12 days overdue · ₹1,80,000 due"
+               data-address="Rajpur Road, Dehradun, Uttarakhand 248001"
+               data-contact="Manoj Bisht" data-phone="+91 94120 66778" data-email="manoj.bisht@foothillacademy.in"
+               data-activity="Payment overdue — ₹1.80L pending|410 students enrolled|Reminder sent 3 days ago"
+               style="display:grid;grid-template-columns:2.2fr 1.2fr 1fr 0.85fr 1.15fr 1.15fr;align-items:center;padding:13px 0;border-bottom:1px solid var(--line);font-size:13.5px;cursor:pointer;">
+            <div style="font-weight:600;">Foothill Academy</div><div style="color:var(--muted);">Dehradun</div><div style="color:var(--muted);">Standard</div><div class="mono">410</div>
+            <div><span class="pill sasch-status-pill" style="background:var(--critical-tint);color:var(--critical);">Overdue</span></div><div class="mono" style="color:var(--muted);">28 Jul 2025</div>
+          </div>
+
+          <div class="sasch-row" id="sasch-row-northstar"
+               data-school="Northstar Public School" data-city="Jaipur, Rajasthan" data-plan="Standard" data-students="168"
+               data-status="overdue" data-onboarded="02 Aug 2025" data-status-detail="5 days overdue · ₹72,000 due"
+               data-address="C-Scheme, Jaipur, Rajasthan 302001"
+               data-contact="Priyanka Sharma" data-phone="+91 94140 77889" data-email="priyanka.sharma@northstarpublic.in"
+               data-activity="Payment overdue — ₹0.72L pending|168 students enrolled|Reminder sent 1 day ago"
+               style="display:grid;grid-template-columns:2.2fr 1.2fr 1fr 0.85fr 1.15fr 1.15fr;align-items:center;padding:13px 0;border-bottom:1px solid var(--line);font-size:13.5px;cursor:pointer;">
+            <div style="font-weight:600;">Northstar Public School</div><div style="color:var(--muted);">Jaipur</div><div style="color:var(--muted);">Standard</div><div class="mono">168</div>
+            <div><span class="pill sasch-status-pill" style="background:var(--critical-tint);color:var(--critical);">Overdue</span></div><div class="mono" style="color:var(--muted);">02 Aug 2025</div>
+          </div>
+
+          <div class="sasch-row" id="sasch-row-mapleleaf"
+               data-school="Maple Leaf Public School" data-city="Indore, Madhya Pradesh" data-plan="Standard" data-students="512"
+               data-status="active" data-onboarded="22 Jan 2025" data-status-detail="Renews 22 Jan 2027"
+               data-address="Vijay Nagar, Indore, Madhya Pradesh 452010"
+               data-contact="Rohit Verma" data-phone="+91 98270 88990" data-email="rohit.verma@mapleleafps.in"
+               data-activity="Fee collection: ₹5.6L this term|512 students enrolled|Last login: yesterday, 4:45 PM"
+               style="display:grid;grid-template-columns:2.2fr 1.2fr 1fr 0.85fr 1.15fr 1.15fr;align-items:center;padding:13px 0;border-bottom:1px solid var(--line);font-size:13.5px;cursor:pointer;">
+            <div style="font-weight:600;">Maple Leaf Public School</div><div style="color:var(--muted);">Indore</div><div style="color:var(--muted);">Standard</div><div class="mono">512</div>
+            <div><span class="pill sasch-status-pill" style="background:var(--good-tint);color:var(--good);">Active</span></div><div class="mono" style="color:var(--muted);">22 Jan 2025</div>
+          </div>
+
+          <div class="sasch-row" id="sasch-row-lotusvalley"
+               data-school="Lotus Valley School" data-city="Lucknow, Uttar Pradesh" data-plan="Premium" data-students="890"
+               data-status="active" data-onboarded="18 Jun 2023" data-status-detail="Renews 18 Jun 2027"
+               data-address="Gomti Nagar, Lucknow, Uttar Pradesh 226010"
+               data-contact="Shalini Awasthi" data-phone="+91 94150 99001" data-email="shalini.a@lotusvalleyschool.in"
+               data-activity="Fee collection: ₹11.2L this term|890 students enrolled|New staff account added"
+               style="display:grid;grid-template-columns:2.2fr 1.2fr 1fr 0.85fr 1.15fr 1.15fr;align-items:center;padding:13px 0;border-bottom:1px solid var(--line);font-size:13.5px;cursor:pointer;">
+            <div style="font-weight:600;">Lotus Valley School</div><div style="color:var(--muted);">Lucknow</div><div style="color:var(--muted);">Premium</div><div class="mono">890</div>
+            <div><span class="pill sasch-status-pill" style="background:var(--good-tint);color:var(--good);">Active</span></div><div class="mono" style="color:var(--muted);">18 Jun 2023</div>
+          </div>
+
+          <div class="sasch-row" id="sasch-row-sapphire"
+               data-school="Sapphire International School" data-city="Surat, Gujarat" data-plan="Standard" data-students="152"
+               data-status="trial" data-onboarded="10 Aug 2026" data-status-detail="Trial ends 05 Sep 2026"
+               data-address="Vesu, Surat, Gujarat 395007"
+               data-contact="Devansh Patel" data-phone="+91 98980 11002" data-email="devansh.patel@sapphireintl.in"
+               data-activity="Trial started 10 Aug 2026|152 students enrolled|Onboarding checklist 35% complete"
+               style="display:grid;grid-template-columns:2.2fr 1.2fr 1fr 0.85fr 1.15fr 1.15fr;align-items:center;padding:13px 0;font-size:13.5px;cursor:pointer;">
+            <div style="font-weight:600;">Sapphire International School</div><div style="color:var(--muted);">Surat</div><div style="color:var(--muted);">Standard</div><div class="mono">152</div>
+            <div><span class="pill sasch-status-pill" style="background:var(--info-tint);color:var(--info);">Trial</span></div><div class="mono" style="color:var(--muted);">10 Aug 2026</div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- RIGHT PANEL: detail view / onboard form -->
+      <div class="card" id="sasch-panel" style="padding:20px;display:flex;flex-direction:column;flex:1;min-height:0;overflow:hidden;">
+
+        <!-- EMPTY STATE -->
+        <div id="sasch-panel-empty" style="flex:1;display:flex;align-items:center;justify-content:center;text-align:center;color:var(--muted);font-size:13px;padding:20px;">
+          Select a school from the directory to view its profile, or onboard a new one.
+        </div>
+
+        <!-- DETAIL VIEW -->
+        <div id="sasch-panel-detail" style="display:none;flex-direction:column;flex:1;min-height:0;overflow:hidden;">
+          <div style="display:flex;align-items:flex-start;justify-content:space-between;">
+            <div>
+              <div id="sasch-detail-name" style="font-size:15.5px;font-weight:700;">—</div>
+              <div id="sasch-detail-city" style="font-size:12px;color:var(--muted);margin-top:2px;">—</div>
+            </div>
+            <span id="sasch-panel-close" style="cursor:pointer;color:var(--muted);font-size:17px;line-height:1;font-weight:700;" title="Close">&times;</span>
+          </div>
+          <div style="margin-top:10px;"><span class="pill" id="sasch-detail-pill" style="background:var(--good-tint);color:var(--good);">Active</span></div>
+
+          <div style="flex:1;overflow-y:auto;margin-top:14px;">
+            <div style="background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:12px 14px;">
+              <div class="sasch-detail-row"><span>Address</span><span id="sasch-detail-address" class="mono" style="color:var(--ink);text-align:right;">—</span></div>
+              <div class="sasch-detail-row"><span>Contact</span><span id="sasch-detail-contact" style="color:var(--ink);text-align:right;">—</span></div>
+              <div class="sasch-detail-row"><span>Phone</span><span id="sasch-detail-phone" class="mono" style="color:var(--ink);text-align:right;">—</span></div>
+              <div class="sasch-detail-row"><span>Email</span><span id="sasch-detail-email" class="mono" style="color:var(--ink);text-align:right;">—</span></div>
+              <div class="sasch-detail-row"><span>Plan</span><span id="sasch-detail-plan" style="color:var(--ink);text-align:right;">—</span></div>
+              <div class="sasch-detail-row"><span>Students</span><span id="sasch-detail-students" class="mono" style="color:var(--ink);text-align:right;">—</span></div>
+              <div class="sasch-detail-row"><span>Onboarded</span><span id="sasch-detail-onboarded" class="mono" style="color:var(--ink);text-align:right;">—</span></div>
+              <div class="sasch-detail-row" style="border-bottom:none;"><span>Status detail</span><span id="sasch-detail-statusdetail" style="color:var(--ink);text-align:right;">—</span></div>
+            </div>
+
+            <div style="font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;margin:16px 0 8px;">Recent activity</div>
+            <div id="sasch-detail-activity" style="display:flex;flex-direction:column;gap:8px;"></div>
+          </div>
+        </div>
+
+        <!-- ONBOARD FORM -->
+        <div id="sasch-panel-form" style="display:none;flex-direction:column;flex:1;min-height:0;overflow:hidden;">
+          <div style="display:flex;align-items:center;justify-content:space-between;">
+            <div style="font-size:14px;font-weight:700;">Onboard a school</div>
+            <span id="sasch-form-close" style="cursor:pointer;color:var(--muted);font-size:17px;line-height:1;font-weight:700;" title="Close">&times;</span>
+          </div>
+          <div style="font-size:12px;color:var(--muted);margin-bottom:14px;">New schools start on a 30-day trial by default.</div>
+
+          <div style="display:flex;flex-direction:column;gap:11px;overflow-y:auto;flex:1;min-height:0;">
+            <div>
+              <label class="sasch-field-label">School name</label>
+              <input class="sasch-field-input" id="sasch-input-name" type="text" placeholder="e.g. Riverdale Public School">
+            </div>
+            <div>
+              <label class="sasch-field-label">City</label>
+              <input class="sasch-field-input" id="sasch-input-city" type="text" placeholder="e.g. Ahmedabad, Gujarat">
+            </div>
+            <div>
+              <label class="sasch-field-label">Plan</label>
+              <select class="sasch-field-input" id="sasch-input-plan">
+                <option>Standard</option>
+                <option>Premium</option>
+              </select>
+            </div>
+            <div>
+              <label class="sasch-field-label">Contact person</label>
+              <input class="sasch-field-input" id="sasch-input-contact" type="text" placeholder="e.g. Anil Kumar">
+            </div>
+            <div>
+              <label class="sasch-field-label">Contact email</label>
+              <input class="sasch-field-input" id="sasch-input-email" type="text" placeholder="e.g. anil.kumar@school.edu.in">
+            </div>
+            <div>
+              <label class="sasch-field-label">Contact phone</label>
+              <input class="sasch-field-input" id="sasch-input-phone" type="text" placeholder="e.g. +91 90000 00000">
+            </div>
+          </div>
+
+          <div id="sasch-form-error" style="display:none;color:var(--critical);font-size:12px;font-weight:600;margin-top:10px;">Please enter at least a school name and city.</div>
+          <div id="sasch-form-success" style="display:none;background:var(--good-tint);color:var(--good);border-radius:8px;padding:9px 12px;font-size:12.5px;font-weight:700;text-align:center;margin-top:12px;flex:none;">School onboarded ✓</div>
+
+          <div style="display:flex;gap:10px;margin-top:14px;flex:none;">
+            <span id="sasch-btn-create" style="flex:1;text-align:center;background:var(--marigold);color:#fff;border-radius:8px;padding:10px 0;font-size:13.5px;font-weight:700;cursor:pointer;">Create school</span>
+            <span id="sasch-btn-cancel" style="background:var(--card);border:1px solid var(--line);border-radius:8px;padding:10px 16px;font-size:13.5px;font-weight:600;color:var(--ink);cursor:pointer;">Cancel</span>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</section>
+<script>
+(function(){
+  var root = document.getElementById('view-SASchools');
+  if (!root) return;
+
+  var tableBody   = root.querySelector('#sasch-table-body');
+  var panelEmpty  = root.querySelector('#sasch-panel-empty');
+  var panelDetail = root.querySelector('#sasch-panel-detail');
+  var panelForm   = root.querySelector('#sasch-panel-form');
+
+  var statTotal  = root.querySelector('#sasch-stat-total');
+  var statActive = root.querySelector('#sasch-stat-active');
+  var statTrial  = root.querySelector('#sasch-stat-trial');
+  var statIssues = root.querySelector('#sasch-stat-issues');
+  var countEl    = root.querySelector('#sasch-count');
+  var alertBox   = root.querySelector('#sasch-alert');
+  var alertText  = root.querySelector('#sasch-alert-text');
+
+  var STATUS_STYLE = {
+    active:   { bg: 'var(--good-tint)',     color: 'var(--good)',     label: 'Active' },
+    trial:    { bg: 'var(--info-tint)',     color: 'var(--info)',     label: 'Trial' },
+    expiring: { bg: 'var(--warn-tint)',     color: 'var(--warn)',     label: 'Expiring soon' },
+    overdue:  { bg: 'var(--critical-tint)', color: 'var(--critical)', label: 'Overdue' }
+  };
+
+  var selectedRow = null;
+
+  function todayDisplay(){
+    var d = new Date();
+    var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    var day = String(d.getDate()).padStart(2, '0');
+    return day + ' ' + months[d.getMonth()] + ' ' + d.getFullYear();
+  }
+
+  // --- live stat + alert recompute -----------------------------------
+  function recompute(){
+    var rows = root.querySelectorAll('.sasch-row');
+    var total = rows.length, active = 0, trial = 0, issues = 0;
+    var issueNames = [];
+    rows.forEach(function(row){
+      var status = row.getAttribute('data-status');
+      if (status === 'active') active++;
+      else if (status === 'trial') trial++;
+      else if (status === 'expiring' || status === 'overdue') {
+        issues++;
+        issueNames.push(row.getAttribute('data-school'));
+      }
+    });
+    statTotal.textContent = total;
+    statActive.textContent = active;
+    statTrial.textContent = trial;
+    statIssues.textContent = issues;
+    countEl.textContent = total;
+
+    if (issues === 0) {
+      alertBox.style.display = 'none';
+    } else {
+      alertBox.style.display = 'flex';
+      var shown = issueNames.slice(0, 3).join(', ');
+      var more = issueNames.length > 3 ? (' and ' + (issueNames.length - 3) + ' more') : '';
+      alertText.innerHTML = '<b>' + issues + ' school' + (issues === 1 ? '' : 's') + '</b> need attention — ' + shown + more + '.';
+    }
+  }
+
+  // --- row selection / detail panel -----------------------------------
+  function clearSelection(){
+    root.querySelectorAll('.sasch-row').forEach(function(r){ r.classList.remove('sasch-row-selected'); });
+  }
+
+  function showEmpty(){
+    panelEmpty.style.display = 'flex';
+    panelDetail.style.display = 'none';
+    panelForm.style.display = 'none';
+  }
+
+  function openDetail(row){
+    selectedRow = row;
+    clearSelection();
+    row.classList.add('sasch-row-selected');
+
+    var status = row.getAttribute('data-status');
+    var style = STATUS_STYLE[status] || STATUS_STYLE.active;
+
+    root.querySelector('#sasch-detail-name').textContent = row.getAttribute('data-school');
+    root.querySelector('#sasch-detail-city').textContent = row.getAttribute('data-city');
+    var pill = root.querySelector('#sasch-detail-pill');
+    pill.style.background = style.bg;
+    pill.style.color = style.color;
+    pill.textContent = style.label;
+
+    root.querySelector('#sasch-detail-address').textContent = row.getAttribute('data-address');
+    root.querySelector('#sasch-detail-contact').textContent = row.getAttribute('data-contact');
+    root.querySelector('#sasch-detail-phone').textContent = row.getAttribute('data-phone');
+    root.querySelector('#sasch-detail-email').textContent = row.getAttribute('data-email');
+    root.querySelector('#sasch-detail-plan').textContent = row.getAttribute('data-plan');
+    root.querySelector('#sasch-detail-students').textContent = row.getAttribute('data-students');
+    root.querySelector('#sasch-detail-onboarded').textContent = row.getAttribute('data-onboarded');
+    root.querySelector('#sasch-detail-statusdetail').textContent = row.getAttribute('data-status-detail');
+
+    var activityWrap = root.querySelector('#sasch-detail-activity');
+    activityWrap.innerHTML = '';
+    var lines = (row.getAttribute('data-activity') || '').split('|');
+    lines.forEach(function(line){
+      if (!line) return;
+      var item = document.createElement('div');
+      item.className = 'sasch-activity-item';
+      item.textContent = line;
+      activityWrap.appendChild(item);
+    });
+
+    panelEmpty.style.display = 'none';
+    panelForm.style.display = 'none';
+    panelDetail.style.display = 'flex';
+  }
+
+  function bindRow(row){
+    row.addEventListener('click', function(){ openDetail(row); });
+  }
+  root.querySelectorAll('.sasch-row').forEach(bindRow);
+
+  root.querySelector('#sasch-panel-close').addEventListener('click', function(){
+    clearSelection();
+    selectedRow = null;
+    showEmpty();
+  });
+
+  root.querySelector('#sasch-alert-dismiss').addEventListener('click', function(){
+    alertBox.style.display = 'none';
+  });
+
+  // --- onboard-a-school form -----------------------------------
+  var inputName    = root.querySelector('#sasch-input-name');
+  var inputCity     = root.querySelector('#sasch-input-city');
+  var inputPlan      = root.querySelector('#sasch-input-plan');
+  var inputContact = root.querySelector('#sasch-input-contact');
+  var inputEmail    = root.querySelector('#sasch-input-email');
+  var inputPhone    = root.querySelector('#sasch-input-phone');
+  var formError     = root.querySelector('#sasch-form-error');
+  var formSuccess  = root.querySelector('#sasch-form-success');
+
+  function resetForm(){
+    inputName.value = '';
+    inputCity.value = '';
+    inputPlan.value = 'Standard';
+    inputContact.value = '';
+    inputEmail.value = '';
+    inputPhone.value = '';
+    formError.style.display = 'none';
+    formSuccess.style.display = 'none';
+  }
+
+  function openForm(){
+    clearSelection();
+    selectedRow = null;
+    resetForm();
+    panelEmpty.style.display = 'none';
+    panelDetail.style.display = 'none';
+    panelForm.style.display = 'flex';
+    inputName.focus();
+  }
+
+  root.querySelector('#sasch-btn-onboard').addEventListener('click', openForm);
+  root.querySelector('#sasch-form-close').addEventListener('click', showEmpty);
+  root.querySelector('#sasch-btn-cancel').addEventListener('click', showEmpty);
+
+  root.querySelector('#sasch-btn-create').addEventListener('click', function(){
+    var name = inputName.value.trim();
+    var city = inputCity.value.trim();
+    if (!name || !city) {
+      formError.style.display = 'block';
+      return;
+    }
+    formError.style.display = 'none';
+
+    var plan = inputPlan.value;
+    var contact = inputContact.value.trim() || 'Not provided';
+    var email = inputEmail.value.trim() || 'Not provided';
+    var phone = inputPhone.value.trim() || 'Not provided';
+    var onboarded = todayDisplay();
+    var slug = 'new-' + Date.now();
+
+    var row = document.createElement('div');
+    row.className = 'sasch-row';
+    row.id = 'sasch-row-' + slug;
+    row.setAttribute('data-school', name);
+    row.setAttribute('data-city', city);
+    row.setAttribute('data-plan', plan);
+    row.setAttribute('data-students', '0');
+    row.setAttribute('data-status', 'trial');
+    row.setAttribute('data-onboarded', onboarded);
+    row.setAttribute('data-status-detail', 'Trial period · 30 days');
+    row.setAttribute('data-address', city);
+    row.setAttribute('data-contact', contact);
+    row.setAttribute('data-phone', phone);
+    row.setAttribute('data-email', email);
+    row.setAttribute('data-activity', 'School onboarded ' + onboarded + '|0 students enrolled so far|Onboarding checklist just started');
+    row.style.cssText = 'display:grid;grid-template-columns:2.2fr 1.2fr 1fr 0.85fr 1.15fr 1.15fr;align-items:center;padding:13px 0;border-bottom:1px solid var(--line);font-size:13.5px;cursor:pointer;';
+    row.innerHTML =
+      '<div style="font-weight:600;">' + name + '</div>' +
+      '<div style="color:var(--muted);">' + city.split(',')[0] + '</div>' +
+      '<div style="color:var(--muted);">' + plan + '</div>' +
+      '<div class="mono">0</div>' +
+      '<div><span class="pill sasch-status-pill" style="background:var(--info-tint);color:var(--info);">Trial</span></div>' +
+      '<div class="mono" style="color:var(--muted);">' + onboarded + '</div>';
+
+    tableBody.insertBefore(row, tableBody.firstChild);
+    bindRow(row);
+    recompute();
+
+    row.classList.add('sasch-row-flash');
+    setTimeout(function(){ row.classList.remove('sasch-row-flash'); }, 1300);
+
+    formSuccess.style.display = 'block';
+    setTimeout(function(){
+      showEmpty();
+      resetForm();
+    }, 1100);
+  });
+
+  showEmpty();
+  recompute();
+})();
+</script>

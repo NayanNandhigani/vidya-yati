@@ -1,0 +1,243 @@
+<section class="view" id="view-SASettings" data-view="SASettings">
+  <!-- MAIN -->
+  <div style="flex:1;overflow:hidden;padding:28px 36px;display:flex;flex-direction:column;gap:22px;">
+
+    <!-- HEADER -->
+    <div style="display:flex;align-items:center;justify-content:space-between;flex:none;">
+      <div>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div class="disp" style="font-size:22px;">Platform Settings</div>
+          <span style="font-size:11px;font-weight:700;color:var(--muted);background:var(--line);padding:3px 9px;border-radius:100px;">Illustrative content</span>
+        </div>
+        <div style="font-size:13.5px;color:var(--muted);margin-top:2px;">Manage your Vidya Yati operator account, notifications and platform-wide plans</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:12px;">
+        <div style="width:34px;height:34px;border-radius:50%;background:var(--ink2);color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;">VY</div>
+      </div>
+    </div>
+
+    <!-- BODY -->
+    <div style="display:flex;gap:20px;flex:1;min-height:0;">
+
+      <!-- SETTINGS SUB-NAV -->
+      <div class="card" style="width:206px;flex:none;padding:10px;display:flex;flex-direction:column;gap:2px;height:fit-content;">
+        <div class="saset-subnav-item active" id="saset-subnav-account" data-panel="account">Account</div>
+        <div class="saset-subnav-item" id="saset-subnav-notifications" data-panel="notifications">Notifications</div>
+        <div class="saset-subnav-item" id="saset-subnav-billing" data-panel="billing">Billing contact</div>
+        <div class="saset-subnav-item" id="saset-subnav-pricing" data-panel="pricing">Plans &amp; Pricing</div>
+      </div>
+
+      <!-- ============ ACCOUNT PANEL ============ -->
+      <div id="saset-panel-account" class="card" style="flex:1;padding:26px;display:flex;flex-direction:column;overflow-y:auto;">
+        <div style="max-width:460px;display:flex;flex-direction:column;gap:18px;">
+          <div>
+            <div class="mono" style="font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);margin-bottom:2px;">Your account</div>
+            <div style="font-size:13px;color:var(--muted);">These details identify you as the Vidya Yati Super Admin operator.</div>
+          </div>
+
+          <div>
+            <div class="saset-flabel">Full name</div>
+            <input class="saset-field-box" id="saset-input-name" type="text" value="Ananya Rao" style="width:100%;font-family:inherit;">
+          </div>
+
+          <div>
+            <div class="saset-flabel">Email address</div>
+            <input class="saset-field-box" id="saset-input-email" type="email" value="ananya.rao@vidyayati.in" style="width:100%;font-family:inherit;">
+          </div>
+
+          <div>
+            <div class="saset-flabel">Phone number</div>
+            <input class="saset-field-box" id="saset-input-phone" type="text" value="+91 98450 11223" style="width:100%;font-family:inherit;">
+          </div>
+
+          <div style="border-top:1px solid var(--line);padding-top:18px;display:flex;align-items:center;gap:14px;">
+            <span id="saset-btn-changepass" style="background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:9px 16px;font-size:13px;font-weight:600;color:var(--ink);cursor:pointer;">Change password</span>
+            <span id="saset-changepass-confirm" class="mono" style="font-size:12px;font-weight:700;color:var(--good);display:none;">✓ Password reset link sent to your email</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============ NOTIFICATIONS PANEL ============ -->
+      <div id="saset-panel-notifications" class="card" style="flex:1;padding:26px;display:none;flex-direction:column;overflow-y:auto;">
+        <div style="max-width:520px;display:flex;flex-direction:column;">
+          <div style="margin-bottom:12px;">
+            <div class="mono" style="font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);margin-bottom:2px;">Email notifications</div>
+            <div style="font-size:13px;color:var(--muted);">Choose which platform events send you an email.</div>
+          </div>
+
+          <div class="saset-visrow">
+            <span>Email me when a subscription is expiring</span>
+            <div class="saset-toggle on" id="saset-toggle-expiring"><div class="saset-knob"></div></div>
+          </div>
+          <div class="saset-visrow">
+            <span>Email me on new school sign-ups</span>
+            <div class="saset-toggle on" id="saset-toggle-signups"><div class="saset-knob"></div></div>
+          </div>
+          <div class="saset-visrow">
+            <span>Weekly revenue summary</span>
+            <div class="saset-toggle off" id="saset-toggle-revenue"><div class="saset-knob"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============ BILLING CONTACT PANEL ============ -->
+      <div id="saset-panel-billing" class="card" style="flex:1;padding:26px;display:none;flex-direction:column;overflow-y:auto;">
+        <div style="max-width:460px;display:flex;flex-direction:column;gap:18px;">
+          <div>
+            <div class="mono" style="font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);margin-bottom:2px;">Vidya Yati billing contact</div>
+            <div style="font-size:13px;color:var(--muted);">Used on invoices raised to schools and for finance correspondence.</div>
+          </div>
+
+          <div>
+            <div class="saset-flabel">Company / legal entity name</div>
+            <input class="saset-field-box" id="saset-input-company" type="text" value="Vidya Yati Technologies Pvt. Ltd." style="width:100%;font-family:inherit;">
+          </div>
+
+          <div>
+            <div class="saset-flabel">Billing contact name</div>
+            <input class="saset-field-box" id="saset-input-billname" type="text" value="Karthik Iyer" style="width:100%;font-family:inherit;">
+          </div>
+
+          <div>
+            <div class="saset-flabel">Billing email</div>
+            <input class="saset-field-box" id="saset-input-billemail" type="email" value="billing@vidyayati.in" style="width:100%;font-family:inherit;">
+          </div>
+
+          <div>
+            <div class="saset-flabel">GSTIN</div>
+            <input class="saset-field-box" id="saset-input-gstin" type="text" value="29ABCDE1234F1Z5" style="width:100%;font-family:inherit;">
+          </div>
+
+          <div>
+            <div class="saset-flabel">Registered address</div>
+            <input class="saset-field-box" id="saset-input-billaddress" type="text" value="4th Floor, Brigade Towers, Bengaluru 560025" style="width:100%;font-family:inherit;">
+          </div>
+
+          <div style="border-top:1px solid var(--line);padding-top:18px;display:flex;align-items:center;gap:14px;">
+            <span id="saset-btn-savebilling" style="background:var(--marigold);color:#fff;border-radius:8px;padding:9px 18px;font-size:13px;font-weight:600;cursor:pointer;">Save changes</span>
+            <span id="saset-savebilling-confirm" class="mono" style="font-size:12px;font-weight:700;color:var(--good);display:none;">✓ Saved</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============ PLANS & PRICING PANEL ============ -->
+      <div id="saset-panel-pricing" class="card" style="flex:1;padding:26px;display:none;flex-direction:column;overflow-y:auto;">
+        <div style="max-width:560px;display:flex;flex-direction:column;">
+          <div style="margin-bottom:16px;">
+            <div class="mono" style="font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);margin-bottom:2px;">Plans &amp; pricing</div>
+            <div style="font-size:13px;color:var(--muted);">Annual pricing shown to schools during onboarding and renewal.</div>
+          </div>
+
+          <div style="display:grid;grid-template-columns:1.4fr 1fr;font-size:11.5px;color:var(--faint);text-transform:uppercase;letter-spacing:.04em;padding-bottom:10px;border-bottom:1px solid var(--line);">
+            <div>Plan</div><div>Annual price (₹)</div>
+          </div>
+
+          <div style="display:grid;grid-template-columns:1.4fr 1fr;align-items:center;padding:16px 0;border-bottom:1px solid var(--line);">
+            <div>
+              <div style="font-weight:700;font-size:14px;">Standard</div>
+              <div style="font-size:12px;color:var(--muted);margin-top:2px;">For schools up to 800 students</div>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;">
+              <span class="mono" style="font-size:13.5px;color:var(--muted);">₹</span>
+              <input class="saset-field-box saset-price-input mono" id="saset-input-price-standard" type="text" value="45,000" style="width:110px;">
+            </div>
+          </div>
+
+          <div style="display:grid;grid-template-columns:1.4fr 1fr;align-items:center;padding:16px 0;border-bottom:1px solid var(--line);">
+            <div>
+              <div style="font-weight:700;font-size:14px;">Premium</div>
+              <div style="font-size:12px;color:var(--muted);margin-top:2px;">Unlimited students, priority support</div>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;">
+              <span class="mono" style="font-size:13.5px;color:var(--muted);">₹</span>
+              <input class="saset-field-box saset-price-input mono" id="saset-input-price-premium" type="text" value="98,000" style="width:110px;">
+            </div>
+          </div>
+
+          <div style="padding-top:18px;display:flex;align-items:center;gap:14px;">
+            <span id="saset-btn-saveprice" style="background:var(--marigold);color:#fff;border-radius:8px;padding:9px 18px;font-size:13px;font-weight:600;cursor:pointer;">Save pricing</span>
+            <span id="saset-saveprice-confirm" class="mono" style="font-size:12px;font-weight:700;color:var(--good);display:none;">✓ Pricing updated</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+<script>
+(function(){
+  var root = document.getElementById('view-SASettings');
+  if (!root) return;
+
+  // ---------- Sub-nav switching ----------
+  var subnavItems = root.querySelectorAll('.saset-subnav-item');
+  var panels = {
+    account: root.querySelector('#saset-panel-account'),
+    notifications: root.querySelector('#saset-panel-notifications'),
+    billing: root.querySelector('#saset-panel-billing'),
+    pricing: root.querySelector('#saset-panel-pricing')
+  };
+
+  function showPanel(key){
+    Object.keys(panels).forEach(function(k){
+      if (panels[k]) panels[k].style.display = (k === key) ? 'flex' : 'none';
+    });
+  }
+
+  subnavItems.forEach(function(item){
+    item.addEventListener('click', function(){
+      subnavItems.forEach(function(it){ it.classList.remove('active'); });
+      item.classList.add('active');
+      showPanel(item.getAttribute('data-panel'));
+    });
+  });
+
+  // ---------- Change password confirmation ----------
+  var changePassBtn = root.querySelector('#saset-btn-changepass');
+  var changePassConfirm = root.querySelector('#saset-changepass-confirm');
+  if (changePassBtn) {
+    changePassBtn.addEventListener('click', function(){
+      changePassConfirm.style.display = 'inline';
+      clearTimeout(changePassBtn._t);
+      changePassBtn._t = setTimeout(function(){ changePassConfirm.style.display = 'none'; }, 3000);
+    });
+  }
+
+  // ---------- Notification toggles ----------
+  var toggles = root.querySelectorAll('#saset-panel-notifications .saset-toggle');
+  toggles.forEach(function(tg){
+    tg.addEventListener('click', function(){
+      var isOn = tg.classList.contains('on');
+      if (isOn) {
+        tg.classList.remove('on');
+        tg.classList.add('off');
+      } else {
+        tg.classList.remove('off');
+        tg.classList.add('on');
+      }
+    });
+  });
+
+  // ---------- Billing contact save ----------
+  var saveBillingBtn = root.querySelector('#saset-btn-savebilling');
+  var saveBillingConfirm = root.querySelector('#saset-savebilling-confirm');
+  if (saveBillingBtn) {
+    saveBillingBtn.addEventListener('click', function(){
+      saveBillingConfirm.style.display = 'inline';
+      clearTimeout(saveBillingBtn._t);
+      saveBillingBtn._t = setTimeout(function(){ saveBillingConfirm.style.display = 'none'; }, 2500);
+    });
+  }
+
+  // ---------- Pricing save ----------
+  var savePriceBtn = root.querySelector('#saset-btn-saveprice');
+  var savePriceConfirm = root.querySelector('#saset-saveprice-confirm');
+  if (savePriceBtn) {
+    savePriceBtn.addEventListener('click', function(){
+      savePriceConfirm.style.display = 'inline';
+      clearTimeout(savePriceBtn._t);
+      savePriceBtn._t = setTimeout(function(){ savePriceConfirm.style.display = 'none'; }, 2500);
+    });
+  }
+})();
+</script>

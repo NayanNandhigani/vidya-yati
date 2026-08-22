@@ -1,0 +1,155 @@
+<section class="view" id="view-Attendance" data-view="Attendance">
+  <!-- MAIN -->
+  <div style="flex:1;overflow:hidden;padding:26px 34px;display:flex;flex-direction:column;gap:16px;">
+
+    <div style="display:flex;align-items:center;justify-content:space-between;">
+      <div class="disp" style="font-size:21px;">Mark Attendance</div>
+      <div style="display:flex;align-items:center;gap:10px;">
+        <span style="background:var(--card);border:1px solid var(--line);border-radius:8px;padding:8px 14px;font-size:13px;font-weight:600;">Class 6-B ▾</span>
+        <span class="mono" style="background:var(--card);border:1px solid var(--line);border-radius:8px;padding:8px 14px;font-size:13px;font-weight:600;">Fri, 21 Aug 2026</span>
+        <span id="att-mark-all" style="background:var(--good);color:#fff;border-radius:8px;padding:8px 14px;font-size:13px;font-weight:600;cursor:pointer;">Mark All Present</span>
+      </div>
+    </div>
+
+    <!-- LIVE COUNT STRIP -->
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:13px;">
+      <div class="card" style="padding:14px 17px;">
+        <div style="font-size:11.5px;color:var(--muted);margin-bottom:6px;">Present</div>
+        <div id="att-count-present" class="mono" style="font-size:22px;font-weight:700;color:var(--good);">0</div>
+      </div>
+      <div class="card" style="padding:14px 17px;">
+        <div style="font-size:11.5px;color:var(--muted);margin-bottom:6px;">Absent</div>
+        <div id="att-count-absent" class="mono" style="font-size:22px;font-weight:700;color:var(--critical);">0</div>
+      </div>
+      <div class="card" style="padding:14px 17px;">
+        <div style="font-size:11.5px;color:var(--muted);margin-bottom:6px;">Half-day</div>
+        <div id="att-count-halfday" class="mono" style="font-size:22px;font-weight:700;color:var(--warn);">0</div>
+      </div>
+      <div class="card" style="padding:14px 17px;">
+        <div style="font-size:11.5px;color:var(--muted);margin-bottom:6px;">Class attendance rate</div>
+        <div id="att-count-rate" class="mono" style="font-size:22px;font-weight:700;">0.0%</div>
+      </div>
+    </div>
+
+    <!-- ROSTER -->
+    <div class="card" style="padding:0;flex:1;overflow:hidden;display:flex;flex-direction:column;">
+      <div style="display:grid;grid-template-columns:2.4fr 1fr 1fr;padding:13px 22px;border-bottom:1px solid var(--line);font-size:11px;color:var(--faint);text-transform:uppercase;letter-spacing:.05em;">
+        <div>Student</div><div>Roll No.</div><div style="text-align:right;">Mark</div>
+      </div>
+
+      <div id="att-roster" style="overflow-y:auto;">
+        <div class="att-row" data-row="1" style="display:grid;grid-template-columns:2.4fr 1fr 1fr;align-items:center;padding:11px 22px;border-bottom:1px solid var(--line);">
+          <div style="display:flex;align-items:center;gap:10px;"><div class="att-avatar" style="background:var(--marigold);">AM</div><span style="font-weight:600;font-size:13.5px;">Aarav Mehta</span></div>
+          <div class="mono" style="color:var(--muted);font-size:13px;">21</div>
+          <div class="att-seg" style="justify-content:flex-end;"><span class="att-p on" data-mark="P">P</span><span class="att-a" data-mark="A">A</span><span class="att-h" data-mark="H">H</span></div>
+        </div>
+        <div class="att-row" data-row="2" style="display:grid;grid-template-columns:2.4fr 1fr 1fr;align-items:center;padding:11px 22px;border-bottom:1px solid var(--line);">
+          <div style="display:flex;align-items:center;gap:10px;"><div class="att-avatar" style="background:var(--teal);">DS</div><span style="font-weight:600;font-size:13.5px;">Diya Sharma</span></div>
+          <div class="mono" style="color:var(--muted);font-size:13px;">22</div>
+          <div class="att-seg" style="justify-content:flex-end;"><span class="att-p on" data-mark="P">P</span><span class="att-a" data-mark="A">A</span><span class="att-h" data-mark="H">H</span></div>
+        </div>
+        <div class="att-row" data-row="3" style="display:grid;grid-template-columns:2.4fr 1fr 1fr;align-items:center;padding:11px 22px;border-bottom:1px solid var(--line);">
+          <div style="display:flex;align-items:center;gap:10px;"><div class="att-avatar" style="background:#8A6FD1;">RK</div><span style="font-weight:600;font-size:13.5px;">Rohan Kapoor</span></div>
+          <div class="mono" style="color:var(--muted);font-size:13px;">23</div>
+          <div class="att-seg" style="justify-content:flex-end;"><span class="att-p" data-mark="P">P</span><span class="att-a on" data-mark="A">A</span><span class="att-h" data-mark="H">H</span></div>
+        </div>
+        <div class="att-row" data-row="4" style="display:grid;grid-template-columns:2.4fr 1fr 1fr;align-items:center;padding:11px 22px;border-bottom:1px solid var(--line);">
+          <div style="display:flex;align-items:center;gap:10px;"><div class="att-avatar" style="background:#D16F8A;">AD</div><span style="font-weight:600;font-size:13.5px;">Ananya Desai</span></div>
+          <div class="mono" style="color:var(--muted);font-size:13px;">24</div>
+          <div class="att-seg" style="justify-content:flex-end;"><span class="att-p on" data-mark="P">P</span><span class="att-a" data-mark="A">A</span><span class="att-h" data-mark="H">H</span></div>
+        </div>
+        <div class="att-row" data-row="5" style="display:grid;grid-template-columns:2.4fr 1fr 1fr;align-items:center;padding:11px 22px;border-bottom:1px solid var(--line);">
+          <div style="display:flex;align-items:center;gap:10px;"><div class="att-avatar" style="background:#4C8FBF;">VS</div><span style="font-weight:600;font-size:13.5px;">Vivaan Shah</span></div>
+          <div class="mono" style="color:var(--muted);font-size:13px;">25</div>
+          <div class="att-seg" style="justify-content:flex-end;"><span class="att-p" data-mark="P">P</span><span class="att-a" data-mark="A">A</span><span class="att-h on" data-mark="H">H</span></div>
+        </div>
+        <div class="att-row" data-row="6" style="display:grid;grid-template-columns:2.4fr 1fr 1fr;align-items:center;padding:11px 22px;border-bottom:1px solid var(--line);">
+          <div style="display:flex;align-items:center;gap:10px;"><div class="att-avatar" style="background:#C2884A;">ZK</div><span style="font-weight:600;font-size:13.5px;">Zara Khan</span></div>
+          <div class="mono" style="color:var(--muted);font-size:13px;">26</div>
+          <div class="att-seg" style="justify-content:flex-end;"><span class="att-p on" data-mark="P">P</span><span class="att-a" data-mark="A">A</span><span class="att-h" data-mark="H">H</span></div>
+        </div>
+        <div class="att-row" data-row="7" style="display:grid;grid-template-columns:2.4fr 1fr 1fr;align-items:center;padding:11px 22px;border-bottom:1px solid var(--line);">
+          <div style="display:flex;align-items:center;gap:10px;"><div class="att-avatar" style="background:#3F9B7A;">SP</div><span style="font-weight:600;font-size:13.5px;">Sneha Pillai</span></div>
+          <div class="mono" style="color:var(--muted);font-size:13px;">27</div>
+          <div class="att-seg" style="justify-content:flex-end;"><span class="att-p on" data-mark="P">P</span><span class="att-a" data-mark="A">A</span><span class="att-h" data-mark="H">H</span></div>
+        </div>
+        <div class="att-row" data-row="8" style="display:grid;grid-template-columns:2.4fr 1fr 1fr;align-items:center;padding:11px 22px;">
+          <div style="display:flex;align-items:center;gap:10px;"><div class="att-avatar" style="background:#7A8494;">NS</div><span style="font-weight:600;font-size:13.5px;">Neha Singh</span></div>
+          <div class="mono" style="color:var(--muted);font-size:13px;">28</div>
+          <div class="att-seg" style="justify-content:flex-end;"><span class="att-p on" data-mark="P">P</span><span class="att-a" data-mark="A">A</span><span class="att-h" data-mark="H">H</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<script>
+(function(){
+  var root = document.getElementById('view-Attendance');
+  if (!root) return;
+
+  var elPresent = root.querySelector('#att-count-present');
+  var elAbsent  = root.querySelector('#att-count-absent');
+  var elHalf    = root.querySelector('#att-count-halfday');
+  var elRate    = root.querySelector('#att-count-rate');
+  var markAllBtn = root.querySelector('#att-mark-all');
+
+  function getRows(){
+    return root.querySelectorAll('.att-row');
+  }
+
+  function setRowMark(rowEl, mark){
+    var seg = rowEl.querySelector('.att-seg');
+    if (!seg) return;
+    var chips = seg.querySelectorAll('[data-mark]');
+    chips.forEach(function(chip){
+      if (chip.getAttribute('data-mark') === mark) {
+        chip.classList.add('on');
+      } else {
+        chip.classList.remove('on');
+      }
+    });
+  }
+
+  function getRowMark(rowEl){
+    var onChip = rowEl.querySelector('.att-seg [data-mark].on');
+    return onChip ? onChip.getAttribute('data-mark') : null;
+  }
+
+  function recompute(){
+    var rows = getRows();
+    var present = 0, absent = 0, half = 0;
+    rows.forEach(function(rowEl){
+      var mark = getRowMark(rowEl);
+      if (mark === 'P') present++;
+      else if (mark === 'A') absent++;
+      else if (mark === 'H') half++;
+    });
+    var total = rows.length;
+    var rate = total > 0 ? (present / total) * 100 : 0;
+
+    elPresent.textContent = String(present);
+    elAbsent.textContent = String(absent);
+    elHalf.textContent = String(half);
+    elRate.textContent = rate.toFixed(1) + '%';
+  }
+
+  root.addEventListener('click', function(evt){
+    var chip = evt.target.closest('.att-seg [data-mark]');
+    if (!chip || !root.contains(chip)) return;
+    var rowEl = chip.closest('.att-row');
+    if (!rowEl) return;
+    setRowMark(rowEl, chip.getAttribute('data-mark'));
+    recompute();
+  });
+
+  if (markAllBtn) {
+    markAllBtn.addEventListener('click', function(){
+      getRows().forEach(function(rowEl){ setRowMark(rowEl, 'P'); });
+      recompute();
+    });
+  }
+
+  // Initialize live-count strip from whatever state the chips start in.
+  recompute();
+})();
+</script>

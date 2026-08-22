@@ -1,0 +1,8 @@
+/* Library.dc.html bespoke rules — everything beyond the shared common set
+   (tokens, .mono, .disp, .card, .pill, .navitem/.navitem.active/.icon/.navgroup,
+   .field/.in). Renamed with the lib- prefix because Transport.dc.html also defines
+   a bare `.row` class with different column widths — kept separate to avoid a
+   cross-module collision inside the shared shell's global stylesheet. */
+
+.lib-row{display:grid;grid-template-columns:2fr 1.4fr 1.1fr 1fr 1fr 1fr;align-items:center;padding:12px 20px;border-bottom:1px solid var(--line);font-size:13px;cursor:pointer;}
+.lib-row-selected{background:var(--marigold-tint) !important;box-shadow:inset 3px 0 0 var(--marigold);}
