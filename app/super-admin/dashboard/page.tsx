@@ -1,14 +1,49 @@
 import Link from "next/link";
+import type { UserRole } from "@prisma/client";
 import { db } from "@/lib/db";
 import { formatINR, formatDate } from "@/lib/format";
+import PlatformUsageChart from "./PlatformUsageChart";
 
-export default async function SuperAdminDashboard() {
+type Period = "day" | "month" | "year";
+const SCHOOL_ROLES: UserRole[] = ["SCHOOL_ADMIN", "STAFF", "PARENT"];
+
+function periodRange(period: Period, now: Date): { start: Date; end: Date; label: string } {
+  if (period === "day") {
+    const start = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const end = new Date(start);
+    end.setDate(end.getDate() + 1);
+    return { start, end, label: "today" };
+  }
+  if (period === "year") {
+    const start = new Date(now.getFullYear(), 0, 1);
+    const end = new Date(now.getFullYear() + 1, 0, 1);
+    return { start, end, label: "this year" };
+  }
+  const start = new Date(now.getFullYear(), now.getMonth(), 1);
+  const end = new Date(now.getFullYear(), now.getMonth() + 1, 1);
+  return { start, end, label: "this month" };
+}
+
+export default async function SuperAdminDashboard({ searchParams }: { searchParams: Promise<{ period?: string }> }) {
+  const params = await searchParams;
+  const period: Period = params.period === "month" || params.period === "year" ? params.period : "day";
+
   const now = new Date();
+  const { start, end, label: periodLabel } = periodRange(period, now);
   const in30Days = new Date(now);
   in30Days.setDate(in30Days.getDate() + 30);
   const fyStart = new Date(now.getMonth() >= 3 ? now.getFullYear() : now.getFullYear() - 1, 3, 1);
 
-  const [schools, activeCount, totalStudents, paymentsThisFY, expiringInvoices, studentCounts] = await Promise.all([
+  const [usageSchools, usageTotalsRaw, usageActiveRaw, platformTotal, platformActive, schools, activeCount, totalStudents, paymentsThisFY, expiringInvoices, studentCounts] = await Promise.all([
+    db.school.findMany({ select: { id: true, name: true }, orderBy: { name: "asc" } }),
+    db.user.groupBy({ by: ["schoolId", "role"], where: { schoolId: { not: null }, role: { in: SCHOOL_ROLES } }, _count: true }),
+    db.user.groupBy({
+      by: ["schoolId", "role"],
+      where: { schoolId: { not: null }, role: { in: SCHOOL_ROLES }, activityLogs: { some: { type: "LOGIN", occurredAt: { gte: start, lt: end } } } },
+      _count: true,
+    }),
+    db.user.count({ where: { schoolId: { not: null }, role: { in: SCHOOL_ROLES } } }),
+    db.user.count({ where: { schoolId: { not: null }, role: { in: SCHOOL_ROLES }, activityLogs: { some: { type: "LOGIN", occurredAt: { gte: start, lt: end } } } } }),
     db.school.findMany({ orderBy: { onboardedOn: "desc" }, take: 6, include: { invoices: { orderBy: { dueDate: "desc" }, take: 1 } } }),
     db.school.count({ where: { status: "ACTIVE" } }),
     db.student.count({ where: { status: "ACTIVE" } }),
@@ -17,6 +52,17 @@ export default async function SuperAdminDashboard() {
     db.student.groupBy({ by: ["schoolId"], where: { status: "ACTIVE" }, _count: true }),
   ]);
   const studentCountBySchool = new Map(studentCounts.map((s) => [s.schoolId, s._count]));
+
+  const usageTotalMap = new Map(usageTotalsRaw.map((r) => [`${r.schoolId}:${r.role}`, r._count]));
+  const usageActiveMap = new Map(usageActiveRaw.map((r) => [`${r.schoolId}:${r.role}`, r._count]));
+  const usageData = usageSchools.map((s) => ({
+    schoolId: s.id,
+    schoolName: s.name,
+    admin: { total: usageTotalMap.get(`${s.id}:SCHOOL_ADMIN`) ?? 0, active: usageActiveMap.get(`${s.id}:SCHOOL_ADMIN`) ?? 0 },
+    staff: { total: usageTotalMap.get(`${s.id}:STAFF`) ?? 0, active: usageActiveMap.get(`${s.id}:STAFF`) ?? 0 },
+    parent: { total: usageTotalMap.get(`${s.id}:PARENT`) ?? 0, active: usageActiveMap.get(`${s.id}:PARENT`) ?? 0 },
+  }));
+  const platformActivePct = platformTotal > 0 ? Math.round((platformActive / platformTotal) * 100) : 0;
 
   const totalSchools = await db.school.count();
   const revenueThisFY = paymentsThisFY.reduce((s, p) => s + Number(p.amount), 0);
@@ -52,6 +98,29 @@ export default async function SuperAdminDashboard() {
         <Link href="/super-admin/schools" style={{ background: "var(--card)", border: "1px solid var(--line)", borderRadius: 8, padding: "9px 16px", fontSize: 13.5, fontWeight: 600, textDecoration: "none", color: "var(--ink)" }}>
           + Onboard a school
         </Link>
+      </div>
+
+      <div className="card" style={{ padding: 20, display: "flex", flexDirection: "column", height: 280, flex: "none" }}>
+        <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", marginBottom: 4 }}>
+          <div>
+            <div style={{ fontSize: 14, fontWeight: 700 }}>Platform usage</div>
+            <div style={{ fontSize: 12, color: "var(--muted)", marginTop: 2 }}>
+              Accounts that have actually logged in — School Admin, Staff and Parent, per school
+            </div>
+          </div>
+          <PeriodTabs current={period} />
+        </div>
+
+        <div style={{ display: "flex", alignItems: "baseline", gap: 8, margin: "10px 0 6px" }}>
+          <span className="mono" style={{ fontSize: 22, fontWeight: 600 }}>
+            {platformActive.toLocaleString("en-IN")} / {platformTotal.toLocaleString("en-IN")}
+          </span>
+          <span style={{ fontSize: 12.5, color: "var(--muted)" }}>
+            accounts active {periodLabel} ({platformActivePct}%)
+          </span>
+        </div>
+
+        <PlatformUsageChart data={usageData} />
       </div>
 
       <div style={{ display: "grid", gridTemplateColumns: "repeat(5,1fr)", gap: 14 }}>
@@ -136,6 +205,37 @@ export default async function SuperAdminDashboard() {
           </div>
         </div>
       </div>
+    </div>
+  );
+}
+
+const PERIOD_OPTIONS: { value: Period; label: string }[] = [
+  { value: "day", label: "Day" },
+  { value: "month", label: "Month" },
+  { value: "year", label: "Year" },
+];
+
+function PeriodTabs({ current }: { current: Period }) {
+  return (
+    <div style={{ display: "flex", gap: 4, background: "var(--paper)", borderRadius: 8, padding: 4, flex: "none" }}>
+      {PERIOD_OPTIONS.map((o) => (
+        <Link
+          key={o.value}
+          href={`/super-admin/dashboard?period=${o.value}`}
+          style={{
+            padding: "5px 12px",
+            borderRadius: 6,
+            fontSize: 12.5,
+            fontWeight: current === o.value ? 700 : 500,
+            color: current === o.value ? "var(--ink)" : "var(--muted)",
+            background: current === o.value ? "var(--card)" : "transparent",
+            textDecoration: "none",
+            boxShadow: current === o.value ? "0 1px 2px rgba(0,0,0,.06)" : "none",
+          }}
+        >
+          {o.label}
+        </Link>
+      ))}
     </div>
   );
 }
