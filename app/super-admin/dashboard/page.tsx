@@ -3,6 +3,7 @@ import type { UserRole } from "@prisma/client";
 import { db } from "@/lib/db";
 import { formatINR, formatDate } from "@/lib/format";
 import PlatformUsageChart from "./PlatformUsageChart";
+import ExpenseBreakdownChart from "../accounts/ExpenseBreakdownChart";
 
 type Period = "day" | "month" | "year";
 const SCHOOL_ROLES: UserRole[] = ["SCHOOL_ADMIN", "STAFF", "PARENT"];
@@ -34,7 +35,10 @@ export default async function SuperAdminDashboard({ searchParams }: { searchPara
   in30Days.setDate(in30Days.getDate() + 30);
   const fyStart = new Date(now.getMonth() >= 3 ? now.getFullYear() : now.getFullYear() - 1, 3, 1);
 
-  const [usageSchools, usageTotalsRaw, usageActiveRaw, platformTotal, platformActive, schools, activeCount, totalStudents, paymentsThisFY, expiringInvoices, studentCounts] = await Promise.all([
+  const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
+  const monthEnd = new Date(now.getFullYear(), now.getMonth() + 1, 1);
+
+  const [usageSchools, usageTotalsRaw, usageActiveRaw, platformTotal, platformActive, activeCount, totalStudents, paymentsThisFY, expiringInvoices, ledgerAccounts, expenseByAccount] = await Promise.all([
     db.school.findMany({ select: { id: true, name: true }, orderBy: { name: "asc" } }),
     db.user.groupBy({ by: ["schoolId", "role"], where: { schoolId: { not: null }, role: { in: SCHOOL_ROLES } }, _count: true }),
     db.user.groupBy({
@@ -44,14 +48,23 @@ export default async function SuperAdminDashboard({ searchParams }: { searchPara
     }),
     db.user.count({ where: { schoolId: { not: null }, role: { in: SCHOOL_ROLES } } }),
     db.user.count({ where: { schoolId: { not: null }, role: { in: SCHOOL_ROLES }, activityLogs: { some: { type: "LOGIN", occurredAt: { gte: start, lt: end } } } } }),
-    db.school.findMany({ orderBy: { onboardedOn: "desc" }, take: 6, include: { invoices: { orderBy: { dueDate: "desc" }, take: 1 } } }),
     db.school.count({ where: { status: "ACTIVE" } }),
     db.student.count({ where: { status: "ACTIVE" } }),
     db.subscriptionPayment.findMany({ where: { paidOn: { gte: fyStart } }, select: { amount: true } }),
     db.subscriptionInvoice.findMany({ where: { dueDate: { gte: now, lte: in30Days }, status: { not: "PAID" } }, include: { school: true } }),
-    db.student.groupBy({ by: ["schoolId"], where: { status: "ACTIVE" }, _count: true }),
+    db.ledgerAccount.findMany({ select: { id: true, name: true } }),
+    db.ledgerEntry.groupBy({ by: ["ledgerAccountId"], where: { entryType: "EXPENSE", date: { gte: monthStart, lt: monthEnd } }, _sum: { amount: true } }),
   ]);
-  const studentCountBySchool = new Map(studentCounts.map((s) => [s.schoolId, s._count]));
+
+  const accountNameMap = new Map(ledgerAccounts.map((a) => [a.id, a.name]));
+  const expenseSlices = expenseByAccount
+    .map((g) => ({ label: accountNameMap.get(g.ledgerAccountId) ?? "Unknown", amount: Number(g._sum.amount ?? 0) }))
+    .filter((s) => s.amount > 0)
+    .sort((a, b) => b.amount - a.amount);
+  const CHART_COLORS = ["var(--marigold)", "var(--teal)", "var(--clay)"];
+  const expensePieSlices = expenseSlices.slice(0, 3).map((s, i) => ({ ...s, color: CHART_COLORS[i] }));
+  const otherExpenseAmount = expenseSlices.slice(3).reduce((s, x) => s + x.amount, 0);
+  if (otherExpenseAmount > 0) expensePieSlices.push({ label: "Other", amount: otherExpenseAmount, color: "var(--muted)" });
 
   const usageTotalMap = new Map(usageTotalsRaw.map((r) => [`${r.schoolId}:${r.role}`, r._count]));
   const usageActiveMap = new Map(usageActiveRaw.map((r) => [`${r.schoolId}:${r.role}`, r._count]));
@@ -77,14 +90,6 @@ export default async function SuperAdminDashboard({ searchParams }: { searchPara
     amount: allPayments.filter((p) => p.paidOn.getFullYear() === year && p.paidOn.getMonth() === month).reduce((s, p) => s + Number(p.amount), 0),
   }));
   const maxRevenue = Math.max(1, ...monthlyRevenue.map((m) => m.amount));
-
-  const STATUS_STYLE: Record<string, { bg: string; fg: string; label: string }> = {
-    ACTIVE: { bg: "var(--good-tint)", fg: "var(--good)", label: "Active" },
-    TRIAL: { bg: "var(--info-tint)", fg: "var(--info)", label: "Trial" },
-    EXPIRING: { bg: "var(--warn-tint)", fg: "var(--warn)", label: "Expiring soon" },
-    OVERDUE: { bg: "var(--critical-tint)", fg: "var(--critical)", label: "Overdue" },
-    CANCELLED: { bg: "var(--line)", fg: "var(--faint)", label: "Cancelled" },
-  };
 
   return (
     <div style={{ padding: "28px 36px", display: "flex", flexDirection: "column", gap: 22, height: "100dvh", boxSizing: "border-box" }}>
@@ -170,39 +175,14 @@ export default async function SuperAdminDashboard({ searchParams }: { searchPara
         </div>
 
         <div className="card" style={{ padding: 22, display: "flex", flexDirection: "column", overflow: "hidden" }}>
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 14 }}>
-            <div style={{ fontSize: 14, fontWeight: 700 }}>Schools</div>
-            <Link href="/super-admin/schools" style={{ fontSize: 12.5, color: "var(--marigold-deep)", fontWeight: 600, textDecoration: "none" }}>
-              View all
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 2 }}>
+            <div style={{ fontSize: 14, fontWeight: 700 }}>Expense breakdown</div>
+            <Link href="/super-admin/accounts" style={{ fontSize: 12.5, color: "var(--marigold-deep)", fontWeight: 600, textDecoration: "none" }}>
+              Open Accounts →
             </Link>
           </div>
-          <div style={{ display: "grid", gridTemplateColumns: "2.1fr 1fr 0.8fr 1.1fr 1.2fr", fontSize: 11.5, color: "var(--faint)", textTransform: "uppercase", letterSpacing: "0.04em", paddingBottom: 10, borderBottom: "1px solid var(--line)" }}>
-            <div>School</div>
-            <div>Plan</div>
-            <div>Students</div>
-            <div>Status</div>
-            <div>Renewal</div>
-          </div>
-          <div style={{ overflowY: "auto" }}>
-            {schools.map((s) => {
-              const style = STATUS_STYLE[s.status];
-              return (
-                <Link key={s.id} href={`/super-admin/schools?school=${s.id}`} style={{ display: "grid", gridTemplateColumns: "2.1fr 1fr 0.8fr 1.1fr 1.2fr", alignItems: "center", padding: "13px 0", borderBottom: "1px solid var(--line)", fontSize: 13.5, textDecoration: "none", color: "inherit" }}>
-                  <div style={{ fontWeight: 600 }}>{s.name}</div>
-                  <div style={{ color: "var(--muted)" }}>{s.plan === "STANDARD" ? "Standard" : "Premium"}</div>
-                  <div className="mono">{studentCountBySchool.get(s.id) ?? 0}</div>
-                  <div>
-                    <span className="pill" style={{ background: style.bg, color: style.fg }}>
-                      {style.label}
-                    </span>
-                  </div>
-                  <div className="mono" style={{ color: "var(--muted)" }}>
-                    {s.invoices[0]?.dueDate.toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" }) ?? "—"}
-                  </div>
-                </Link>
-              );
-            })}
-          </div>
+          <div style={{ fontSize: 12, color: "var(--muted)", marginBottom: 18 }}>This month, top categories — Vidya Yati&apos;s own spend</div>
+          <ExpenseBreakdownChart slices={expensePieSlices} totalLabel="total spend" formatAmount={formatINR} />
         </div>
       </div>
     </div>

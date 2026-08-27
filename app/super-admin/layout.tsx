@@ -2,13 +2,14 @@ import { redirect } from "next/navigation";
 import Link from "next/link";
 import { auth } from "@/auth";
 import { signOutAction } from "@/app/app/actions";
-import { IconHome, IconSchool, IconReceipt, IconBarChart, IconSettings, IconLogOut } from "@/components/icons";
+import { IconHome, IconSchool, IconReceipt, IconWallet, IconBarChart, IconSettings, IconLogOut } from "@/components/icons";
 import { initials } from "@/lib/format";
 
 const NAV = [
   { label: "Dashboard", href: "/super-admin/dashboard", icon: IconHome },
   { label: "Schools", href: "/super-admin/schools", icon: IconSchool },
   { label: "Subscriptions & Billing", href: "/super-admin/subscriptions", icon: IconReceipt },
+  { label: "Accounts", href: "/super-admin/accounts", icon: IconWallet },
   { label: "Reports", href: "/super-admin/reports", icon: IconBarChart },
   { label: "Settings", href: "/super-admin/settings", icon: IconSettings },
 ];

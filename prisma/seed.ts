@@ -22,6 +22,25 @@ async function main() {
     },
   });
 
+  // --- Platform chart of accounts (Vidya Yati's own bookkeeping) ----------
+  const CHART_OF_ACCOUNTS: { id: string; name: string; type: "INCOME" | "EXPENSE"; code: string }[] = [
+    { id: "la-subscription-revenue", name: "Subscription Revenue", type: "INCOME", code: "4000" },
+    { id: "la-other-income", name: "Other Income", type: "INCOME", code: "4900" },
+    { id: "la-hosting", name: "Hosting & Infrastructure", type: "EXPENSE", code: "5000" },
+    { id: "la-salaries", name: "Salaries & Payroll", type: "EXPENSE", code: "5100" },
+    { id: "la-software", name: "Software & Tools", type: "EXPENSE", code: "5200" },
+    { id: "la-marketing", name: "Marketing & Sales", type: "EXPENSE", code: "5300" },
+    { id: "la-office", name: "Office & Admin", type: "EXPENSE", code: "5400" },
+    { id: "la-professional-fees", name: "Professional Fees", type: "EXPENSE", code: "5500" },
+    { id: "la-taxes", name: "Taxes & Compliance", type: "EXPENSE", code: "5600" },
+    { id: "la-misc", name: "Miscellaneous", type: "EXPENSE", code: "5900" },
+  ];
+  await Promise.all(
+    CHART_OF_ACCOUNTS.map((a) =>
+      db.ledgerAccount.upsert({ where: { id: a.id }, update: {}, create: a })
+    )
+  );
+
   // --- Demo school ----------------------------------------------------------
   const school = await db.school.upsert({
     where: { id: "demo-school" },

@@ -153,6 +153,7 @@ model SubscriptionInvoice {
   billingPeriod  String        @map("billing_period") // e.g. "2026-27"
   dueDate        DateTime      @map("due_date")
   status         InvoiceStatus @default(PENDING)
+  recurrence     Recurrence    @default(NONE) // schedules "generate next invoice" in the Accounts module
   createdAt      DateTime      @default(now()) @map("created_at")
 
   payments SubscriptionPayment[]
@@ -170,8 +171,133 @@ model SubscriptionPayment {
   referenceNo  String?  @map("reference_no")
   paidOn       DateTime @map("paid_on")
 
+  ledgerEntry LedgerEntry?
+
   @@index([invoiceId])
   @@map("subscription_payments")
+}
+
+// =========================================================================
+// PLATFORM ACCOUNTS (Vidya Yati's own bookkeeping — separate from what a
+// school owes Vidya Yati above, and separate from a school's own
+// AccountsTransaction ledger under FINANCE below. This is Vidya Yati-the-
+// company's income/expense ledger: subscription income (auto-mirrored from
+// SubscriptionPayment) plus everything Vidya Yati itself pays out.)
+// =========================================================================
+
+enum LedgerAccountType {
+  INCOME
+  EXPENSE
+  ASSET
+  LIABILITY
+}
+
+model LedgerAccount {
+  id        String            @id @default(cuid())
+  name      String            @unique
+  type      LedgerAccountType
+  code      String?
+  isActive  Boolean           @default(true) @map("is_active")
+  createdAt DateTime          @default(now()) @map("created_at")
+
+  bills   Bill[]
+  entries LedgerEntry[]
+
+  @@map("ledger_accounts")
+}
+
+model Vendor {
+  id          String   @id @default(cuid())
+  name        String
+  category    String?
+  contactName String?  @map("contact_name")
+  phone       String?
+  email       String?
+  notes       String?  @db.Text
+  isActive    Boolean  @default(true) @map("is_active")
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  bills   Bill[]
+  entries LedgerEntry[]
+
+  @@map("vendors")
+}
+
+enum Recurrence {
+  NONE
+  MONTHLY
+  QUARTERLY
+  YEARLY
+}
+
+enum BillStatus {
+  PENDING
+  PARTIALLY_PAID
+  PAID
+  OVERDUE
+  CANCELLED
+}
+
+model Bill {
+  id              String        @id @default(cuid())
+  billNumber      String        @unique @map("bill_number")
+  vendorId        String        @map("vendor_id")
+  vendor          Vendor        @relation(fields: [vendorId], references: [id])
+  ledgerAccountId String        @map("ledger_account_id")
+  ledgerAccount   LedgerAccount @relation(fields: [ledgerAccountId], references: [id])
+  amount          Decimal       @db.Decimal(12, 2)
+  issueDate       DateTime      @map("issue_date")
+  dueDate         DateTime      @map("due_date")
+  status          BillStatus    @default(PENDING)
+  recurrence      Recurrence    @default(NONE)
+  notes           String?       @db.Text
+  createdAt       DateTime      @default(now()) @map("created_at")
+
+  payments LedgerEntry[]
+
+  @@index([vendorId])
+  @@index([ledgerAccountId])
+  @@map("bills")
+}
+
+enum LedgerEntryType {
+  INCOME
+  EXPENSE
+}
+
+enum LedgerSource {
+  MANUAL
+  AUTO_SUBSCRIPTION
+}
+
+// One row per platform cash movement, in or out. Bill payments and
+// subscription income both land here (the latter auto-created alongside a
+// SubscriptionPayment — see recordSubscriptionPayment) so the Accounts
+// module has one unified feed instead of needing to stitch two tables.
+model LedgerEntry {
+  id              String          @id @default(cuid())
+  entryType       LedgerEntryType @map("entry_type")
+  ledgerAccountId String          @map("ledger_account_id")
+  ledgerAccount   LedgerAccount   @relation(fields: [ledgerAccountId], references: [id])
+  amount          Decimal         @db.Decimal(12, 2)
+  date            DateTime
+  description     String
+  method          String?
+  referenceNo     String?         @map("reference_no")
+  source          LedgerSource    @default(MANUAL)
+  vendorId        String?         @map("vendor_id")
+  vendor          Vendor?         @relation(fields: [vendorId], references: [id])
+  billId          String?         @map("bill_id")
+  bill            Bill?           @relation(fields: [billId], references: [id])
+
+  subscriptionPaymentId String?              @unique @map("subscription_payment_id")
+  subscriptionPayment   SubscriptionPayment? @relation(fields: [subscriptionPaymentId], references: [id])
+
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@index([entryType, date])
+  @@index([ledgerAccountId])
+  @@map("ledger_entries")
 }
 
 // =========================================================================

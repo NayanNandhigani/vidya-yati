@@ -18,23 +18,41 @@ export async function recordSubscriptionPayment(_prevState: PaymentFormState, fo
   const amount = Number(amountRaw);
   if (!Number.isFinite(amount) || amount <= 0) return { error: "Enter a valid amount." };
 
-  const invoice = await db.subscriptionInvoice.findUniqueOrThrow({ where: { id: invoiceId }, include: { payments: true } });
+  const invoice = await db.subscriptionInvoice.findUniqueOrThrow({ where: { id: invoiceId }, include: { payments: true, school: true } });
   const paidOn = typeof paidOnRaw === "string" && paidOnRaw ? new Date(paidOnRaw) : new Date();
+  const normalizedReferenceNo = typeof referenceNo === "string" && referenceNo ? referenceNo : null;
 
   const alreadyPaid = invoice.payments.reduce((s, p) => s + Number(p.amount), 0);
   const newStatus = alreadyPaid + amount >= Number(invoice.amount) ? "PAID" : "PENDING";
 
+  const payment = await db.subscriptionPayment.create({
+    data: { invoiceId, amount, method, referenceNo: normalizedReferenceNo, paidOn },
+  });
   await db.$transaction([
-    db.subscriptionPayment.create({
-      data: { invoiceId, amount, method, referenceNo: typeof referenceNo === "string" && referenceNo ? referenceNo : null, paidOn },
-    }),
     db.subscriptionInvoice.update({ where: { id: invoiceId }, data: { status: newStatus } }),
     ...(newStatus === "PAID" ? [db.school.update({ where: { id: invoice.schoolId }, data: { status: "ACTIVE" as const } })] : []),
+    // Mirrors into the platform ledger so subscription income shows up in
+    // Accounts without the Super Admin having to enter it twice — same
+    // pattern as AccountsTransaction.source: AUTO_FEES at the school level.
+    db.ledgerEntry.create({
+      data: {
+        entryType: "INCOME",
+        ledgerAccountId: "la-subscription-revenue",
+        amount,
+        date: paidOn,
+        description: `Subscription payment — ${invoice.school.name} (${invoice.billingPeriod})`,
+        method,
+        referenceNo: normalizedReferenceNo,
+        source: "AUTO_SUBSCRIPTION",
+        subscriptionPaymentId: payment.id,
+      },
+    }),
   ]);
 
   revalidatePath("/super-admin/subscriptions");
   revalidatePath("/super-admin/schools");
   revalidatePath("/super-admin/dashboard");
+  revalidatePath("/super-admin/accounts");
   return { success: true };
 }
 
