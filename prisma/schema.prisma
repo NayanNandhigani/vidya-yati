@@ -45,6 +45,16 @@ enum SchoolStatus {
   CANCELLED
 }
 
+// Sales pipeline stage — separate from SchoolStatus (subscription lifecycle).
+// A School row exists for pipeline tracking even before a deal is WON.
+enum SalesStage {
+  LEAD
+  DEMO_SCHEDULED
+  PROPOSAL_SENT
+  NEGOTIATION
+  WON
+}
+
 model School {
   id                  String       @id @default(cuid())
   code                String       @unique
@@ -53,7 +63,11 @@ model School {
   state               String?
   plan                SchoolPlan   @default(STANDARD)
   status              SchoolStatus @default(TRIAL)
-  relationshipManager String?      @map("relationship_manager")
+  relationshipManager String?      @map("relationship_manager") // doubles as "account owner" for the sales pipeline — one field, not two
+  salesStage          SalesStage   @default(WON) @map("sales_stage") // WON = has gone through onboarding (has a School Admin login); pre-WON stages are pipeline-only prospects with no portal access yet
+  leadSource          String?      @map("lead_source")
+  lastContactedAt     DateTime?    @map("last_contacted_at")
+  nextFollowUpAt      DateTime?    @map("next_follow_up_at")
   onboardedOn         DateTime     @default(now()) @map("onboarded_on")
   createdAt           DateTime     @default(now()) @map("created_at")
   updatedAt           DateTime     @updatedAt @map("updated_at")
