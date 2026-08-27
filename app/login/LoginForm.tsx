@@ -11,8 +11,8 @@ export default function LoginForm() {
   return (
     <form action={formAction} style={{ display: "flex", flexDirection: "column", gap: 16 }}>
       <label className="field">
-        Email
-        <input className="in" type="email" name="email" required autoComplete="email" placeholder="you@school.edu" />
+        Username
+        <input className="in" type="text" name="username" required autoComplete="username" placeholder="e.g. VIDYAYATI" />
       </label>
 
       <label className="field">

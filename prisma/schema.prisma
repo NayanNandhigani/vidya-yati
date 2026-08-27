@@ -46,15 +46,17 @@ enum SchoolStatus {
 }
 
 model School {
-  id          String       @id @default(cuid())
-  name        String
-  city        String?
-  state       String?
-  plan        SchoolPlan   @default(STANDARD)
-  status      SchoolStatus @default(TRIAL)
-  onboardedOn DateTime     @default(now()) @map("onboarded_on")
-  createdAt   DateTime     @default(now()) @map("created_at")
-  updatedAt   DateTime     @updatedAt @map("updated_at")
+  id                  String       @id @default(cuid())
+  code                String       @unique
+  name                String
+  city                String?
+  state               String?
+  plan                SchoolPlan   @default(STANDARD)
+  status              SchoolStatus @default(TRIAL)
+  relationshipManager String?      @map("relationship_manager")
+  onboardedOn         DateTime     @default(now()) @map("onboarded_on")
+  createdAt           DateTime     @default(now()) @map("created_at")
+  updatedAt           DateTime     @updatedAt @map("updated_at")
 
   users                  User[]
   invoices               SubscriptionInvoice[]
@@ -95,8 +97,46 @@ model School {
   websiteSettings        WebsiteSettings?
   idCardTemplates        IdCardTemplate[]
   screenCustomizations   ScreenCustomization[]
+  notes                  SchoolNote[]
+  activityLogs           ActivityLog[]
 
   @@map("schools")
+}
+
+model SchoolNote {
+  id        String   @id @default(cuid())
+  schoolId  String   @map("school_id")
+  school    School   @relation(fields: [schoolId], references: [id], onDelete: Cascade)
+  authorId  String   @map("author_id")
+  author    User     @relation(fields: [authorId], references: [id])
+  body      String   @db.Text
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@index([schoolId])
+  @@map("school_notes")
+}
+
+enum ActivityType {
+  LOGIN
+  PAGE_VIEW
+}
+
+// Powers the Super Admin's per-school engagement view: login frequency and
+// which modules a school's users actually open. schoolId is null only for
+// Super Admin's own logins (they have no school).
+model ActivityLog {
+  id         String       @id @default(cuid())
+  schoolId   String?      @map("school_id")
+  school     School?      @relation(fields: [schoolId], references: [id], onDelete: Cascade)
+  userId     String       @map("user_id")
+  user       User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type       ActivityType
+  module     String? // set for PAGE_VIEW only, e.g. "Attendance", "Fees"
+  occurredAt DateTime     @default(now()) @map("occurred_at")
+
+  @@index([schoolId, occurredAt])
+  @@index([userId])
+  @@map("activity_logs")
 }
 
 enum InvoiceStatus {
@@ -156,16 +196,20 @@ model User {
   school       School?    @relation(fields: [schoolId], references: [id], onDelete: Cascade)
   name         String
   phone        String?
-  email        String     @unique
+  username     String     @unique
+  email        String?    @unique
   passwordHash String     @map("password_hash")
   role         UserRole
   status       UserStatus @default(ACTIVE)
+  lastLoginAt  DateTime?  @map("last_login_at")
   createdAt    DateTime   @default(now()) @map("created_at")
   updatedAt    DateTime   @updatedAt @map("updated_at")
 
   staffProfile      StaffProfile?
   parentProfile      Parent?
   announcementReads AnnouncementRead[]
+  schoolNotesAuthored SchoolNote[]
+  activityLogs      ActivityLog[]
 
   @@index([schoolId])
   @@map("users")

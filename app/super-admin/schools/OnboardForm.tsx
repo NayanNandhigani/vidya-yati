@@ -47,13 +47,10 @@ export default function OnboardForm() {
           <input className="in" name="adminName" required placeholder="e.g. Anil Kumar" />
         </label>
         <label className="field">
-          Admin email
-          <input className="in" type="email" name="adminEmail" required placeholder="anil.kumar@school.edu.in" />
+          Admin username
+          <input className="in" type="text" name="adminUsername" required placeholder="e.g. anil.kumar" />
         </label>
-        <label className="field">
-          Initial password
-          <input className="in" type="password" name="adminPassword" required minLength={8} placeholder="At least 8 characters" />
-        </label>
+        <div style={{ fontSize: 12, color: "var(--muted)" }}>Default password: <span className="mono">12345</span> — the admin can change it after logging in.</div>
 
         {state.error && (
           <p style={{ margin: 0, fontSize: 13, fontWeight: 600, color: "var(--critical)", background: "var(--critical-tint)", border: "1px solid var(--critical-border)", borderRadius: 8, padding: "8px 11px" }}>

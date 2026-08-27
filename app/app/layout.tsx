@@ -1,8 +1,12 @@
 import { redirect } from "next/navigation";
+import { headers } from "next/headers";
 import { auth } from "@/auth";
 import { db } from "@/lib/db";
+import { scopedDb, scopedCreateData } from "@/lib/tenant-db";
+import { moduleLabelForPath } from "@/components/sidebar-config";
 import Sidebar from "@/components/Sidebar";
 import { signOutAction } from "./actions";
+import type { Prisma } from "@prisma/client";
 
 export default async function AppLayout({ children }: { children: React.ReactNode }) {
   const session = await auth();
@@ -14,6 +18,15 @@ export default async function AppLayout({ children }: { children: React.ReactNod
     where: { id: session.user.schoolId },
     select: { name: true },
   });
+
+  const pathname = (await headers()).get("x-pathname");
+  const moduleLabel = pathname ? moduleLabelForPath(pathname) : null;
+  if (moduleLabel) {
+    const sdb = scopedDb(session.user.schoolId);
+    sdb.activityLog
+      .create({ data: scopedCreateData<Prisma.ActivityLogUncheckedCreateInput>({ userId: session.user.id, type: "PAGE_VIEW", module: moduleLabel }) })
+      .catch(() => {});
+  }
 
   let visibleModules: Set<string> | null = null;
   if (session.user.role === "STAFF") {

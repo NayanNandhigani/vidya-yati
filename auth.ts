@@ -9,17 +9,17 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   providers: [
     Credentials({
       credentials: {
-        email: { label: "Email", type: "email" },
+        username: { label: "Username", type: "text" },
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
-        const email = credentials?.email;
+        const username = credentials?.username;
         const password = credentials?.password;
-        if (typeof email !== "string" || typeof password !== "string") {
+        if (typeof username !== "string" || typeof password !== "string") {
           return null;
         }
 
-        const user = await db.user.findUnique({ where: { email: email.toLowerCase() } });
+        const user = await db.user.findUnique({ where: { username: username.trim().toLowerCase() } });
         if (!user || user.status !== "ACTIVE") {
           return null;
         }
@@ -29,9 +29,17 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           return null;
         }
 
+        await db.user
+          .update({ where: { id: user.id }, data: { lastLoginAt: new Date() } })
+          .catch(() => {});
+        await db.activityLog
+          .create({ data: { userId: user.id, schoolId: user.schoolId, type: "LOGIN" } })
+          .catch(() => {});
+
         return {
           id: user.id,
           name: user.name,
+          username: user.username,
           email: user.email,
           role: user.role,
           schoolId: user.schoolId,

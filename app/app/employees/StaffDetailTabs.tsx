@@ -21,7 +21,7 @@ type Staff = {
   department: string | null;
   dateJoined: string | null;
   employmentStatus: "ACTIVE" | "ON_LEAVE";
-  user: { name: string; email: string; phone: string | null };
+  user: { name: string; username: string; phone: string | null };
 };
 
 type Props = {
@@ -107,7 +107,7 @@ export default function StaffDetailTabs({ staff, isAdmin, attendanceTotals, rece
             <SectionTitle>Contact</SectionTitle>
             <FieldGrid>
               <Field label="Phone" value={staff.user.phone ?? "—"} mono />
-              <Field label="Email" value={staff.user.email} mono />
+              <Field label="Username" value={staff.user.username} mono />
             </FieldGrid>
           </>
         )}

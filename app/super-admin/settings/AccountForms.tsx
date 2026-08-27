@@ -5,7 +5,7 @@ import { updateAccount, changePassword, type FormState } from "./actions";
 
 const initialState: FormState = {};
 
-export default function AccountForms({ name, email }: { name: string; email: string }) {
+export default function AccountForms({ name, username }: { name: string; username: string }) {
   const [profileState, profileAction, profilePending] = useActionState(updateAccount, initialState);
   const [pwState, pwAction, pwPending] = useActionState(changePassword, initialState);
 
@@ -21,8 +21,8 @@ export default function AccountForms({ name, email }: { name: string; email: str
             <input className="in" name="name" defaultValue={name} required />
           </label>
           <label className="field">
-            Email
-            <input className="in mono" defaultValue={email} disabled style={{ background: "var(--paper)", color: "var(--muted)" }} />
+            Username
+            <input className="in mono" defaultValue={username} disabled style={{ background: "var(--paper)", color: "var(--muted)" }} />
           </label>
           <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
             <button type="submit" disabled={profilePending} style={{ background: "var(--marigold)", color: "#fff", border: "none", borderRadius: 8, padding: "9px 18px", fontSize: 13, fontWeight: 600, cursor: "pointer" }}>

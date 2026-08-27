@@ -9,7 +9,7 @@ export default async function SuperAdminSettingsPage() {
         Settings
       </div>
       <div className="card" style={{ padding: 26, maxWidth: 600 }}>
-        <AccountForms name={session!.user.name ?? ""} email={session!.user.email ?? ""} />
+        <AccountForms name={session!.user.name ?? ""} username={session!.user.username} />
       </div>
     </div>
   );

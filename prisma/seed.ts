@@ -7,16 +7,18 @@ async function hash(password: string) {
   return bcrypt.hash(password, 10);
 }
 
+const DEFAULT_PASSWORD = "12345";
+
 async function main() {
   // --- Super Admin (no schoolId — platform-level account) -----------------
   await db.user.upsert({
-    where: { email: "superadmin@vidyayati.com" },
+    where: { username: "vidyayati" },
     update: {},
     create: {
-      email: "superadmin@vidyayati.com",
+      username: "vidyayati",
       name: "Vidya Yati Platform Admin",
       role: "SUPER_ADMIN",
-      passwordHash: await hash("SuperAdmin@123"),
+      passwordHash: await hash(DEFAULT_PASSWORD),
     },
   });
 
@@ -26,6 +28,7 @@ async function main() {
     update: {},
     create: {
       id: "demo-school",
+      code: "SUN0001",
       name: "Sunrise Public School",
       city: "Bengaluru",
       state: "Karnataka",
@@ -75,29 +78,29 @@ async function main() {
 
   // --- School Admin -----------------------------------------------------
   await db.user.upsert({
-    where: { email: "principal@sunrise.edu" },
+    where: { username: "anita.rao" },
     update: {},
     create: {
-      email: "principal@sunrise.edu",
+      username: "anita.rao",
       name: "Anita Rao",
       phone: "9876500001",
       role: "SCHOOL_ADMIN",
       schoolId: school.id,
-      passwordHash: await hash("Admin@123"),
+      passwordHash: await hash(DEFAULT_PASSWORD),
     },
   });
 
   // --- Staff (teacher, with per-module permissions) ----------------------
   const teacherUser = await db.user.upsert({
-    where: { email: "teacher@sunrise.edu" },
+    where: { username: "ravi.kumar" },
     update: {},
     create: {
-      email: "teacher@sunrise.edu",
+      username: "ravi.kumar",
       name: "Ravi Kumar",
       phone: "9876500002",
       role: "STAFF",
       schoolId: school.id,
-      passwordHash: await hash("Staff@123"),
+      passwordHash: await hash(DEFAULT_PASSWORD),
     },
   });
 
@@ -142,15 +145,15 @@ async function main() {
 
   // --- Parent + student ----------------------------------------------------
   const parentUser = await db.user.upsert({
-    where: { email: "parent@sunrise.edu" },
+    where: { username: "suresh.nair" },
     update: {},
     create: {
-      email: "parent@sunrise.edu",
+      username: "suresh.nair",
       name: "Suresh Nair",
       phone: "9876500003",
       role: "PARENT",
       schoolId: school.id,
-      passwordHash: await hash("Parent@123"),
+      passwordHash: await hash(DEFAULT_PASSWORD),
     },
   });
 
@@ -192,10 +195,10 @@ async function main() {
   });
 
   console.log("Seed complete.");
-  console.log("  Super Admin:  superadmin@vidyayati.com / SuperAdmin@123");
-  console.log("  School Admin: principal@sunrise.edu / Admin@123");
-  console.log("  Staff:        teacher@sunrise.edu / Staff@123");
-  console.log("  Parent:       parent@sunrise.edu / Parent@123");
+  console.log(`  Super Admin:  vidyayati / ${DEFAULT_PASSWORD}`);
+  console.log(`  School Admin: anita.rao / ${DEFAULT_PASSWORD}`);
+  console.log(`  Staff:        ravi.kumar / ${DEFAULT_PASSWORD}`);
+  console.log(`  Parent:       suresh.nair / ${DEFAULT_PASSWORD}`);
 }
 
 main()

@@ -46,7 +46,7 @@ export default async function EmployeesPage({ searchParams }: { searchParams: Pr
         department: selected.department,
         dateJoined: selected.dateJoined?.toISOString() ?? null,
         employmentStatus: selected.employmentStatus,
-        user: { name: selected.user.name, email: selected.user.email, phone: selected.user.phone },
+        user: { name: selected.user.name, username: selected.user.username, phone: selected.user.phone },
       },
       attendanceTotals,
       recentAttendance: recentAttendance.map((a) => ({ date: a.date.toISOString(), status: a.status })),

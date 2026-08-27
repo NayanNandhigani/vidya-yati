@@ -85,3 +85,11 @@ export const NAV_GROUPS: NavGroup[] = [
     items: [{ label: "Settings", href: "/app/settings", icon: IconSettings, roles: ["SCHOOL_ADMIN"] }],
   },
 ];
+
+const ALL_NAV_ITEMS = NAV_GROUPS.flatMap((g) => g.items);
+
+/** Maps a request path (e.g. "/app/attendance/mark") to its nav label ("Attendance"), for activity logging. */
+export function moduleLabelForPath(pathname: string): string | null {
+  const match = ALL_NAV_ITEMS.find((item) => pathname === item.href || pathname.startsWith(item.href + "/"));
+  return match?.label ?? null;
+}

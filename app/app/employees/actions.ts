@@ -11,31 +11,33 @@ import { auth } from "@/auth";
 
 export type StaffFormState = { error?: string };
 
+const DEFAULT_PASSWORD = "12345";
+
 export async function createStaff(_prevState: StaffFormState, formData: FormData): Promise<StaffFormState> {
   const session = await auth();
   if (session!.user.role !== "SCHOOL_ADMIN") return { error: "Only a School Admin can add staff." };
   const sdb = await getScopedDb();
 
   const name = formData.get("name");
-  const email = formData.get("email");
+  const username = formData.get("username");
   const phone = formData.get("phone");
-  const password = formData.get("password");
   const designation = formData.get("designation");
   const department = formData.get("department");
 
-  if (typeof name !== "string" || !name.trim() || typeof email !== "string" || !email.trim() || typeof password !== "string" || password.length < 8) {
-    return { error: "Name, email, and a password of at least 8 characters are required." };
+  if (typeof name !== "string" || !name.trim() || typeof username !== "string" || !username.trim()) {
+    return { error: "Name and username are required." };
   }
 
-  const existing = await db.user.findUnique({ where: { email: email.toLowerCase() } });
-  if (existing) return { error: "A user with this email already exists." };
+  const normalizedUsername = username.trim().toLowerCase();
+  const existing = await db.user.findUnique({ where: { username: normalizedUsername } });
+  if (existing) return { error: "A user with this username already exists." };
 
-  const passwordHash = await bcrypt.hash(password, 10);
+  const passwordHash = await bcrypt.hash(DEFAULT_PASSWORD, 10);
 
   const user = await sdb.user.create({
     data: scopedCreateData<Prisma.UserUncheckedCreateInput>({
       name: name.trim(),
-      email: email.toLowerCase().trim(),
+      username: normalizedUsername,
       phone: typeof phone === "string" && phone ? phone : null,
       role: "STAFF",
       passwordHash,

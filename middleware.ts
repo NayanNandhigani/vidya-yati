@@ -30,6 +30,17 @@ export default auth((req) => {
     return NextResponse.redirect(new URL("/super-admin/dashboard", nextUrl));
   }
 
+  // Expose the current pathname to Server Components (app/app/layout.tsx uses
+  // it for per-module activity logging) — RSC layouts don't receive it directly.
+  // Skip prefetch requests (Link hover/viewport prefetch) so they don't
+  // inflate module-usage counts with pages the user never actually opened.
+  const isPrefetch = req.headers.get("next-router-prefetch") || req.headers.get("purpose") === "prefetch";
+  if (isAppRoute && !isPrefetch) {
+    const headers = new Headers(req.headers);
+    headers.set("x-pathname", nextUrl.pathname);
+    return NextResponse.next({ request: { headers } });
+  }
+
   return NextResponse.next();
 });
 

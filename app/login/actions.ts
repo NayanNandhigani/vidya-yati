@@ -7,15 +7,15 @@ import { auth, signIn } from "@/auth";
 export type LoginState = { error?: string };
 
 export async function loginAction(_prevState: LoginState, formData: FormData): Promise<LoginState> {
-  const email = formData.get("email");
+  const username = formData.get("username");
   const password = formData.get("password");
 
-  if (typeof email !== "string" || typeof password !== "string" || !email || !password) {
-    return { error: "Enter your email and password." };
+  if (typeof username !== "string" || typeof password !== "string" || !username || !password) {
+    return { error: "Enter your username and password." };
   }
 
   try {
-    await signIn("credentials", { email, password, redirect: false });
+    await signIn("credentials", { username, password, redirect: false });
   } catch (error) {
     if (error instanceof AuthError) {
       // Only a real "authorize() returned null" means bad credentials.
@@ -23,7 +23,7 @@ export async function loginAction(_prevState: LoginState, formData: FormData): P
       // server misconfiguration — log the real cause instead of masking
       // it as "wrong password", which makes that class of bug undebuggable.
       if (error.type === "CredentialsSignin") {
-        return { error: "Incorrect email or password." };
+        return { error: "Incorrect username or password." };
       }
       console.error("Sign-in failed with a non-credentials auth error:", error);
       return { error: "Sign-in is temporarily unavailable. Please try again shortly." };

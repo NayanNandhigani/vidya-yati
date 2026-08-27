@@ -12,6 +12,9 @@
 .env
 .env*.local
 
+# local database files (embedded Postgres data directory)
+/DATA
+
 # misc
 .DS_Store
 *.pem

@@ -14,6 +14,7 @@ export const authConfig: NextAuthConfig = {
       if (user) {
         token.role = user.role;
         token.schoolId = user.schoolId ?? null;
+        token.username = user.username;
       }
       return token;
     },
@@ -22,6 +23,7 @@ export const authConfig: NextAuthConfig = {
         session.user.id = token.sub as string;
         session.user.role = token.role as typeof session.user.role;
         session.user.schoolId = (token.schoolId as string | null) ?? null;
+        session.user.username = token.username as string;
       }
       return session;
     },

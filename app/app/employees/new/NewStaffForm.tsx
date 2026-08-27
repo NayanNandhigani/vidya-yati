@@ -17,8 +17,8 @@ export default function NewStaffForm() {
       </label>
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14 }}>
         <label className="field">
-          Email
-          <input className="in" type="email" name="email" required placeholder="priya.kapoor@school.edu" />
+          Username
+          <input className="in" type="text" name="username" required placeholder="e.g. priya.kapoor" />
         </label>
         <label className="field">
           Phone
@@ -35,10 +35,7 @@ export default function NewStaffForm() {
           <input className="in" name="department" placeholder="Academics" />
         </label>
       </div>
-      <label className="field">
-        Initial password
-        <input className="in" type="password" name="password" required minLength={8} placeholder="At least 8 characters" />
-      </label>
+      <div style={{ fontSize: 12, color: "var(--muted)" }}>Default password: <span className="mono">12345</span> — the staff member can change it after logging in.</div>
 
       {state.error && (
         <p style={{ margin: 0, fontSize: 13, fontWeight: 600, color: "var(--critical)", background: "var(--critical-tint)", border: "1px solid var(--critical-border)", borderRadius: 8, padding: "8px 11px" }}>
