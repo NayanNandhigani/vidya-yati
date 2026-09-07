@@ -789,7 +789,6 @@ enum AccessLevel {
   NONE
   VIEW
   EDIT
-  FULL
 }
 
 model StaffPermission {
@@ -1275,12 +1274,28 @@ model Exam {
   endDate   DateTime     @map("end_date")
   resultReleaseAt DateTime? @map("result_release_at") // parents can't see this exam's marks before this instant — null = visible as soon as entered (today's behavior)
 
+  // Every newly scheduled or edited exam starts/reverts to PENDING,
+  // regardless of who schedules it — School Admin included — and needs an
+  // explicit approveExam call (School-Admin-only) before it counts as
+  // successfully scheduled; see createExam/updateExam/approveExam/
+  // rejectExam in actions.ts. Existing rows predating this column default
+  // to APPROVED (grandfathered in via the migration's column default, not
+  // a special-cased backfill — nothing already scheduled before this
+  // feature existed gets retroactively un-scheduled).
+  approvalStatus ExamApprovalStatus @default(APPROVED) @map("approval_status")
+
   examSubjects ExamSubject[]
   seating      ExamSeating[]
 
   @@index([schoolId])
   @@index([classId])
   @@map("exams")
+}
+
+enum ExamApprovalStatus {
+  PENDING
+  APPROVED
+  REJECTED
 }
 
 model ExamSubject {

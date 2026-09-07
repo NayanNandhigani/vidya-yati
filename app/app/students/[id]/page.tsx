@@ -33,6 +33,7 @@ export default async function StudentProfilePage({ params }: { params: Promise<{
       },
       emergencyContacts: { orderBy: { priority: "asc" } },
       documents: { where: { subjectType: "STUDENT" }, orderBy: { uploadedAt: "desc" } },
+      admissionEnquiry: true,
     },
   });
   if (!student) notFound();
@@ -154,6 +155,39 @@ export default async function StudentProfilePage({ params }: { params: Promise<{
           expiryDate: d.expiryDate?.toISOString() ?? null,
           uploadedAt: d.uploadedAt.toISOString(),
         }))}
+        admission={
+          student.admissionEnquiry
+            ? {
+                dob: student.admissionEnquiry.dob?.toISOString() ?? null,
+                gender: student.admissionEnquiry.gender,
+                bloodGroup: student.admissionEnquiry.bloodGroup,
+                nationality: student.admissionEnquiry.nationality,
+                caste: student.admissionEnquiry.caste,
+                religionCategory: student.admissionEnquiry.religionCategory,
+                motherTongue: student.admissionEnquiry.motherTongue,
+                studentAadhaarNumber: student.admissionEnquiry.studentAadhaarNumber,
+                fatherName: student.admissionEnquiry.fatherName,
+                motherName: student.admissionEnquiry.motherName,
+                guardianName: student.admissionEnquiry.guardianName,
+                fatherOccupation: student.admissionEnquiry.fatherOccupation,
+                motherOccupation: student.admissionEnquiry.motherOccupation,
+                annualIncome: student.admissionEnquiry.annualIncome,
+                parentContact: student.admissionEnquiry.parentContact,
+                contactNumber2: student.admissionEnquiry.contactNumber2,
+                email: student.admissionEnquiry.email,
+                parentAadhaarNumber: student.admissionEnquiry.parentAadhaarNumber,
+                permanentAddress: student.admissionEnquiry.permanentAddress,
+                currentAddress: student.admissionEnquiry.currentAddress,
+                pincode: student.admissionEnquiry.pincode,
+                allergiesConditions: student.admissionEnquiry.allergiesConditions,
+                emergencyContactName: student.admissionEnquiry.emergencyContactName,
+                emergencyContactNumber: student.admissionEnquiry.emergencyContactNumber,
+                familyDoctorContact: student.admissionEnquiry.familyDoctorContact,
+                udiseNumber: student.admissionEnquiry.udiseNumber,
+                penNumber: student.admissionEnquiry.penNumber,
+              }
+            : null
+        }
       />
     </div>
   );

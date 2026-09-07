@@ -23,7 +23,7 @@ export default async function LibraryPage({ searchParams }: { searchParams: Prom
   }
 
   const accessLevel = await requireModuleAccess("Library", "VIEW");
-  const canEdit = accessLevel === "EDIT" || accessLevel === "FULL";
+  const canEdit = accessLevel === "EDIT";
   const params = await searchParams;
   const tab: Tab = TABS.includes(params.tab as Tab) ? (params.tab as Tab) : "catalogue";
 

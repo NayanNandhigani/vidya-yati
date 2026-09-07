@@ -15,7 +15,7 @@ const STATUS_STYLE: Record<string, { bg: string; fg: string; label: string }> = 
 export default async function ContractsPage({ searchParams }: { searchParams: Promise<{ contract?: string; new?: string; school?: string }> }) {
   const access = await requirePlatformModuleAccess("Contracts", "VIEW");
   const params = await searchParams;
-  const canManage = access === "EDIT" || access === "FULL";
+  const canManage = access === "EDIT";
 
   const [contracts, schools] = await Promise.all([
     db.contract.findMany({ include: { school: true }, orderBy: { createdAt: "desc" } }),

@@ -70,7 +70,7 @@ export async function cyclePermission(staffId: string, moduleName: string, class
   if (session!.user.role !== "SCHOOL_ADMIN") throw new Error("Only a School Admin can change permissions.");
   const sdb = await getScopedDb();
 
-  const CYCLE: AccessLevel[] = ["NONE", "VIEW", "EDIT", "FULL"];
+  const CYCLE: AccessLevel[] = ["NONE", "VIEW", "EDIT"];
 
   // Prisma's compound-unique-key lookup type requires a non-null classId
   // (it can't express "classId IS NULL" through that path, even though the

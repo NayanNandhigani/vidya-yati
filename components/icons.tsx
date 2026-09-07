@@ -216,3 +216,13 @@ export const IconBox = (p: SVGProps<SVGSVGElement>) => (
     <path d="M12 12.5V21.5" />
   </Icon>
 );
+
+export const IconBed = (p: SVGProps<SVGSVGElement>) => (
+  <Icon {...p}>
+    <path d="M3 19v-8.5A1.5 1.5 0 0 1 4.5 9H11v4" />
+    <path d="M21 19v-4a2 2 0 0 0-2-2h-6a2 2 0 0 0-2 2v4" />
+    <circle cx="6.5" cy="9.8" r="1.4" />
+    <path d="M3 16h18" />
+    <path d="M3 19v1.5M21 19v1.5" />
+  </Icon>
+);

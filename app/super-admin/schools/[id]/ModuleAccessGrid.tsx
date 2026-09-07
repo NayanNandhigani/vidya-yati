@@ -3,7 +3,7 @@
 import { useTransition } from "react";
 import { toggleSchoolModule } from "../actions";
 
-const MODULES = ["Students", "Employees", "Attendance", "Exams", "Homework", "Timetable", "Fees", "Accounts", "Admissions", "Transport", "Library", "Events", "Certificates", "Communication", "Reports"];
+const MODULES = ["Students", "Employees", "Attendance", "Exams", "Homework", "Timetable", "Fees", "Accounts", "Admissions", "Transport", "Hostel", "Library", "Events", "Certificates", "Communication", "Reports"];
 
 export default function ModuleAccessGrid({ schoolId, disabledModules }: { schoolId: string; disabledModules: string[] }) {
   const [pending, startTransition] = useTransition();

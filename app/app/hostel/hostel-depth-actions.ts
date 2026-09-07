@@ -13,7 +13,7 @@ async function schoolId() {
 }
 
 async function guard() {
-  await requireModuleAccess("Transport", "EDIT");
+  await requireModuleAccess("Hostel", "EDIT");
   await requireFeature(await schoolId(), "hostel.operations");
 }
 
@@ -21,7 +21,7 @@ export async function updateRoomTypeAndWarden(roomId: string, roomType: string |
   await guard();
   const sdb = await getScopedDb();
   await sdb.hostelRoom.update({ where: { id: roomId }, data: { roomType, wardenStaffId } });
-  revalidatePath("/app/transport");
+  revalidatePath("/app/hostel");
 }
 
 export async function upsertMessMenu(dayOfWeek: number, mealType: MealType, menuText: string) {
@@ -33,7 +33,7 @@ export async function upsertMessMenu(dayOfWeek: number, mealType: MealType, menu
     create: scopedCreateData<Prisma.HostelMessMenuUncheckedCreateInput>({ dayOfWeek, mealType, menuText: menuText.trim() }),
     update: { menuText: menuText.trim() },
   });
-  revalidatePath("/app/transport");
+  revalidatePath("/app/hostel");
 }
 
 export async function addVisitorLog(studentId: string, visitorName: string, relation: string | null, purpose: string | null) {
@@ -42,14 +42,14 @@ export async function addVisitorLog(studentId: string, visitorName: string, rela
   await sdb.hostelVisitorLog.create({
     data: scopedCreateData<Prisma.HostelVisitorLogUncheckedCreateInput>({ studentId, visitorName: visitorName.trim(), relation, purpose }),
   });
-  revalidatePath("/app/transport");
+  revalidatePath("/app/hostel");
 }
 
 export async function checkOutVisitor(logId: string) {
   await guard();
   const sdb = await getScopedDb();
   await sdb.hostelVisitorLog.update({ where: { id: logId }, data: { checkOutAt: new Date() } });
-  revalidatePath("/app/transport");
+  revalidatePath("/app/hostel");
 }
 
 /** Parent requests an outing for their hostel-resident child — no module-access check, a parent isn't Staff/Admin. */
@@ -71,7 +71,7 @@ export async function requestOuting(studentId: string, reason: string, dateFrom:
       dateTo: new Date(dateTo),
     }),
   });
-  revalidatePath("/app/transport");
+  revalidatePath("/app/hostel");
 }
 
 export async function actOnOuting(requestId: string, approve: boolean) {
@@ -81,5 +81,5 @@ export async function actOnOuting(requestId: string, approve: boolean) {
     where: { id: requestId },
     data: { status: approve ? HostelOutingStatus.APPROVED : HostelOutingStatus.REJECTED, actionAt: new Date() },
   });
-  revalidatePath("/app/transport");
+  revalidatePath("/app/hostel");
 }

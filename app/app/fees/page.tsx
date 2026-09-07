@@ -17,7 +17,7 @@ export default async function FeesPage() {
   }
 
   const accessLevel = await requireModuleAccess("Fees", "VIEW");
-  const canEdit = accessLevel === "EDIT" || accessLevel === "FULL";
+  const canEdit = accessLevel === "EDIT";
 
   const currentYear = await sdb.academicYear.findFirst({ where: { isCurrent: true } });
   const structures = currentYear ? await sdb.feeStructure.findMany({ where: { yearId: currentYear.id } }) : [];

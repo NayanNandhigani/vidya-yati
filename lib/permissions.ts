@@ -6,14 +6,14 @@ const LEVEL_RANK: Record<AccessLevel, number> = {
   NONE: 0,
   VIEW: 1,
   EDIT: 2,
-  FULL: 3,
 };
 
 /**
  * Staff permissions are per-module (see StaffPermission), not a fixed
  * "Teacher" role — call this from a module's pages/server actions to check
- * the current user can access it. School Admins implicitly have FULL access
- * to everything. Throws if the session is missing or access is insufficient.
+ * the current user can access it. School Admins implicitly have EDIT access
+ * to everything (the top of the two-tier View/Edit ladder). Throws if the
+ * session is missing or access is insufficient.
  *
  * `classId`, when the module is one of the class-scoped ones (Students,
  * Attendance, Exams, Homework, Timetable), checks access to that specific
@@ -43,7 +43,7 @@ export async function requireModuleAccess(
   }
 
   if (session.user.role === "SCHOOL_ADMIN") {
-    return "FULL";
+    return "EDIT";
   }
 
   if (session.user.role !== "STAFF") {
@@ -94,7 +94,7 @@ export async function getPermittedClassIds(moduleName: string, minimum: AccessLe
 /**
  * Same idea as requireModuleAccess, but for the Super Admin portal's own
  * team (PlatformStaffPermission) rather than a school's. A SUPER_ADMIN
- * session implicitly has FULL access to every platform module; a
+ * session implicitly has EDIT access to every platform module; a
  * PLATFORM_STAFF session is checked against its per-module grant. Throws if
  * the session is missing or access is insufficient.
  */
@@ -108,7 +108,7 @@ export async function requirePlatformModuleAccess(
   }
 
   if (session.user.role === "SUPER_ADMIN") {
-    return "FULL";
+    return "EDIT";
   }
 
   if (session.user.role !== "PLATFORM_STAFF") {
@@ -129,11 +129,11 @@ export async function requirePlatformModuleAccess(
   return level;
 }
 
-/** Full map of a platform-staff session's per-module access, for building nav/UI. SUPER_ADMIN gets FULL everywhere. */
+/** Full map of a platform-staff session's per-module access, for building nav/UI. SUPER_ADMIN gets EDIT everywhere. */
 export async function getPlatformPermissionMap(): Promise<Record<string, AccessLevel> | null> {
   const session = await auth();
   if (!session?.user) return null;
-  if (session.user.role === "SUPER_ADMIN") return null; // null == unrestricted, caller should treat every module as FULL
+  if (session.user.role === "SUPER_ADMIN") return null; // null == unrestricted, caller should treat every module as EDIT
 
   const staffProfile = await db.platformStaffProfile.findUnique({
     where: { userId: session.user.id },

@@ -6,7 +6,7 @@ import LeadList, { type LeadRow } from "./LeadList";
 
 export default async function LeadsPage() {
   const access = await requirePlatformModuleAccess("Leads", "VIEW");
-  const canEdit = access === "EDIT" || access === "FULL";
+  const canEdit = access === "EDIT";
 
   const leadsRaw = await db.salesLead.findMany({ orderBy: { updatedAt: "desc" } });
 

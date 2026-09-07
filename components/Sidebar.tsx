@@ -19,6 +19,7 @@ export default function Sidebar({ role, visibleModules, disabledSchoolModules, s
 
   return (
     <aside
+      className="print-hide"
       style={{
         width: 236,
         flex: "none",

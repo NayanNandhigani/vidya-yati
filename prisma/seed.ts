@@ -239,8 +239,8 @@ async function seedSchool(school: SchoolSeed, now: Date, passwordHash: string, u
 
   await db.staffPermission.createMany({
     data: staffProfiles.flatMap((sp) => [
-      { schoolId: school.id, staffId: sp.id, moduleName: "Attendance", accessLevel: "FULL" as const },
-      { schoolId: school.id, staffId: sp.id, moduleName: "Homework", accessLevel: "FULL" as const },
+      { schoolId: school.id, staffId: sp.id, moduleName: "Attendance", accessLevel: "EDIT" as const },
+      { schoolId: school.id, staffId: sp.id, moduleName: "Homework", accessLevel: "EDIT" as const },
       { schoolId: school.id, staffId: sp.id, moduleName: "Exams", accessLevel: "EDIT" as const },
       { schoolId: school.id, staffId: sp.id, moduleName: "Timetable", accessLevel: "VIEW" as const },
       { schoolId: school.id, staffId: sp.id, moduleName: "Fees", accessLevel: "NONE" as const },

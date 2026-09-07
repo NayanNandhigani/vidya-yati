@@ -19,7 +19,7 @@ export default async function CommunicationPage() {
   }
 
   const accessLevel = await requireModuleAccess("Communication", "VIEW");
-  const canEdit = accessLevel === "EDIT" || accessLevel === "FULL";
+  const canEdit = accessLevel === "EDIT";
 
   if (!canEdit) {
     return <RecipientView />;

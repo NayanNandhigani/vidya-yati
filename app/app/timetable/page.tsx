@@ -63,7 +63,7 @@ export default async function TimetablePage({ searchParams }: { searchParams: Pr
   // Per-class access — a staffer can have EDIT on one class's timetable and
   // only VIEW (or none) on another.
   const accessLevel = classId ? await requireModuleAccess("Timetable", "VIEW", classId) : "NONE";
-  const canEdit = accessLevel === "EDIT" || accessLevel === "FULL";
+  const canEdit = accessLevel === "EDIT";
 
   return (
     <div style={{ padding: "22px 30px", display: "flex", flexDirection: "column", gap: 13, height: "100dvh", boxSizing: "border-box" }}>

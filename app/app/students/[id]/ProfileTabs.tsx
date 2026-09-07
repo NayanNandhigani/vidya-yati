@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { gradeColor, FEE_STATUS_STYLE } from "@/lib/academic";
-import { IconUsers, IconCheckSquare, IconEdit, IconReceipt, IconTruck, IconFileText, IconPaperclip } from "@/components/icons";
+import { IconUsers, IconCheckSquare, IconEdit, IconReceipt, IconTruck, IconFileText, IconPaperclip, IconClipboard } from "@/components/icons";
 import type { AttendanceStatus } from "@prisma/client";
 import RecordsPanel from "./RecordsPanel";
 import PersonDocumentsPanel, { type PersonDocumentRow } from "@/components/PersonDocumentsPanel";
@@ -40,6 +40,42 @@ type Props = {
   priorSchool: { previousSchoolName: string | null; previousTcNo: string | null; previousTcDate: string | null; priorPerformanceNote: string | null };
   siblings: { id: string; name: string; className: string; admissionNo: string }[];
   documents: PersonDocumentRow[];
+  admission: AdmissionDetail | null;
+};
+
+// Everything captured on the Admissions detailed application form — carried
+// over here read-only via the Student's linked AdmissionEnquiry
+// (convertedStudentId), so nothing typed at admission time is lost once the
+// enquiry becomes a Student. null for a student added directly (+Add
+// Student / bulk import) rather than through an admission enquiry.
+type AdmissionDetail = {
+  dob: string | null;
+  gender: string | null;
+  bloodGroup: string | null;
+  nationality: string | null;
+  caste: string | null;
+  religionCategory: string | null;
+  motherTongue: string | null;
+  studentAadhaarNumber: string | null;
+  fatherName: string | null;
+  motherName: string | null;
+  guardianName: string | null;
+  fatherOccupation: string | null;
+  motherOccupation: string | null;
+  annualIncome: string | null;
+  parentContact: string | null;
+  contactNumber2: string | null;
+  email: string | null;
+  parentAadhaarNumber: string | null;
+  permanentAddress: string | null;
+  currentAddress: string | null;
+  pincode: string | null;
+  allergiesConditions: string | null;
+  emergencyContactName: string | null;
+  emergencyContactNumber: string | null;
+  familyDoctorContact: string | null;
+  udiseNumber: string | null;
+  penNumber: string | null;
 };
 
 const BASE_TABS = [
@@ -64,12 +100,14 @@ export default function ProfileTabs({
   priorSchool,
   siblings,
   documents,
+  admission,
 }: Props) {
   const showRecords = features.medicalInfo || features.priorSchool || features.siblings;
   const TABS = [
     ...BASE_TABS,
     ...(showRecords ? [{ key: "Records" as const, label: "Records", icon: IconFileText }] : []),
     ...(features.documents ? [{ key: "Documents" as const, label: "Documents", icon: IconPaperclip }] : []),
+    ...(admission ? [{ key: "Admission" as const, label: "Admission Details", icon: IconClipboard }] : []),
   ];
   const [tab, setTab] = useState<(typeof TABS)[number]["key"]>("Profile");
 
@@ -304,6 +342,56 @@ export default function ProfileTabs({
             assetUrlBase="/api/person-documents"
           />
         )}
+
+        {tab === "Admission" && admission && (
+          <div style={{ display: "flex", flexDirection: "column", gap: 20, fontSize: 13.5, maxWidth: 640 }}>
+            <div style={{ fontSize: 11.5, color: "var(--muted)" }}>
+              Carried over from this student's admission application — read-only.
+            </div>
+
+            <AdmissionSection title="Student">
+              <Row label="Date of birth" value={admission.dob ? new Date(admission.dob).toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" }) : "—"} />
+              <Row label="Gender" value={admission.gender ? admission.gender[0] + admission.gender.slice(1).toLowerCase() : "—"} />
+              <Row label="Blood group" value={admission.bloodGroup ?? "—"} />
+              <Row label="Nationality" value={admission.nationality ?? "—"} />
+              <Row label="Caste" value={admission.caste ?? "—"} />
+              <Row label="Religion / Category" value={admission.religionCategory ?? "—"} />
+              <Row label="Mother tongue" value={admission.motherTongue ?? "—"} />
+              <Row label="Aadhaar number (student)" value={admission.studentAadhaarNumber ?? "—"} mono last />
+            </AdmissionSection>
+
+            <AdmissionSection title="Parent / Guardian">
+              <Row label="Father's name" value={admission.fatherName ?? "—"} />
+              <Row label="Mother's name" value={admission.motherName ?? "—"} />
+              <Row label="Guardian's name" value={admission.guardianName ?? "—"} />
+              <Row label="Father's occupation" value={admission.fatherOccupation ?? "—"} />
+              <Row label="Mother's occupation" value={admission.motherOccupation ?? "—"} />
+              <Row label="Annual income" value={admission.annualIncome ?? "—"} />
+              <Row label="Contact number 1" value={admission.parentContact ?? "—"} mono />
+              <Row label="Contact number 2" value={admission.contactNumber2 ?? "—"} mono />
+              <Row label="Email address" value={admission.email ?? "—"} />
+              <Row label="Aadhaar number (parents)" value={admission.parentAadhaarNumber ?? "—"} mono last />
+            </AdmissionSection>
+
+            <AdmissionSection title="Address">
+              <Row label="Permanent address" value={admission.permanentAddress ?? "—"} />
+              <Row label="Current / correspondence address" value={admission.currentAddress ?? "—"} />
+              <Row label="Pincode" value={admission.pincode ?? "—"} mono last />
+            </AdmissionSection>
+
+            <AdmissionSection title="Health / Emergency">
+              <Row label="Known allergies / medical conditions" value={admission.allergiesConditions ?? "—"} />
+              <Row label="Emergency contact name" value={admission.emergencyContactName ?? "—"} />
+              <Row label="Emergency contact number" value={admission.emergencyContactNumber ?? "—"} mono />
+              <Row label="Family doctor contact" value={admission.familyDoctorContact ?? "—"} mono last />
+            </AdmissionSection>
+
+            <AdmissionSection title="Academic Reference Details">
+              <Row label="UDISE number" value={admission.udiseNumber ?? "—"} mono />
+              <Row label="PEN number" value={admission.penNumber ?? "—"} mono last />
+            </AdmissionSection>
+          </div>
+        )}
       </div>
     </div>
   );
@@ -316,6 +404,15 @@ function StatBox({ label, value, color }: { label: string; value: React.ReactNod
       <div className="mono" style={{ fontSize: 16, fontWeight: 700, color: color ?? "var(--ink)" }}>
         {value}
       </div>
+    </div>
+  );
+}
+
+function AdmissionSection({ title, children }: { title: string; children: React.ReactNode }) {
+  return (
+    <div>
+      <div style={{ fontSize: 11, color: "var(--faint)", textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: 9 }}>{title}</div>
+      <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>{children}</div>
     </div>
   );
 }

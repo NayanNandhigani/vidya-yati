@@ -177,13 +177,14 @@ export default function ExamMarksGrid({
                       style={{
                         width: "100%",
                         textAlign: "center",
-                        border: "none",
-                        background: failing ? "var(--critical-tint)" : "transparent",
+                        border: canEdit ? `1px solid ${failing ? "var(--critical-border)" : "var(--marigold-tint)"}` : "none",
+                        background: failing ? "var(--critical-tint)" : canEdit ? "var(--marigold-tint)" : "transparent",
                         color: failing ? "var(--critical)" : "var(--ink)",
                         fontWeight: 700,
                         fontSize: 13,
-                        borderRadius: 4,
-                        padding: "4px 0",
+                        borderRadius: 5,
+                        padding: "5px 0",
+                        margin: "1px 0",
                       }}
                     />
                   );

@@ -139,6 +139,16 @@ export async function updateFeeLockSetting(enabled: boolean) {
 export async function canViewExamResults(examId: string, studentId: string): Promise<{ visible: boolean; reason?: string }> {
   const sdb = await getScopedDb();
   const sid = await schoolId();
+
+  // Not yet approved by a School Admin = not "successfully scheduled" —
+  // this check applies regardless of the exams.resultRelease feature flag,
+  // unlike the release-date/fee-lock checks below which are that feature's
+  // own depth behaviour.
+  const examStatus = await sdb.exam.findUnique({ where: { id: examId }, select: { approvalStatus: true } });
+  if (examStatus?.approvalStatus !== "APPROVED") {
+    return { visible: false, reason: "This exam hasn't been approved yet." };
+  }
+
   const enabled = await hasFeature(sid, "exams.resultRelease");
   if (!enabled) return { visible: true };
 

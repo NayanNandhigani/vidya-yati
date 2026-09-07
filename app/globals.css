@@ -225,6 +225,7 @@ body {
   }
 
   @page {
+    size: A4;
     margin: 18mm 16mm;
   }
 }

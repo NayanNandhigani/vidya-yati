@@ -8,7 +8,7 @@ import ApplicationDetailForm from "./ApplicationDetailForm";
 
 export default async function ApplicationDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const accessLevel = await requireModuleAccess("Admissions", "VIEW");
-  const canEdit = accessLevel === "EDIT" || accessLevel === "FULL";
+  const canEdit = accessLevel === "EDIT";
   const session = await auth();
   await requireFeature(session!.user.schoolId, "admissions.detailedForm");
 

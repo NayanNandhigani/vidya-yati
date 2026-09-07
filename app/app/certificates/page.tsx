@@ -19,7 +19,7 @@ export default async function CertificatesPage({ searchParams }: { searchParams:
   }
 
   const accessLevel = await requireModuleAccess("Certificates", "VIEW");
-  const canEdit = accessLevel === "EDIT" || accessLevel === "FULL";
+  const canEdit = accessLevel === "EDIT";
   const params = await searchParams;
 
   // Every school needs these four standard certificate types — provision any

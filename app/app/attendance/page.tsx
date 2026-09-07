@@ -44,7 +44,7 @@ export default async function AttendancePage({ searchParams }: { searchParams: P
   // permitted at all (e.g. a manipulated ?classId=), consistent with how
   // insufficient access is handled elsewhere in this codebase.
   const accessLevel = classId ? await requireModuleAccess("Attendance", "VIEW", classId) : "NONE";
-  const canEdit = accessLevel === "EDIT" || accessLevel === "FULL";
+  const canEdit = accessLevel === "EDIT";
 
   const students = classId
     ? await sdb.student.findMany({

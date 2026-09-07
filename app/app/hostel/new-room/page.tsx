@@ -2,7 +2,7 @@ import { requireModuleAccess } from "@/lib/permissions";
 import NewRoomForm from "./NewRoomForm";
 
 export default async function NewRoomPage() {
-  await requireModuleAccess("Transport", "EDIT");
+  await requireModuleAccess("Hostel", "EDIT");
   return (
     <div style={{ padding: "26px 34px" }}>
       <div className="disp" style={{ fontSize: 21, marginBottom: 4 }}>

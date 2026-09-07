@@ -113,7 +113,7 @@ async function AdminStaffDashboard() {
   const approvalItems = [
     { label: "Staff leave requests", count: staffLeavePending, href: "/app/employees" },
     { label: "Student leave requests", count: studentLeavePending, href: "/app/attendance" },
-    { label: "Hostel outing requests", count: hostelOutingPending, href: "/app/transport?tab=hostel" },
+    { label: "Hostel outing requests", count: hostelOutingPending, href: "/app/hostel" },
     { label: "Admission approvals", count: admissionsPending, href: "/app/admissions" },
     { label: "Accounts transactions", count: accountsPending, href: "/app/accounts" },
   ];

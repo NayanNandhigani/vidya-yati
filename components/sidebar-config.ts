@@ -19,6 +19,7 @@ import {
   IconSettings,
   IconSchool,
   IconBox,
+  IconBed,
 } from "./icons";
 
 export type NavItem = {
@@ -42,9 +43,13 @@ export const NAV_GROUPS: NavGroup[] = [
     items: [{ label: "Dashboard", href: "/app/dashboard", icon: IconHome, roles: ["SCHOOL_ADMIN", "STAFF", "PARENT"] }],
   },
   {
+    label: "Admissions",
+    items: [{ label: "Admissions", href: "/app/admissions", icon: IconClipboard, module: "Admissions", roles: ["SCHOOL_ADMIN", "STAFF"] }],
+  },
+  {
     label: "Academics",
     items: [
-      { label: "Manage Institute", href: "/app/institute", icon: IconSchool, roles: ["SCHOOL_ADMIN"] },
+      { label: "Classes and Sections", href: "/app/institute", icon: IconSchool, roles: ["SCHOOL_ADMIN"] },
       { label: "Students", href: "/app/students", icon: IconUsers, module: "Students", roles: ["SCHOOL_ADMIN", "STAFF"] },
       { label: "Employees", href: "/app/employees", icon: IconBriefcase, module: "Employees", roles: ["SCHOOL_ADMIN", "STAFF"] },
       { label: "Attendance", href: "/app/attendance", icon: IconCheckSquare, module: "Attendance", roles: ["SCHOOL_ADMIN", "STAFF", "PARENT"] },
@@ -61,13 +66,10 @@ export const NAV_GROUPS: NavGroup[] = [
     ],
   },
   {
-    label: "Admissions",
-    items: [{ label: "Admissions", href: "/app/admissions", icon: IconClipboard, module: "Admissions", roles: ["SCHOOL_ADMIN", "STAFF"] }],
-  },
-  {
     label: "Operations",
     items: [
       { label: "Transport", href: "/app/transport", icon: IconTruck, module: "Transport", roles: ["SCHOOL_ADMIN", "STAFF", "PARENT"] },
+      { label: "Hostel", href: "/app/hostel", icon: IconBed, module: "Hostel", roles: ["SCHOOL_ADMIN", "STAFF", "PARENT"] },
       { label: "Library", href: "/app/library", icon: IconLibrary, module: "Library", roles: ["SCHOOL_ADMIN", "STAFF", "PARENT"] },
       { label: "Inventory", href: "/app/inventory", icon: IconBox, module: "Inventory", roles: ["SCHOOL_ADMIN", "STAFF"] },
     ],

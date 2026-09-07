@@ -7,7 +7,7 @@ import AdmissionsBoard from "./AdmissionsBoard";
 
 export default async function AdmissionsPage() {
   const accessLevel = await requireModuleAccess("Admissions", "VIEW");
-  const canEdit = accessLevel === "EDIT" || accessLevel === "FULL";
+  const canEdit = accessLevel === "EDIT";
   const session = await auth();
   const sdb = await getScopedDb();
 
@@ -23,11 +23,22 @@ export default async function AdmissionsPage() {
         <div className="disp" style={{ fontSize: 21 }}>
           Admissions pipeline
         </div>
-        {canEdit && (
-          <Link href="/app/admissions/new" style={{ background: "var(--marigold)", color: "#fff", borderRadius: 8, padding: "8px 16px", fontSize: 13, fontWeight: 600, textDecoration: "none" }}>
-            + New Enquiry
-          </Link>
-        )}
+        <div style={{ display: "flex", gap: 10 }}>
+          {showDetailedForm && (
+            <Link
+              href="/app/admissions/blank-form/print"
+              target="_blank"
+              style={{ background: "var(--card)", border: "1px solid var(--line)", color: "var(--ink)", borderRadius: 8, padding: "8px 16px", fontSize: 13, fontWeight: 600, textDecoration: "none" }}
+            >
+              View Admission Form
+            </Link>
+          )}
+          {canEdit && (
+            <Link href="/app/admissions/new" style={{ background: "var(--marigold)", color: "#fff", borderRadius: 8, padding: "8px 16px", fontSize: 13, fontWeight: 600, textDecoration: "none" }}>
+              + New Enquiry
+            </Link>
+          )}
+        </div>
       </div>
 
       <AdmissionsBoard

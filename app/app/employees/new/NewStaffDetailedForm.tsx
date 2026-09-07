@@ -201,7 +201,7 @@ export default function NewStaffDetailedForm({ staff }: { staff: { id: string; n
           </label>
         )}
         {staffType === "teaching" && (
-          <div style={{ fontSize: 11.5, color: "var(--faint)" }}>Subjects taught &amp; classes assigned are set from Manage Institute → Subjects, once this staff member is added.</div>
+          <div style={{ fontSize: 11.5, color: "var(--faint)" }}>Subjects taught &amp; classes assigned are set from Classes and Sections → Subjects, once this staff member is added.</div>
         )}
       </Section>
 

@@ -30,7 +30,7 @@ const THIRTY_DAYS_MS = 30 * 24 * 60 * 60 * 1000;
 
 export default async function SchoolProfilePage({ params }: { params: Promise<{ id: string }> }) {
   const access = await requirePlatformModuleAccess("Schools", "VIEW");
-  const canManage = access === "EDIT" || access === "FULL";
+  const canManage = access === "EDIT";
   const { id } = await params;
 
   const school = await db.school.findUnique({

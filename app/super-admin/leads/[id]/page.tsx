@@ -10,7 +10,7 @@ import ConvertLeadForm from "../ConvertLeadForm";
 
 export default async function LeadDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const access = await requirePlatformModuleAccess("Leads", "VIEW");
-  const canEdit = access === "EDIT" || access === "FULL";
+  const canEdit = access === "EDIT";
 
   const { id } = await params;
   const lead = await db.salesLead.findUnique({ where: { id }, include: { activities: { orderBy: { createdAt: "desc" } }, convertedSchool: { select: { id: true, name: true } } } });

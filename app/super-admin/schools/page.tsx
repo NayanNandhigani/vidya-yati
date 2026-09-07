@@ -13,7 +13,7 @@ const STATUS_STYLE: Record<string, { bg: string; fg: string; label: string }> = 
 
 export default async function SchoolsPage({ searchParams }: { searchParams: Promise<{ new?: string }> }) {
   const access = await requirePlatformModuleAccess("Schools", "VIEW");
-  const canManage = access === "EDIT" || access === "FULL";
+  const canManage = access === "EDIT";
   const params = await searchParams;
 
   const schools = await db.school.findMany({

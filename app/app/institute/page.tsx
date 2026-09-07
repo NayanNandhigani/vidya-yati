@@ -1,17 +1,14 @@
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { auth } from "@/auth";
-import { db } from "@/lib/db";
 import { getScopedDb } from "@/lib/tenant-db";
 import { hasFeature } from "@/lib/feature-flags";
 import InstituteClassesPanel from "./InstituteClassesPanel";
 import InstituteSubjectsPanel from "./InstituteSubjectsPanel";
-import NewRouteForm from "../transport/new-route/NewRouteForm";
 
 const PANELS = [
   { key: "classes", label: "Classes & Sections" },
   { key: "subjects", label: "Subjects" },
-  { key: "transport", label: "Add Transport Route" },
 ];
 
 export default async function InstitutePage({ searchParams }: { searchParams: Promise<{ panel?: string }> }) {
@@ -23,18 +20,16 @@ export default async function InstitutePage({ searchParams }: { searchParams: Pr
   const sdb = await getScopedDb();
 
   const currentYear = await sdb.academicYear.findFirst({ where: { isCurrent: true } });
-  const [showCapacity, showCoTeacher, showRte, school] = await Promise.all([
+  const [showCapacity, showCoTeacher, showRte] = await Promise.all([
     hasFeature(session!.user.schoolId, "classes.capacityAndCurriculum"),
     hasFeature(session!.user.schoolId, "classes.coTeacherAndReshuffle"),
     hasFeature(session!.user.schoolId, "compliance.udise"),
-    db.school.findUnique({ where: { id: session!.user.schoolId! }, select: { disabledModules: true } }),
   ]);
-  const transportDisabled = school?.disabledModules.includes("Transport") ?? false;
 
   return (
     <div style={{ padding: "26px 34px", display: "flex", flexDirection: "column", gap: 18, height: "100dvh", boxSizing: "border-box" }}>
       <div className="disp" style={{ fontSize: 21 }}>
-        Manage Institute
+        Classes and Sections
       </div>
 
       <div style={{ display: "flex", gap: 20, flex: 1, minHeight: 0 }}>
@@ -74,25 +69,9 @@ export default async function InstitutePage({ searchParams }: { searchParams: Pr
           <div className="card" style={{ flex: 1, padding: 26, overflowY: "auto" }}>
             <ClassesPanelData sdb={sdb} yearId={currentYear.id} showCapacity={showCapacity} showCoTeacher={showCoTeacher} showRte={showRte} />
           </div>
-        ) : panel === "subjects" && currentYear ? (
-          <div className="card" style={{ flex: 1, padding: 26, overflowY: "auto" }}>
-            <SubjectsPanelData sdb={sdb} yearId={currentYear.id} showCapacity={showCapacity} />
-          </div>
         ) : (
           <div className="card" style={{ flex: 1, padding: 26, overflowY: "auto" }}>
-            {transportDisabled ? (
-              <div style={{ color: "var(--muted)" }}>The Transport module is disabled for this school.</div>
-            ) : (
-              <>
-                <div className="mono" style={{ fontSize: 10.5, letterSpacing: "0.06em", textTransform: "uppercase", color: "var(--faint)", marginBottom: 2 }}>
-                  Add Transport Route
-                </div>
-                <p style={{ color: "var(--muted)", fontSize: 13.5, marginTop: 0, marginBottom: 22 }}>Set up a new transport route.</p>
-                <div style={{ maxWidth: 460 }}>
-                  <NewRouteForm />
-                </div>
-              </>
-            )}
+            <SubjectsPanelData sdb={sdb} yearId={currentYear!.id} showCapacity={showCapacity} />
           </div>
         )}
       </div>

@@ -15,7 +15,7 @@ const AUTO_SOURCE_LABEL: Record<string, string> = {
 
 export default async function AccountsPage() {
   const accessLevel = await requireModuleAccess("Accounts", "VIEW");
-  const canEdit = accessLevel === "EDIT" || accessLevel === "FULL";
+  const canEdit = accessLevel === "EDIT";
   const session = await auth();
   const sdb = await getScopedDb();
 

@@ -66,7 +66,7 @@ export async function createPlatformStaff(_prevState: StaffFormState, formData: 
 export async function cyclePlatformPermission(staffId: string, moduleName: string) {
   await requireSuperAdmin();
 
-  const CYCLE: AccessLevel[] = ["NONE", "VIEW", "EDIT", "FULL"];
+  const CYCLE: AccessLevel[] = ["NONE", "VIEW", "EDIT"];
   const existing = await db.platformStaffPermission.findUnique({ where: { staffId_moduleName: { staffId, moduleName } } });
   const next = CYCLE[(CYCLE.indexOf(existing?.accessLevel ?? "NONE") + 1) % CYCLE.length];
 

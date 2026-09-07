@@ -22,10 +22,14 @@ const APPROVAL_STYLE: Record<string, { bg: string; fg: string }> = {
   REJECTED: { bg: "var(--critical-tint)", fg: "var(--critical)" },
 };
 
+// Once an enquiry is admitted it becomes a real Student record (see Students)
+// — there's nothing further to do with it on this board, so it isn't given
+// its own column here. The enquiry row itself is kept (stage: "ADMITTED")
+// for the pipeline's own history/conversion-rate stats above, it just isn't
+// rendered as a card once it reaches that stage.
 const COLS = [
   { stage: "ENQUIRY" as const, label: "Enquiries", bg: "var(--marigold-tint)", fg: "var(--marigold-deep)" },
   { stage: "APPLICATION" as const, label: "Applications", bg: "var(--teal-tint)", fg: "var(--teal)" },
-  { stage: "ADMITTED" as const, label: "Admitted", bg: "var(--good-tint)", fg: "var(--good)" },
 ];
 
 export default function AdmissionsBoard({ enquiries, classes, canEdit, showDetailedForm }: { enquiries: Enquiry[]; classes: { id: string; grade: string; section: string }[]; canEdit: boolean; showDetailedForm: boolean }) {

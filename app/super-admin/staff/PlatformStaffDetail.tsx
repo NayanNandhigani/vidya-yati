@@ -12,7 +12,6 @@ const LEVEL_STYLE: Record<AccessLevel, { bg: string; fg: string; label: string }
   NONE: { bg: "var(--line)", fg: "var(--faint)", label: "No access" },
   VIEW: { bg: "var(--marigold-tint)", fg: "var(--marigold-deep)", label: "View only" },
   EDIT: { bg: "var(--teal-tint)", fg: "var(--teal)", label: "View + Edit" },
-  FULL: { bg: "var(--good-tint)", fg: "var(--good)", label: "Full access" },
 };
 
 export type PlatformStaffRow = {
