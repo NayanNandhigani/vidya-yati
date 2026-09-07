@@ -1,11 +1,17 @@
 import Link from "next/link";
+import { auth } from "@/auth";
 import { getScopedDb } from "@/lib/tenant-db";
 import { requireModuleAccess } from "@/lib/permissions";
+import { hasFeature } from "@/lib/feature-flags";
 import { formatINR } from "@/lib/format";
+import ReportBuilderPanel from "./ReportBuilderPanel";
 
 export default async function ReportsPage() {
   await requireModuleAccess("Reports", "VIEW");
+  const session = await auth();
   const sdb = await getScopedDb();
+  const showBuilder = await hasFeature(session!.user.schoolId, "reports.customBuilder");
+  const classesForBuilder = showBuilder ? await sdb.class.findMany({ orderBy: [{ grade: "asc" }, { section: "asc" }] }) : [];
 
   const now = new Date();
   const eightWeeksAgo = new Date(now);
@@ -67,16 +73,16 @@ export default async function ReportsPage() {
   const conversionPct = enquiriesThisMonth ? Math.round((admittedThisMonth / enquiriesThisMonth) * 100) : 0;
 
   const reportCards = [
-    { key: "attendance", title: "Attendance Summary", desc: "Daily & monthly attendance by class", color: "var(--teal)", tint: "var(--teal-tint)", stat: `${overallAttendancePct}%`, href: "/app/attendance" },
-    { key: "fees", title: "Fee Collection", desc: "Collections, dues & defaulter list", color: "var(--marigold-deep)", tint: "var(--marigold-tint)", stat: `${feePct}% · ${formatINR(collected)}`, href: "/app/fees" },
-    { key: "academic", title: "Academic Performance", desc: "Exam results & subject-wise trends", color: "var(--info)", tint: "var(--info-tint)", stat: `${examAvg}% avg`, href: "/app/exams" },
-    { key: "admissions", title: "Admissions Funnel", desc: "Enquiry-to-admission conversion", color: "var(--good)", tint: "var(--good-tint)", stat: `${conversionPct}% conversion`, href: "/app/admissions" },
-    { key: "staff", title: "Staff Attendance", desc: "Teaching & non-teaching attendance log", color: "var(--warn)", tint: "var(--warn-tint)", stat: `${staffAttPct}%`, href: "/app/employees" },
-    { key: "transport", title: "Transport Utilization", desc: "Route-wise ridership & seat occupancy", color: "var(--teal)", tint: "var(--teal-tint)", stat: `${transportUtil}%`, href: "/app/transport" },
+    { key: "attendance", title: "Attendance Summary", desc: "Daily & monthly attendance by class", color: "var(--teal)", tint: "var(--teal-tint)", stat: `${overallAttendancePct}%`, href: "/app/reports/attendance" },
+    { key: "fees", title: "Fee Collection", desc: "Collections, dues & defaulter list", color: "var(--marigold-deep)", tint: "var(--marigold-tint)", stat: `${feePct}% · ${formatINR(collected)}`, href: "/app/reports/fees" },
+    { key: "academic", title: "Academic Performance", desc: "Exam results & subject-wise trends", color: "var(--info)", tint: "var(--info-tint)", stat: `${examAvg}% avg`, href: "/app/reports/academic" },
+    { key: "admissions", title: "Admissions Funnel", desc: "Enquiry-to-admission conversion", color: "var(--good)", tint: "var(--good-tint)", stat: `${conversionPct}% conversion`, href: "/app/reports/admissions" },
+    { key: "staff", title: "Staff Attendance", desc: "Teaching & non-teaching attendance log", color: "var(--warn)", tint: "var(--warn-tint)", stat: `${staffAttPct}%`, href: "/app/reports/staff" },
+    { key: "transport", title: "Transport Utilization", desc: "Route-wise ridership & seat occupancy", color: "var(--teal)", tint: "var(--teal-tint)", stat: `${transportUtil}%`, href: "/app/reports/transport" },
   ];
 
   return (
-    <div style={{ padding: "26px 34px", display: "flex", flexDirection: "column", gap: 16, height: "100dvh", boxSizing: "border-box" }}>
+    <div style={{ padding: "26px 34px", display: "flex", flexDirection: "column", gap: 16, boxSizing: "border-box", ...(showBuilder ? { minHeight: "100dvh", overflowY: "auto" } : { height: "100dvh" }) }}>
       <div className="disp" style={{ fontSize: 21 }}>
         Reports &amp; analytics
       </div>
@@ -124,6 +130,14 @@ export default async function ReportsPage() {
           ))}
         </div>
       </div>
+
+      {showBuilder && (
+        <div className="card" style={{ padding: 22 }}>
+          <div style={{ fontSize: 14, fontWeight: 700, marginBottom: 2 }}>Custom report builder</div>
+          <div style={{ fontSize: 12, color: "var(--muted)", marginBottom: 16 }}>Pick an entity, filter it down, choose your columns, and export the result as CSV.</div>
+          <ReportBuilderPanel classes={classesForBuilder.map((c) => ({ id: c.id, label: `${c.grade}-${c.section}` }))} />
+        </div>
+      )}
     </div>
   );
 }

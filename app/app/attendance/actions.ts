@@ -8,7 +8,7 @@ import { getScopedDb, scopedCreateData } from "@/lib/tenant-db";
 import { requireModuleAccess } from "@/lib/permissions";
 
 export async function saveAttendance(classId: string, date: string, marks: Record<string, AttendanceStatus>) {
-  await requireModuleAccess("Attendance", "EDIT");
+  await requireModuleAccess("Attendance", "EDIT", classId);
   const session = await auth();
   const sdb = await getScopedDb();
 

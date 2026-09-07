@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { Prisma } from "@prisma/client";
 import { getScopedDb, scopedCreateData } from "@/lib/tenant-db";
 import { requireModuleAccess } from "@/lib/permissions";
+import { studentName } from "@/lib/format";
 
 export type PaymentFormState = { error?: string; success?: boolean };
 
@@ -59,7 +60,7 @@ export async function recordPayment(_prevState: PaymentFormState, formData: Form
     sdb.accountsTransaction.create({
       data: scopedCreateData<Prisma.AccountsTransactionUncheckedCreateInput>({
         date: paidOn,
-        description: `Fee payment — ${student.name} (${student.class.grade}-${student.class.section})`,
+        description: `Fee payment — ${studentName(student)} (${student.class.grade}-${student.class.section})`,
         category: "Fees",
         source: "AUTO_FEES",
         type: "INCOME",

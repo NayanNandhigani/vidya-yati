@@ -32,6 +32,14 @@ export async function createStaff(_prevState: StaffFormState, formData: FormData
   const existing = await db.user.findUnique({ where: { username: normalizedUsername } });
   if (existing) return { error: "A user with this username already exists." };
 
+  const school = await db.school.findUnique({ where: { id: session!.user.schoolId! }, select: { maxStaff: true } });
+  if (school?.maxStaff != null) {
+    const staffCount = await sdb.user.count({ where: { role: "STAFF" } });
+    if (staffCount >= school.maxStaff) {
+      return { error: `This school's staff limit (${school.maxStaff}) has been reached. Contact Vidya Yati to raise it.` };
+    }
+  }
+
   const passwordHash = await bcrypt.hash(DEFAULT_PASSWORD, 10);
 
   const user = await sdb.user.create({
@@ -57,23 +65,50 @@ export async function createStaff(_prevState: StaffFormState, formData: FormData
   redirect(`/app/employees?staff=${staff.id}`);
 }
 
-export async function cyclePermission(staffId: string, moduleName: string) {
+export async function cyclePermission(staffId: string, moduleName: string, classId: string | null = null) {
   const session = await auth();
   if (session!.user.role !== "SCHOOL_ADMIN") throw new Error("Only a School Admin can change permissions.");
   const sdb = await getScopedDb();
 
   const CYCLE: AccessLevel[] = ["NONE", "VIEW", "EDIT", "FULL"];
-  const existing = await sdb.staffPermission.findUnique({ where: { staffId_moduleName: { staffId, moduleName } } });
+
+  // Prisma's compound-unique-key lookup type requires a non-null classId
+  // (it can't express "classId IS NULL" through that path, even though the
+  // column itself is nullable) — so the school-wide row (classId: null)
+  // has to be resolved through a regular where-filter + explicit
+  // create/update instead of upsert() on the compound key.
+  if (classId === null) {
+    const existing = await sdb.staffPermission.findFirst({ where: { staffId, moduleName, classId: null } });
+    const next = CYCLE[(CYCLE.indexOf(existing?.accessLevel ?? "NONE") + 1) % CYCLE.length];
+    if (existing) {
+      await sdb.staffPermission.update({ where: { id: existing.id }, data: { accessLevel: next } });
+    } else {
+      await sdb.staffPermission.create({ data: scopedCreateData<Prisma.StaffPermissionUncheckedCreateInput>({ staffId, moduleName, classId: null, accessLevel: next }) });
+    }
+    revalidatePath("/app/employees");
+    return { accessLevel: next };
+  }
+
+  const existing = await sdb.staffPermission.findUnique({ where: { staffId_moduleName_classId: { staffId, moduleName, classId } } });
   const next = CYCLE[(CYCLE.indexOf(existing?.accessLevel ?? "NONE") + 1) % CYCLE.length];
 
   await sdb.staffPermission.upsert({
-    where: { staffId_moduleName: { staffId, moduleName } },
+    where: { staffId_moduleName_classId: { staffId, moduleName, classId } },
     update: { accessLevel: next },
-    create: scopedCreateData<Prisma.StaffPermissionUncheckedCreateInput>({ staffId, moduleName, accessLevel: next }),
+    create: scopedCreateData<Prisma.StaffPermissionUncheckedCreateInput>({ staffId, moduleName, classId, accessLevel: next }),
   });
 
   revalidatePath("/app/employees");
   return { accessLevel: next };
+}
+
+export async function removeClassPermission(staffId: string, moduleName: string, classId: string) {
+  const session = await auth();
+  if (session!.user.role !== "SCHOOL_ADMIN") throw new Error("Only a School Admin can change permissions.");
+  const sdb = await getScopedDb();
+
+  await sdb.staffPermission.delete({ where: { staffId_moduleName_classId: { staffId, moduleName, classId } } }).catch(() => {});
+  revalidatePath("/app/employees");
 }
 
 export async function runPayroll(staffId: string, month: string, amount: number) {

@@ -28,7 +28,7 @@ export default async function CommunicationPage() {
   const [announcements, classes, students, totalParents, totalStaff] = await Promise.all([
     sdb.announcement.findMany({ where: { publishedOn: { not: null } }, include: { reads: true }, orderBy: { publishedOn: "desc" }, take: 30 }),
     sdb.class.findMany({ orderBy: [{ grade: "asc" }, { section: "asc" }] }),
-    sdb.student.findMany({ where: { status: "ACTIVE" }, orderBy: { name: "asc" }, select: { id: true, name: true } }),
+    sdb.student.findMany({ where: { status: "ACTIVE" }, orderBy: [{ firstName: "asc" }, { surname: "asc" }], select: { id: true, firstName: true, surname: true } }),
     sdb.parent.count(),
     sdb.staffProfile.count(),
   ]);

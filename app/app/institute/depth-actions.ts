@@ -1,0 +1,56 @@
+"use server";
+
+import { revalidatePath } from "next/cache";
+import { auth } from "@/auth";
+import { getScopedDb } from "@/lib/tenant-db";
+import { requireFeature } from "@/lib/feature-flags";
+
+async function requireAdmin() {
+  const session = await auth();
+  if (session!.user.role !== "SCHOOL_ADMIN") throw new Error("Only a School Admin can manage the institute.");
+  return session!.user.schoolId!;
+}
+
+export async function updateClassCapacityAndBoard(classId: string, maxStrength: number | null, board: string) {
+  const schoolId = await requireAdmin();
+  await requireFeature(schoolId, "classes.capacityAndCurriculum");
+  const sdb = await getScopedDb();
+  await sdb.class.update({ where: { id: classId }, data: { maxStrength, board: board.trim() || null } });
+  revalidatePath("/app/institute");
+}
+
+export async function updateSubjectDetail(subjectId: string, isElective: boolean, credits: number | null) {
+  const schoolId = await requireAdmin();
+  await requireFeature(schoolId, "classes.capacityAndCurriculum");
+  const sdb = await getScopedDb();
+  await sdb.subject.update({ where: { id: subjectId }, data: { isElective, credits } });
+  revalidatePath("/app/institute");
+}
+
+export async function addCoTeacher(classId: string, staffId: string) {
+  const schoolId = await requireAdmin();
+  await requireFeature(schoolId, "classes.coTeacherAndReshuffle");
+  const sdb = await getScopedDb();
+  await sdb.classCoTeacher.upsert({
+    where: { classId_staffId: { classId, staffId } },
+    update: {},
+    create: { classId, staffId, schoolId },
+  });
+  revalidatePath("/app/institute");
+}
+
+export async function removeCoTeacher(classId: string, staffId: string) {
+  await requireAdmin();
+  const sdb = await getScopedDb();
+  await sdb.classCoTeacher.delete({ where: { classId_staffId: { classId, staffId } } });
+  revalidatePath("/app/institute");
+}
+
+export async function bulkReshuffleStudents(studentIds: string[], targetClassId: string) {
+  const schoolId = await requireAdmin();
+  await requireFeature(schoolId, "classes.coTeacherAndReshuffle");
+  const sdb = await getScopedDb();
+  await sdb.student.updateMany({ where: { id: { in: studentIds } }, data: { classId: targetClassId } });
+  revalidatePath("/app/students");
+  return { moved: studentIds.length };
+}

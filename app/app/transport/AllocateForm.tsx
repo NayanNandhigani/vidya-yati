@@ -1,9 +1,10 @@
 "use client";
 
 import { useState, useTransition } from "react";
+import { studentName } from "@/lib/format";
 import { allocateRoom } from "./actions";
 
-export default function AllocateForm({ roomId, students }: { roomId: string; students: { id: string; name: string }[] }) {
+export default function AllocateForm({ roomId, students }: { roomId: string; students: { id: string; firstName: string; surname: string }[] }) {
   const [studentId, setStudentId] = useState("");
   const [pending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
@@ -29,7 +30,7 @@ export default function AllocateForm({ roomId, students }: { roomId: string; stu
           <option value="">Select student…</option>
           {students.map((s) => (
             <option key={s.id} value={s.id}>
-              {s.name}
+              {studentName(s)}
             </option>
           ))}
         </select>

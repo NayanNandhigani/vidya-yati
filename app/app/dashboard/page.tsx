@@ -1,6 +1,8 @@
 import { auth } from "@/auth";
 import { getScopedDb } from "@/lib/tenant-db";
-import { formatINR, formatDate, daysUntil } from "@/lib/format";
+import { formatINR, formatDate, daysUntil, studentName } from "@/lib/format";
+import { RemindersPanel, StaffAvailabilityTile, PendingApprovalsPanel } from "./DashboardWidgets";
+import { AttendanceByClassChart, FeeTrendChart, ResultsTrendChart } from "./DashboardCharts";
 
 function StatTile({ label, value, color }: { label: string; value: React.ReactNode; color?: string }) {
   return (
@@ -18,15 +20,25 @@ export default async function DashboardPage() {
   const role = session!.user.role;
   const name = session!.user.name ?? "there";
 
+  const reminders =
+    role !== "PARENT"
+      ? await (async () => {
+          const sdb = await getScopedDb();
+          const rows = await sdb.dashboardReminder.findMany({ orderBy: { createdAt: "desc" } });
+          return rows.map((r) => ({ id: r.id, title: r.title, content: r.content, createdAt: r.createdAt.toISOString() }));
+        })()
+      : [];
+
   return (
     <div style={{ padding: "26px 34px", display: "flex", flexDirection: "column", gap: 18 }}>
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+      <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between" }}>
         <div>
           <div className="disp" style={{ fontSize: 21 }}>
             {greeting()}, {name.split(" ")[0]}
           </div>
           <div style={{ fontSize: 13, color: "var(--muted)", marginTop: 2 }}>{formatDate(new Date())}</div>
         </div>
+        {role !== "PARENT" && <RemindersPanel reminders={reminders} />}
       </div>
 
       {role === "PARENT" ? <ParentDashboard /> : <AdminStaffDashboard />}
@@ -73,11 +85,74 @@ async function AdminStaffDashboard() {
   const admittedCount = enquiriesThisMonth.filter((e) => e.stage === "ADMITTED").length;
 
   const sixMonthsAgo = new Date(now.getFullYear(), now.getMonth() - 5, 1);
-  const transactions = await sdb.accountsTransaction.findMany({ where: { date: { gte: sixMonthsAgo } } });
+  // Same exclusion the Accounts module itself applies — a transaction
+  // still awaiting a second admin's approval isn't real cash flow yet
+  // (see requireFeature("accounts.approvals")); the dashboard's own cash
+  // flow chart was missing this filter before this fix.
+  const transactions = await sdb.accountsTransaction.findMany({ where: { date: { gte: sixMonthsAgo }, approvalStatus: { not: "PENDING" } } });
   const months = Array.from({ length: 6 }, (_, i) => {
     const d = new Date(now.getFullYear(), now.getMonth() - 5 + i, 1);
     return { label: d.toLocaleDateString("en-IN", { month: "short" }), year: d.getFullYear(), month: d.getMonth() };
   });
+  // --- Staff availability today ---
+  const [allStaff, staffAttendanceToday] = await Promise.all([
+    sdb.staffProfile.findMany({ include: { user: true }, orderBy: { user: { name: "asc" } } }),
+    sdb.staffAttendance.findMany({ where: { date: today } }),
+  ]);
+  const staffStatusById = new Map(staffAttendanceToday.map((a) => [a.staffId, a.status]));
+  const staffAvailability = allStaff.map((s) => ({ id: s.id, name: s.user.name, status: staffStatusById.get(s.id) ?? null }));
+
+  // --- Pending approvals across every gated approval workflow ---
+  const [staffLeavePending, studentLeavePending, hostelOutingPending, admissionsPending, accountsPending] = await Promise.all([
+    sdb.staffLeaveRequest.count({ where: { status: "PENDING" } }),
+    sdb.studentLeaveRequest.count({ where: { stage: { in: ["PENDING", "CLASS_TEACHER_APPROVED"] } } }),
+    sdb.hostelOutingRequest.count({ where: { status: "PENDING" } }),
+    sdb.admissionEnquiry.count({ where: { approvalStatus: "PENDING" } }),
+    sdb.accountsTransaction.count({ where: { approvalStatus: "PENDING" } }),
+  ]);
+  const approvalItems = [
+    { label: "Staff leave requests", count: staffLeavePending, href: "/app/employees" },
+    { label: "Student leave requests", count: studentLeavePending, href: "/app/attendance" },
+    { label: "Hostel outing requests", count: hostelOutingPending, href: "/app/transport?tab=hostel" },
+    { label: "Admission approvals", count: admissionsPending, href: "/app/admissions" },
+    { label: "Accounts transactions", count: accountsPending, href: "/app/accounts" },
+  ];
+
+  // --- Attendance by class, today ---
+  const classesWithAttendance = await sdb.class.findMany({
+    include: { students: { where: { status: "ACTIVE" }, include: { attendance: { where: { date: today } } } } },
+    orderBy: [{ grade: "asc" }, { section: "asc" }],
+  });
+  const attendanceByClass = classesWithAttendance
+    .map((c) => {
+      const marks = c.students.flatMap((s) => s.attendance);
+      const pct = marks.length ? Math.round((marks.filter((a) => a.status === "PRESENT").length / marks.length) * 100) : null;
+      return { label: `${c.grade}-${c.section}`, pct };
+    })
+    .filter((c): c is { label: string; pct: number } => c.pct !== null);
+
+  // --- Fee collection trend, last 6 months ---
+  const feePaymentsTrend = await sdb.feePayment.findMany({ where: { paidOn: { gte: sixMonthsAgo } }, select: { amount: true, paidOn: true } });
+  const feeTrend = months.map(({ label, year, month }) => ({
+    label,
+    collected: feePaymentsTrend.filter((p) => p.paidOn.getFullYear() === year && p.paidOn.getMonth() === month).reduce((s, p) => s + Number(p.amount), 0),
+  }));
+
+  // --- Exam results trend, this year ---
+  const yearStart = new Date(now.getFullYear(), 0, 1);
+  const examsThisYear = await sdb.exam.findMany({
+    where: { startDate: { gte: yearStart }, endDate: { lt: now } },
+    include: { examSubjects: { include: { marks: true } } },
+    orderBy: { startDate: "asc" },
+  });
+  const resultsTrend = examsThisYear
+    .map((ex) => {
+      const marks = ex.examSubjects.flatMap((es) => es.marks.map((m) => ({ v: Number(m.marksObtained), max: es.maxMarks })));
+      const avgPct = marks.length ? Math.round((marks.reduce((s, m) => s + m.v, 0) / marks.reduce((s, m) => s + m.max, 0)) * 100) : null;
+      return { label: ex.name, avgPct };
+    })
+    .filter((e): e is { label: string; avgPct: number } => e.avgPct !== null);
+
   const monthlyFlow = months.map(({ label, year, month }) => {
     const inMonth = transactions.filter((t) => t.date.getFullYear() === year && t.date.getMonth() === month);
     const income = inMonth.filter((t) => t.type === "INCOME").reduce((s, t) => s + Number(t.amount), 0);
@@ -89,9 +164,10 @@ async function AdminStaffDashboard() {
 
   return (
     <>
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(5,1fr)", gap: 13 }}>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(6,1fr)", gap: 13 }}>
         <StatTile label="Total students" value={totalStudents} />
         <StatTile label="Attendance today" value={attendancePct === null ? "—" : `${attendancePct}%`} color="var(--teal)" />
+        <StaffAvailabilityTile staff={staffAvailability} />
         <StatTile
           label="Fees this month"
           value={
@@ -183,6 +259,14 @@ async function AdminStaffDashboard() {
           </div>
         </div>
       </div>
+
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 16 }}>
+        <AttendanceByClassChart data={attendanceByClass} />
+        <FeeTrendChart data={feeTrend} />
+        <ResultsTrendChart data={resultsTrend} />
+      </div>
+
+      <PendingApprovalsPanel items={approvalItems} />
     </>
   );
 }
@@ -241,7 +325,7 @@ async function ParentDashboard() {
       {students.map((student) => (
         <div key={student.id} className="card" style={{ padding: 20 }}>
           <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", marginBottom: 14 }}>
-            <div style={{ fontSize: 15.5, fontWeight: 700 }}>{student.name}</div>
+            <div style={{ fontSize: 15.5, fontWeight: 700 }}>{studentName(student)}</div>
             <div style={{ fontSize: 12.5, color: "var(--muted)" }}>
               Grade {student.class.grade}
               {student.class.section} · {student.admissionNo}

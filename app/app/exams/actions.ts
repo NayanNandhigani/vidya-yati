@@ -9,54 +9,71 @@ import { requireModuleAccess } from "@/lib/permissions";
 export type ExamFormState = { error?: string };
 
 export async function createExam(_prevState: ExamFormState, formData: FormData): Promise<ExamFormState> {
-  await requireModuleAccess("Exams", "EDIT");
-  const sdb = await getScopedDb();
-
   const name = formData.get("name");
-  const classId = formData.get("classId");
+  const classIds = formData.getAll("classIds") as string[];
   const startDate = formData.get("startDate");
   const endDate = formData.get("endDate");
   const subjectIds = formData.getAll("subjectIds") as string[];
 
   if (
     typeof name !== "string" || !name.trim() ||
-    typeof classId !== "string" || !classId ||
+    classIds.length === 0 ||
     typeof startDate !== "string" || !startDate ||
     typeof endDate !== "string" || !endDate ||
     subjectIds.length === 0
   ) {
-    return { error: "Name, class, dates, and at least one subject are required." };
+    return { error: "Name, at least one class, dates, and at least one subject are required." };
   }
 
-  const cls = await sdb.class.findUniqueOrThrow({ where: { id: classId } });
+  // Same exam (name/dates/subjects) scheduled once per selected class — the
+  // data model keeps one Exam row per class (marks/seating/report cards
+  // all key off a single class), so "multiple classes" means creating one
+  // sibling Exam per class rather than reshaping that model. Check every
+  // selected class's permission up front so a partial failure can't create
+  // some exams but not others.
+  for (const classId of classIds) {
+    await requireModuleAccess("Exams", "EDIT", classId);
+  }
 
-  const exam = await sdb.exam.create({
-    data: scopedCreateData<Prisma.ExamUncheckedCreateInput>({
-      name: name.trim(),
-      classId,
-      yearId: cls.yearId,
-      startDate: new Date(startDate),
-      endDate: new Date(endDate),
-    }),
-  });
+  const sdb = await getScopedDb();
+  let firstExamId: string | null = null;
 
-  await sdb.examSubject.createMany({
-    data: subjectIds.map((subjectId) =>
-      scopedCreateData<Prisma.ExamSubjectUncheckedCreateInput>({
-        examId: exam.id,
-        subjectId,
-        maxMarks: Number(formData.get(`maxMarks_${subjectId}`)) || 100,
-      })
-    ),
-  });
+  for (const classId of classIds) {
+    const cls = await sdb.class.findUniqueOrThrow({ where: { id: classId } });
+
+    const exam = await sdb.exam.create({
+      data: scopedCreateData<Prisma.ExamUncheckedCreateInput>({
+        name: name.trim(),
+        classId,
+        yearId: cls.yearId,
+        startDate: new Date(startDate),
+        endDate: new Date(endDate),
+      }),
+    });
+
+    await sdb.examSubject.createMany({
+      data: subjectIds.map((subjectId) =>
+        scopedCreateData<Prisma.ExamSubjectUncheckedCreateInput>({
+          examId: exam.id,
+          subjectId,
+          maxMarks: Number(formData.get(`maxMarks_${subjectId}`)) || 100,
+        })
+      ),
+    });
+
+    firstExamId ??= exam.id;
+  }
 
   revalidatePath("/app/exams");
-  redirect(`/app/exams?exam=${exam.id}&classId=${classId}`);
+  redirect(`/app/exams?exam=${firstExamId}&classId=${classIds[0]}`);
 }
 
 export async function saveMarks(examId: string, marks: Record<string, Record<string, number>>) {
-  await requireModuleAccess("Exams", "EDIT");
   const sdb = await getScopedDb();
+  // An Exam belongs to exactly one Class, so every mark in this batch is
+  // for that same class — one lookup covers the whole call.
+  const exam = await sdb.exam.findUniqueOrThrow({ where: { id: examId }, select: { classId: true } });
+  await requireModuleAccess("Exams", "EDIT", exam.classId);
 
   const ops = [];
   for (const [studentId, bySubject] of Object.entries(marks)) {

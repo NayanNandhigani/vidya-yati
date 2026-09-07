@@ -4,21 +4,38 @@ import { getScopedDb } from "@/lib/tenant-db";
 import { requireModuleAccess } from "@/lib/permissions";
 import { initials } from "@/lib/format";
 import { avatarColorFor } from "@/lib/academic";
+import { SortableHeader, resolveSort } from "@/components/SortableHeader";
+import type { Prisma } from "@prisma/client";
+import { hasFeature } from "@/lib/feature-flags";
+import { getStaffLeaveSummary } from "./hr-depth-actions";
 import StaffDetailTabs from "./StaffDetailTabs";
+import StatutoryRatesPanel from "./StatutoryRatesPanel";
 
-export default async function EmployeesPage({ searchParams }: { searchParams: Promise<{ staff?: string; q?: string }> }) {
+export default async function EmployeesPage({ searchParams }: { searchParams: Promise<{ staff?: string; q?: string; sortBy?: string; sortDir?: string }> }) {
   await requireModuleAccess("Employees", "VIEW");
   const session = await auth();
   const isAdmin = session!.user.role === "SCHOOL_ADMIN";
   const params = await searchParams;
   const sdb = await getScopedDb();
 
+  const orderBy = resolveSort<Prisma.StaffProfileOrderByWithRelationInput>(
+    params,
+    {
+      name: (dir) => ({ user: { name: dir } }),
+      designation: (dir) => ({ designation: dir }),
+      department: (dir) => ({ department: dir }),
+      contact: (dir) => ({ user: { phone: dir } }),
+      status: (dir) => ({ employmentStatus: dir }),
+    },
+    { user: { name: "asc" } }
+  );
+
   const staffList = await sdb.staffProfile.findMany({
     where: params.q
       ? { user: { name: { contains: params.q, mode: "insensitive" } } }
       : undefined,
     include: { user: true },
-    orderBy: { user: { name: "asc" } },
+    orderBy,
   });
 
   const totalStaff = staffList.length;
@@ -29,12 +46,22 @@ export default async function EmployeesPage({ searchParams }: { searchParams: Pr
   const selected = selectedId ? staffList.find((s) => s.id === selectedId) : undefined;
 
   let detailData = null;
+  const showDocuments = await hasFeature(session!.user.schoolId, "employees.documents");
+  const showStructuredPayroll = await hasFeature(session!.user.schoolId, "payroll.structuredSalary");
+  const showLeave = await hasFeature(session!.user.schoolId, "employees.leave");
   if (selected) {
-    const [attendanceGroups, recentAttendance, payrollRuns, permissions] = await Promise.all([
+    const [attendanceGroups, recentAttendance, payrollRuns, permissions, classes, documents, salaryComponents, allLeaveTypes, leaveRequests, pendingLeaveRequestsRaw, leaveSummary] = await Promise.all([
       sdb.staffAttendance.groupBy({ by: ["status"], where: { staffId: selected.id }, _count: true }),
       sdb.staffAttendance.findMany({ where: { staffId: selected.id }, orderBy: { date: "desc" }, take: 10 }),
       sdb.payrollRun.findMany({ where: { staffId: selected.id }, orderBy: { month: "desc" } }),
       sdb.staffPermission.findMany({ where: { staffId: selected.id } }),
+      sdb.class.findMany({ orderBy: [{ grade: "asc" }, { section: "asc" }] }),
+      showDocuments ? sdb.personDocument.findMany({ where: { staffId: selected.id, subjectType: "STAFF" }, orderBy: { uploadedAt: "desc" } }) : Promise.resolve([]),
+      showStructuredPayroll ? sdb.salaryComponent.findMany({ where: { staffId: selected.id } }) : Promise.resolve([]),
+      showLeave ? sdb.staffLeaveType.findMany({ orderBy: { name: "asc" } }) : Promise.resolve([]),
+      showLeave ? sdb.staffLeaveRequest.findMany({ where: { staffId: selected.id }, include: { leaveType: true }, orderBy: { requestedAt: "desc" } }) : Promise.resolve([]),
+      showLeave && isAdmin ? sdb.staffLeaveRequest.findMany({ where: { status: "PENDING" }, include: { leaveType: true, staff: { include: { user: true } } }, orderBy: { requestedAt: "desc" } }) : Promise.resolve([]),
+      showLeave ? getStaffLeaveSummary(selected.id) : Promise.resolve([]),
     ]);
     const attendanceTotals = { PRESENT: 0, ABSENT: 0, HALF_DAY: 0 };
     for (const g of attendanceGroups) attendanceTotals[g.status] = g._count;
@@ -47,13 +74,47 @@ export default async function EmployeesPage({ searchParams }: { searchParams: Pr
         dateJoined: selected.dateJoined?.toISOString() ?? null,
         employmentStatus: selected.employmentStatus,
         user: { name: selected.user.name, username: selected.user.username, phone: selected.user.phone },
+        qualifications: selected.qualifications,
+        specialization: selected.specialization,
+        shiftStart: selected.shiftStart,
+        isSelf: selected.userId === session!.user.id,
       },
       attendanceTotals,
-      recentAttendance: recentAttendance.map((a) => ({ date: a.date.toISOString(), status: a.status })),
-      payrollRuns: payrollRuns.map((p) => ({ month: p.month, amount: Number(p.amount), status: p.status, paidOn: p.paidOn?.toISOString() ?? null })),
-      permissions: Object.fromEntries(permissions.map((p) => [p.moduleName, p.accessLevel])),
+      recentAttendance: recentAttendance.map((a) => ({ date: a.date.toISOString(), status: a.status, checkInTime: a.checkInTime })),
+      payrollRuns: payrollRuns.map((p) => ({
+        month: p.month,
+        amount: Number(p.amount),
+        status: p.status,
+        paidOn: p.paidOn?.toISOString() ?? null,
+        grossAmount: p.grossAmount ? Number(p.grossAmount) : null,
+        pfAmount: p.pfAmount ? Number(p.pfAmount) : null,
+        esiAmount: p.esiAmount ? Number(p.esiAmount) : null,
+        tdsAmount: p.tdsAmount ? Number(p.tdsAmount) : null,
+        ptAmount: p.ptAmount ? Number(p.ptAmount) : null,
+        lopAmount: p.lopAmount ? Number(p.lopAmount) : null,
+      })),
+      permissions: permissions.map((p) => ({ moduleName: p.moduleName, classId: p.classId, accessLevel: p.accessLevel })),
+      classes: classes.map((c) => ({ id: c.id, grade: c.grade, section: c.section })),
+      salaryComponents: salaryComponents.map((c) => ({ id: c.id, name: c.name, amount: Number(c.amount) })),
+      documents: documents.map((d) => ({
+        id: d.id,
+        category: d.category,
+        label: d.label,
+        filePath: d.filePath,
+        expiryDate: d.expiryDate?.toISOString() ?? null,
+        uploadedAt: d.uploadedAt.toISOString(),
+      })),
+      showLeave,
+      leaveTypes: leaveSummary,
+      allLeaveTypes: allLeaveTypes.map((t) => ({ id: t.id, name: t.name })),
+      leaveRequests: leaveRequests.map((r) => ({ id: r.id, leaveTypeName: r.leaveType.name, dateFrom: r.dateFrom.toISOString(), dateTo: r.dateTo.toISOString(), reason: r.reason, status: r.status })),
+      pendingLeaveRequests: pendingLeaveRequestsRaw.map((r) => ({ id: r.id, leaveTypeName: r.leaveType.name, dateFrom: r.dateFrom.toISOString(), dateTo: r.dateTo.toISOString(), reason: r.reason, status: r.status, staffName: r.staff.user.name })),
     };
   }
+
+  const school = showStructuredPayroll && isAdmin
+    ? await sdb.school.findUnique({ where: { id: session!.user.schoolId! }, select: { pfPercent: true, esiPercent: true, ptFixedAmount: true, tdsPercent: true } })
+    : null;
 
   return (
     <div style={{ padding: "26px 34px", display: "flex", flexDirection: "column", gap: 16, height: "100dvh", boxSizing: "border-box" }}>
@@ -62,8 +123,18 @@ export default async function EmployeesPage({ searchParams }: { searchParams: Pr
           Employees <span className="mono" style={{ fontSize: 14, fontWeight: 500, color: "var(--faint)" }}>· {totalStaff}</span>
         </div>
         <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+          {school && (
+            <StatutoryRatesPanel
+              pfPercent={school.pfPercent ? Number(school.pfPercent) : null}
+              esiPercent={school.esiPercent ? Number(school.esiPercent) : null}
+              ptFixedAmount={school.ptFixedAmount ? Number(school.ptFixedAmount) : null}
+              tdsPercent={school.tdsPercent ? Number(school.tdsPercent) : null}
+            />
+          )}
           <form method="GET">
             {params.staff && <input type="hidden" name="staff" value={params.staff} />}
+            {params.sortBy && <input type="hidden" name="sortBy" value={params.sortBy} />}
+            {params.sortDir && <input type="hidden" name="sortDir" value={params.sortDir} />}
             <input className="in" name="q" defaultValue={params.q} placeholder="Search staff…" style={{ width: 200, background: "var(--card)" }} />
           </form>
           {isAdmin && (
@@ -84,11 +155,11 @@ export default async function EmployeesPage({ searchParams }: { searchParams: Pr
       <div style={{ display: "grid", gridTemplateColumns: "1.6fr 1fr", gap: 16, flex: 1, minHeight: 0 }}>
         <div className="card" style={{ padding: 0, display: "flex", flexDirection: "column", overflow: "hidden" }}>
           <div style={{ display: "grid", gridTemplateColumns: "1.9fr 1.6fr 1.1fr 1.3fr 0.9fr", padding: "13px 20px", borderBottom: "1px solid var(--line)", fontSize: 10.5, color: "var(--faint)", textTransform: "uppercase", letterSpacing: "0.05em" }}>
-            <div>Staff</div>
-            <div>Designation</div>
-            <div>Department</div>
-            <div>Contact</div>
-            <div>Status</div>
+            <div><SortableHeader label="Staff" field="name" basePath="/app/employees" currentParams={params} /></div>
+            <div><SortableHeader label="Designation" field="designation" basePath="/app/employees" currentParams={params} /></div>
+            <div><SortableHeader label="Department" field="department" basePath="/app/employees" currentParams={params} /></div>
+            <div><SortableHeader label="Contact" field="contact" basePath="/app/employees" currentParams={params} /></div>
+            <div><SortableHeader label="Status" field="status" basePath="/app/employees" currentParams={params} /></div>
           </div>
           <div style={{ overflowY: "auto" }}>
             {staffList.length === 0 && <div style={{ padding: 32, textAlign: "center", color: "var(--muted)" }}>No staff found.</div>}
@@ -97,7 +168,7 @@ export default async function EmployeesPage({ searchParams }: { searchParams: Pr
               return (
                 <Link
                   key={s.id}
-                  href={`/app/employees?staff=${s.id}${params.q ? `&q=${params.q}` : ""}`}
+                  href={`/app/employees?staff=${s.id}${params.q ? `&q=${params.q}` : ""}${params.sortBy ? `&sortBy=${params.sortBy}` : ""}${params.sortDir ? `&sortDir=${params.sortDir}` : ""}`}
                   style={{ display: "grid", gridTemplateColumns: "1.9fr 1.6fr 1.1fr 1.3fr 0.9fr", alignItems: "center", padding: "12px 20px", borderBottom: "1px solid var(--line)", background: isSelected ? "var(--marigold-tint)" : "transparent", textDecoration: "none", color: "inherit" }}
                 >
                   <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
@@ -123,7 +194,7 @@ export default async function EmployeesPage({ searchParams }: { searchParams: Pr
         </div>
 
         {detailData ? (
-          <StaffDetailTabs {...detailData} isAdmin={isAdmin} />
+          <StaffDetailTabs {...detailData} isAdmin={isAdmin} showDocuments={showDocuments} showStructuredPayroll={showStructuredPayroll} />
         ) : (
           <div className="card" style={{ padding: 32, display: "flex", alignItems: "center", justifyContent: "center", color: "var(--muted)" }}>
             No staff selected.

@@ -1,4 +1,4 @@
-import { PrismaClient, type SchoolPlan, type SchoolStatus, type SalesStage } from "@prisma/client";
+import { PrismaClient, type SchoolStatus, type SalesStage } from "@prisma/client";
 import bcrypt from "bcryptjs";
 
 const db = new PrismaClient();
@@ -84,17 +84,13 @@ function usernameFor(first: string, last: string, used: Set<string>): string {
   return candidate;
 }
 
-function planRate(plan: SchoolPlan): number {
-  return plan === "PREMIUM" ? 150000 : 65000;
-}
-
 type SchoolSeed = {
   id: string;
   code: string;
   name: string;
   city: string;
   state: string;
-  plan: SchoolPlan;
+  annualFee: number;
   status: SchoolStatus;
   onboardedDaysAgo: number;
   students: number;
@@ -103,24 +99,24 @@ type SchoolSeed = {
 };
 
 const WON_SCHOOLS: SchoolSeed[] = [
-  { id: "sch-sunrise", code: "SUN0001", name: "Sunrise Public School", city: "Bengaluru", state: "Karnataka", plan: "STANDARD", status: "ACTIVE", onboardedDaysAgo: 335, students: 640, owner: "Radhika Menon", health: "healthy" },
-  { id: "sch-littlesparrows", code: "LSK0002", name: "Little Sparrows Kindergarten", city: "Pune", state: "Maharashtra", plan: "STANDARD", status: "ACTIVE", onboardedDaysAgo: 305, students: 95, owner: "Radhika Menon", health: "healthy" },
-  { id: "sch-greenvalley", code: "GVI0003", name: "Green Valley International", city: "Chennai", state: "Tamil Nadu", plan: "PREMIUM", status: "ACTIVE", onboardedDaysAgo: 275, students: 1150, owner: "Arjun Nair", health: "healthy" },
-  { id: "sch-mapleleaf", code: "MLP0004", name: "Maple Leaf Public School", city: "Indore", state: "Madhya Pradesh", plan: "STANDARD", status: "ACTIVE", onboardedDaysAgo: 245, students: 340, owner: "Arjun Nair", health: "healthy" },
-  { id: "sch-lotusvalley", code: "LVS0005", name: "Lotus Valley School", city: "Lucknow", state: "Uttar Pradesh", plan: "PREMIUM", status: "ACTIVE", onboardedDaysAgo: 215, students: 880, owner: "Priya Iyer", health: "healthy" },
-  { id: "sch-sapphire", code: "SIS0006", name: "Sapphire International School", city: "Surat", state: "Gujarat", plan: "STANDARD", status: "ACTIVE", onboardedDaysAgo: 185, students: 260, owner: "Priya Iyer", health: "healthy" },
-  { id: "sch-xaviers", code: "SXA0007", name: "St. Xavier's Academy", city: "Kochi", state: "Kerala", plan: "PREMIUM", status: "ACTIVE", onboardedDaysAgo: 155, students: 720, owner: "Radhika Menon", health: "healthy" },
-  { id: "sch-holycross", code: "HCC0008", name: "Holy Cross Convent School", city: "Nashik", state: "Maharashtra", plan: "STANDARD", status: "ACTIVE", onboardedDaysAgo: 150, students: 300, owner: "Arjun Nair", health: "dormant" },
-  { id: "sch-vidyasagar", code: "VPS0009", name: "Vidyasagar Public School", city: "Bhubaneswar", state: "Odisha", plan: "STANDARD", status: "ACTIVE", onboardedDaysAgo: 120, students: 410, owner: "Priya Iyer", health: "healthy" },
-  { id: "sch-bluebells", code: "BBM0010", name: "Blue Bells Model School", city: "Chandigarh", state: "Chandigarh", plan: "STANDARD", status: "ACTIVE", onboardedDaysAgo: 90, students: 120, owner: "Radhika Menon", health: "dormant" },
-  { id: "sch-brightminds", code: "BMA0011", name: "Bright Minds Academy", city: "Hyderabad", state: "Telangana", plan: "STANDARD", status: "EXPIRING", onboardedDaysAgo: 355, students: 380, owner: "Arjun Nair", health: "healthy" },
-  { id: "sch-silveroak", code: "SOC0012", name: "Silver Oak Convent School", city: "Coimbatore", state: "Tamil Nadu", plan: "STANDARD", status: "EXPIRING", onboardedDaysAgo: 350, students: 270, owner: "Priya Iyer", health: "healthy" },
-  { id: "sch-northstar", code: "NPS0013", name: "Northstar Public School", city: "Jaipur", state: "Rajasthan", plan: "STANDARD", status: "OVERDUE", onboardedDaysAgo: 380, students: 165, owner: "Radhika Menon", health: "dormant" },
-  { id: "sch-goldengate", code: "GGS0014", name: "Golden Gate School", city: "Amritsar", state: "Punjab", plan: "STANDARD", status: "OVERDUE", onboardedDaysAgo: 370, students: 140, owner: "Arjun Nair", health: "healthy" },
-  { id: "sch-riverside", code: "RES0015", name: "Riverside English School", city: "Guwahati", state: "Assam", plan: "STANDARD", status: "CANCELLED", onboardedDaysAgo: 410, students: 85, owner: "Priya Iyer", health: "dormant" },
-  { id: "sch-rosewood", code: "RPS0016", name: "Rosewood Public School", city: "Dehradun", state: "Uttarakhand", plan: "STANDARD", status: "TRIAL", onboardedDaysAgo: 20, students: 94, owner: "Radhika Menon", health: "healthy" },
-  { id: "sch-everest", code: "EIS0017", name: "Everest International School", city: "Ranchi", state: "Jharkhand", plan: "STANDARD", status: "TRIAL", onboardedDaysAgo: 10, students: 60, owner: "Arjun Nair", health: "healthy" },
-  { id: "sch-sunflower", code: "SKA0018", name: "Sunflower Kids Academy", city: "Mysuru", state: "Karnataka", plan: "STANDARD", status: "TRIAL", onboardedDaysAgo: 25, students: 70, owner: "Priya Iyer", health: "dormant" },
+  { id: "sch-sunrise", code: "SUN0001", name: "Sunrise Public School", city: "Bengaluru", state: "Karnataka", annualFee: 65000, status: "ACTIVE", onboardedDaysAgo: 335, students: 640, owner: "Radhika Menon", health: "healthy" },
+  { id: "sch-littlesparrows", code: "LSK0002", name: "Little Sparrows Kindergarten", city: "Pune", state: "Maharashtra", annualFee: 65000, status: "ACTIVE", onboardedDaysAgo: 305, students: 95, owner: "Radhika Menon", health: "healthy" },
+  { id: "sch-greenvalley", code: "GVI0003", name: "Green Valley International", city: "Chennai", state: "Tamil Nadu", annualFee: 150000, status: "ACTIVE", onboardedDaysAgo: 275, students: 1150, owner: "Arjun Nair", health: "healthy" },
+  { id: "sch-mapleleaf", code: "MLP0004", name: "Maple Leaf Public School", city: "Indore", state: "Madhya Pradesh", annualFee: 65000, status: "ACTIVE", onboardedDaysAgo: 245, students: 340, owner: "Arjun Nair", health: "healthy" },
+  { id: "sch-lotusvalley", code: "LVS0005", name: "Lotus Valley School", city: "Lucknow", state: "Uttar Pradesh", annualFee: 150000, status: "ACTIVE", onboardedDaysAgo: 215, students: 880, owner: "Priya Iyer", health: "healthy" },
+  { id: "sch-sapphire", code: "SIS0006", name: "Sapphire International School", city: "Surat", state: "Gujarat", annualFee: 65000, status: "ACTIVE", onboardedDaysAgo: 185, students: 260, owner: "Priya Iyer", health: "healthy" },
+  { id: "sch-xaviers", code: "SXA0007", name: "St. Xavier's Academy", city: "Kochi", state: "Kerala", annualFee: 150000, status: "ACTIVE", onboardedDaysAgo: 155, students: 720, owner: "Radhika Menon", health: "healthy" },
+  { id: "sch-holycross", code: "HCC0008", name: "Holy Cross Convent School", city: "Nashik", state: "Maharashtra", annualFee: 65000, status: "ACTIVE", onboardedDaysAgo: 150, students: 300, owner: "Arjun Nair", health: "dormant" },
+  { id: "sch-vidyasagar", code: "VPS0009", name: "Vidyasagar Public School", city: "Bhubaneswar", state: "Odisha", annualFee: 65000, status: "ACTIVE", onboardedDaysAgo: 120, students: 410, owner: "Priya Iyer", health: "healthy" },
+  { id: "sch-bluebells", code: "BBM0010", name: "Blue Bells Model School", city: "Chandigarh", state: "Chandigarh", annualFee: 65000, status: "ACTIVE", onboardedDaysAgo: 90, students: 120, owner: "Radhika Menon", health: "dormant" },
+  { id: "sch-brightminds", code: "BMA0011", name: "Bright Minds Academy", city: "Hyderabad", state: "Telangana", annualFee: 65000, status: "EXPIRING", onboardedDaysAgo: 355, students: 380, owner: "Arjun Nair", health: "healthy" },
+  { id: "sch-silveroak", code: "SOC0012", name: "Silver Oak Convent School", city: "Coimbatore", state: "Tamil Nadu", annualFee: 65000, status: "EXPIRING", onboardedDaysAgo: 350, students: 270, owner: "Priya Iyer", health: "healthy" },
+  { id: "sch-northstar", code: "NPS0013", name: "Northstar Public School", city: "Jaipur", state: "Rajasthan", annualFee: 65000, status: "OVERDUE", onboardedDaysAgo: 380, students: 165, owner: "Radhika Menon", health: "dormant" },
+  { id: "sch-goldengate", code: "GGS0014", name: "Golden Gate School", city: "Amritsar", state: "Punjab", annualFee: 65000, status: "OVERDUE", onboardedDaysAgo: 370, students: 140, owner: "Arjun Nair", health: "healthy" },
+  { id: "sch-riverside", code: "RES0015", name: "Riverside English School", city: "Guwahati", state: "Assam", annualFee: 65000, status: "CANCELLED", onboardedDaysAgo: 410, students: 85, owner: "Priya Iyer", health: "dormant" },
+  { id: "sch-rosewood", code: "RPS0016", name: "Rosewood Public School", city: "Dehradun", state: "Uttarakhand", annualFee: 65000, status: "TRIAL", onboardedDaysAgo: 20, students: 94, owner: "Radhika Menon", health: "healthy" },
+  { id: "sch-everest", code: "EIS0017", name: "Everest International School", city: "Ranchi", state: "Jharkhand", annualFee: 65000, status: "TRIAL", onboardedDaysAgo: 10, students: 60, owner: "Arjun Nair", health: "healthy" },
+  { id: "sch-sunflower", code: "SKA0018", name: "Sunflower Kids Academy", city: "Mysuru", state: "Karnataka", annualFee: 65000, status: "TRIAL", onboardedDaysAgo: 25, students: 70, owner: "Priya Iyer", health: "dormant" },
 ];
 
 const LEADS: { id: string; code: string; name: string; city: string; state: string; stage: SalesStage; source: string; owner: string }[] = [
@@ -151,7 +147,6 @@ async function seedSchool(school: SchoolSeed, now: Date, passwordHash: string, u
       name: school.name,
       city: school.city,
       state: school.state,
-      plan: school.plan,
       status: school.status,
       relationshipManager: school.owner,
       salesStage: "WON",
@@ -173,6 +168,7 @@ async function seedSchool(school: SchoolSeed, now: Date, passwordHash: string, u
       phone: `9${randInt(100000000, 999999999, rng)}`,
       role: "SCHOOL_ADMIN",
       passwordHash,
+      mustChangePassword: false,
     },
   });
 
@@ -204,7 +200,8 @@ async function seedSchool(school: SchoolSeed, now: Date, passwordHash: string, u
     return {
       schoolId: school.id,
       admissionNo: `${school.code}-${String(i + 1).padStart(4, "0")}`,
-      name: `${pick(FIRST_NAMES_CHILD, rng)} ${pick(LAST_NAMES, rng)}`,
+      firstName: pick(FIRST_NAMES_CHILD, rng),
+      surname: pick(LAST_NAMES, rng),
       dob,
       gender,
       classId: cls.id,
@@ -225,6 +222,7 @@ async function seedSchool(school: SchoolSeed, now: Date, passwordHash: string, u
       phone: `9${randInt(100000000, 999999999, rng)}`,
       role: "STAFF" as const,
       passwordHash,
+      mustChangePassword: false,
     };
   });
   const staffUsers = await db.user.createManyAndReturn({ data: staffUserRows });
@@ -260,6 +258,7 @@ async function seedSchool(school: SchoolSeed, now: Date, passwordHash: string, u
       phone: `9${randInt(100000000, 999999999, rng)}`,
       role: "PARENT" as const,
       passwordHash,
+      mustChangePassword: false,
     };
   });
   const parentUsers = await db.user.createManyAndReturn({ data: parentUserRows });
@@ -316,7 +315,7 @@ async function seedSchool(school: SchoolSeed, now: Date, passwordHash: string, u
   }
 
   // --- Subscription invoice/payment history -------------------------------
-  const rate = planRate(school.plan);
+  const rate = school.annualFee;
   type InvoicePlan = { dueDate: Date; status: "PAID" | "PENDING"; paidOn?: Date };
   const invoicePlans: InvoicePlan[] = [];
   if (school.status === "ACTIVE") {
@@ -370,7 +369,6 @@ async function seedLead(lead: (typeof LEADS)[number], now: Date) {
       name: lead.name,
       city: lead.city,
       state: lead.state,
-      plan: "STANDARD",
       status: "TRIAL",
       salesStage: lead.stage,
       leadSource: lead.source,
@@ -480,6 +478,7 @@ async function main() {
       name: "Vidya Yati Platform Admin",
       role: "SUPER_ADMIN",
       passwordHash,
+      mustChangePassword: false,
     },
   });
 

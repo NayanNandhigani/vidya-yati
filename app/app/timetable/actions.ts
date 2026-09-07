@@ -12,7 +12,7 @@ export async function setTimetableSlot(
   subjectId: string | null,
   staffId: string | null
 ) {
-  await requireModuleAccess("Timetable", "EDIT");
+  await requireModuleAccess("Timetable", "EDIT", classId);
   const sdb = await getScopedDb();
 
   if (!subjectId || !staffId) {

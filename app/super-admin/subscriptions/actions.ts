@@ -60,6 +60,7 @@ export type InvoiceFormState = { error?: string };
 
 export async function createInvoice(_prevState: InvoiceFormState, formData: FormData): Promise<InvoiceFormState> {
   const schoolId = formData.get("schoolId");
+  const planId = formData.get("planId");
   const amountRaw = formData.get("amount");
   const billingPeriod = formData.get("billingPeriod");
   const dueDate = formData.get("dueDate");
@@ -69,9 +70,17 @@ export async function createInvoice(_prevState: InvoiceFormState, formData: Form
   }
 
   await db.subscriptionInvoice.create({
-    data: { schoolId, amount: Number(amountRaw), billingPeriod: billingPeriod.trim(), dueDate: new Date(dueDate), status: "PENDING" },
+    data: {
+      schoolId,
+      planId: typeof planId === "string" && planId ? planId : null,
+      amount: Number(amountRaw),
+      billingPeriod: billingPeriod.trim(),
+      dueDate: new Date(dueDate),
+      status: "PENDING",
+    },
   });
 
   revalidatePath("/super-admin/subscriptions");
+  revalidatePath("/super-admin/plans");
   return {};
 }

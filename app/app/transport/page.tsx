@@ -2,8 +2,12 @@ import Link from "next/link";
 import { auth } from "@/auth";
 import { getScopedDb } from "@/lib/tenant-db";
 import { requireModuleAccess } from "@/lib/permissions";
+import { studentName } from "@/lib/format";
+import { hasFeature } from "@/lib/feature-flags";
 import AddStopForm from "./AddStopForm";
 import AllocateForm from "./AllocateForm";
+import TransportDepthPanel from "./TransportDepthPanel";
+import { RoomTypeWardenEditor, MessMenuEditor, VisitorLogPanel, OutingRequestsPanel, ParentOutingRequestForm } from "./HostelDepthPanel";
 
 export default async function TransportPage({ searchParams }: { searchParams: Promise<{ tab?: string; route?: string; room?: string }> }) {
   const session = await auth();
@@ -25,8 +29,8 @@ export default async function TransportPage({ searchParams }: { searchParams: Pr
           Transport &amp; Hostel
         </div>
         {canEdit && (
-          <Link href={tab === "hostel" ? "/app/transport/new-room" : "/app/transport/new-route"} style={{ background: "var(--card)", border: "1px solid var(--line)", borderRadius: 8, padding: "8px 15px", fontSize: 13, fontWeight: 600, textDecoration: "none", color: "var(--ink)" }}>
-            + Add {tab === "hostel" ? "room" : "route"}
+          <Link href={tab === "hostel" ? "/app/transport/new-room" : "/app/institute?panel=transport"} style={{ background: "var(--card)", border: "1px solid var(--line)", borderRadius: 8, padding: "8px 15px", fontSize: 13, fontWeight: 600, textDecoration: "none", color: "var(--ink)" }}>
+            + Add {tab === "hostel" ? "room" : "route"} {tab !== "hostel" && "→"}
           </Link>
         )}
       </div>
@@ -40,13 +44,21 @@ export default async function TransportPage({ searchParams }: { searchParams: Pr
         </Link>
       </div>
 
-      {tab === "transport" ? <TransportTab selectedRouteId={params.route} canEdit={canEdit} sdb={sdb} /> : <HostelTab selectedRoomId={params.room} canEdit={canEdit} sdb={sdb} />}
+      {tab === "transport" ? (
+        <TransportTab selectedRouteId={params.route} canEdit={canEdit} sdb={sdb} schoolId={session!.user.schoolId!} />
+      ) : (
+        <HostelTab selectedRoomId={params.room} canEdit={canEdit} sdb={sdb} schoolId={session!.user.schoolId!} />
+      )}
     </div>
   );
 }
 
-async function TransportTab({ selectedRouteId, canEdit, sdb }: { selectedRouteId?: string; canEdit: boolean; sdb: Awaited<ReturnType<typeof getScopedDb>> }) {
-  const routes = await sdb.transportRoute.findMany({ include: { assignments: true, stops: { orderBy: { sequence: "asc" } } }, orderBy: { name: "asc" } });
+async function TransportTab({ selectedRouteId, canEdit, sdb, schoolId }: { selectedRouteId?: string; canEdit: boolean; sdb: Awaited<ReturnType<typeof getScopedDb>>; schoolId: string }) {
+  const [routes, showLiveLocation, showCompliance] = await Promise.all([
+    sdb.transportRoute.findMany({ include: { assignments: true, stops: { orderBy: { sequence: "asc" } } }, orderBy: { name: "asc" } }),
+    hasFeature(schoolId, "transport.liveLocation"),
+    hasFeature(schoolId, "transport.complianceAndFees"),
+  ]);
   const totalCommuting = routes.reduce((s, r) => s + r.assignments.length, 0);
   const busesInService = routes.filter((r) => r.assignments.length > 0).length;
   const avgUtilisation = routes.length ? Math.round((routes.reduce((s, r) => s + (r.capacity ? r.assignments.length / r.capacity : 0), 0) / routes.length) * 100) : 0;
@@ -100,7 +112,7 @@ async function TransportTab({ selectedRouteId, canEdit, sdb }: { selectedRouteId
           </div>
         </div>
 
-        <div className="card" style={{ padding: 22, display: "flex", flexDirection: "column", gap: 14, overflow: "hidden" }}>
+        <div className="card" style={{ padding: 22, display: "flex", flexDirection: "column", gap: 14, overflowY: "auto" }}>
           {selected ? (
             <>
               <div>
@@ -140,6 +152,23 @@ async function TransportTab({ selectedRouteId, canEdit, sdb }: { selectedRouteId
                   </div>
                 )}
               </div>
+              {canEdit && (
+                <TransportDepthPanel
+                  route={{
+                    id: selected.id,
+                    driverLicenseNo: selected.driverLicenseNo,
+                    licenseExpiry: selected.licenseExpiry?.toISOString() ?? null,
+                    insuranceExpiry: selected.insuranceExpiry?.toISOString() ?? null,
+                    fitnessExpiry: selected.fitnessExpiry?.toISOString() ?? null,
+                    feeAmount: selected.feeAmount ? Number(selected.feeAmount) : null,
+                    lastKnownLat: selected.lastKnownLat,
+                    lastKnownLng: selected.lastKnownLng,
+                    lastLocationAt: selected.lastLocationAt?.toISOString() ?? null,
+                  }}
+                  showLiveLocation={showLiveLocation}
+                  showCompliance={showCompliance}
+                />
+              )}
             </>
           ) : (
             <div style={{ color: "var(--muted)", fontSize: 13.5 }}>No route selected.</div>
@@ -150,11 +179,21 @@ async function TransportTab({ selectedRouteId, canEdit, sdb }: { selectedRouteId
   );
 }
 
-async function HostelTab({ selectedRoomId, canEdit, sdb }: { selectedRoomId?: string; canEdit: boolean; sdb: Awaited<ReturnType<typeof getScopedDb>> }) {
-  const [rooms, unassignedStudents] = await Promise.all([
-    sdb.hostelRoom.findMany({ include: { allocations: { include: { student: { include: { class: true } } } } }, orderBy: { roomNo: "asc" } }),
-    sdb.student.findMany({ where: { status: "ACTIVE", hostelAllocations: { none: {} } }, orderBy: { name: "asc" }, select: { id: true, name: true } }),
+async function HostelTab({ selectedRoomId, canEdit, sdb, schoolId }: { selectedRoomId?: string; canEdit: boolean; sdb: Awaited<ReturnType<typeof getScopedDb>>; schoolId: string }) {
+  const [rooms, unassignedStudents, showHostelOps] = await Promise.all([
+    sdb.hostelRoom.findMany({ include: { allocations: { include: { student: { include: { class: true } } } }, warden: { include: { user: true } } }, orderBy: { roomNo: "asc" } }),
+    sdb.student.findMany({ where: { status: "ACTIVE", hostelAllocations: { none: {} } }, orderBy: [{ firstName: "asc" }, { surname: "asc" }], select: { id: true, firstName: true, surname: true } }),
+    hasFeature(schoolId, "hostel.operations"),
   ]);
+
+  const [staffOptions, messMenus, visitorLogs, outingRequests] = showHostelOps
+    ? await Promise.all([
+        sdb.staffProfile.findMany({ include: { user: true }, orderBy: { user: { name: "asc" } } }),
+        sdb.hostelMessMenu.findMany(),
+        sdb.hostelVisitorLog.findMany({ include: { student: true }, orderBy: { checkInAt: "desc" }, take: 30 }),
+        sdb.hostelOutingRequest.findMany({ include: { student: true }, orderBy: { requestedAt: "desc" }, take: 30 }),
+      ])
+    : [[], [], [], []];
 
   const totalBeds = rooms.reduce((s, r) => s + r.capacity, 0);
   const occupied = rooms.reduce((s, r) => s + r.allocations.length, 0);
@@ -162,6 +201,7 @@ async function HostelTab({ selectedRoomId, canEdit, sdb }: { selectedRoomId?: st
   const occupancyPct = totalBeds ? Math.round((occupied / totalBeds) * 100) : 0;
 
   const selected = rooms.find((r) => r.id === selectedRoomId) ?? rooms[0];
+  const roomResidents = selected ? selected.allocations.map((a) => ({ id: a.studentId, name: studentName(a.student) })) : [];
 
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 16, flex: 1, minHeight: 0 }}>
@@ -190,7 +230,7 @@ async function HostelTab({ selectedRoomId, canEdit, sdb }: { selectedRoomId?: st
               return (
                 <Link key={r.id} href={`/app/transport?tab=hostel&room=${r.id}`} style={{ display: "grid", gridTemplateColumns: "1fr 1.6fr 0.8fr 0.9fr 1fr", alignItems: "center", padding: "12px 20px", borderBottom: "1px solid var(--line)", fontSize: 13, background: isSelected ? "var(--marigold-tint)" : "transparent", textDecoration: "none", color: "inherit" }}>
                   <div style={{ fontWeight: isSelected ? 700 : 600 }}>{r.roomNo}</div>
-                  <div style={{ color: "var(--muted)" }}>—</div>
+                  <div style={{ color: "var(--muted)" }}>{r.roomType ?? "—"}</div>
                   <div className="mono">{r.capacity}</div>
                   <div className="mono" style={{ fontWeight: 600 }}>{r.allocations.length}</div>
                   <div>
@@ -204,12 +244,26 @@ async function HostelTab({ selectedRoomId, canEdit, sdb }: { selectedRoomId?: st
           </div>
         </div>
 
-        <div className="card" style={{ padding: 22, display: "flex", flexDirection: "column", gap: 14, overflow: "hidden" }}>
+        <div className="card" style={{ padding: 22, display: "flex", flexDirection: "column", gap: 14, overflowY: "auto" }}>
           {selected ? (
             <>
               {canEdit && <AllocateForm roomId={selected.id} students={unassignedStudents} />}
+              {showHostelOps && canEdit && (
+                <div style={{ borderTop: "1px solid var(--line)", paddingTop: 12 }}>
+                  <div style={{ fontSize: 11.5, color: "var(--faint)", textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: 8 }}>Room type &amp; warden</div>
+                  <RoomTypeWardenEditor
+                    roomId={selected.id}
+                    roomType={selected.roomType}
+                    wardenStaffId={selected.wardenStaffId}
+                    staffOptions={staffOptions.map((s) => ({ id: s.id, name: s.user.name ?? "Staff" }))}
+                  />
+                </div>
+              )}
               <div style={{ borderTop: "1px solid var(--line)", paddingTop: 14, flex: 1, overflowY: "auto" }}>
                 <div style={{ fontSize: 13.5, fontWeight: 700, marginBottom: 2 }}>{selected.roomNo} roster</div>
+                {showHostelOps && selected.warden && (
+                  <div style={{ fontSize: 11.5, color: "var(--muted)", marginBottom: 6 }}>Warden: {selected.warden.user.name}</div>
+                )}
                 <div className="mono" style={{ fontSize: 12, color: "var(--muted)", marginBottom: 12 }}>
                   {selected.allocations.length} of {selected.capacity} beds occupied
                 </div>
@@ -222,7 +276,7 @@ async function HostelTab({ selectedRoomId, canEdit, sdb }: { selectedRoomId?: st
                   <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
                     {selected.allocations.map((a) => (
                       <div key={a.studentId}>
-                        <div style={{ fontSize: 13, fontWeight: 700 }}>{a.student.name}</div>
+                        <div style={{ fontSize: 13, fontWeight: 700 }}>{studentName(a.student)}</div>
                         <div style={{ fontSize: 12, color: "var(--muted)", margin: "2px 0 4px" }}>
                           Class {a.student.class.grade}-{a.student.class.section}
                         </div>
@@ -240,6 +294,19 @@ async function HostelTab({ selectedRoomId, canEdit, sdb }: { selectedRoomId?: st
           )}
         </div>
       </div>
+
+      {showHostelOps && (
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 16 }}>
+          <MessMenuEditor menus={messMenus.map((m) => ({ dayOfWeek: m.dayOfWeek, mealType: m.mealType, menuText: m.menuText }))} />
+          <VisitorLogPanel
+            students={roomResidents}
+            logs={visitorLogs.map((l) => ({ id: l.id, studentName: studentName(l.student), visitorName: l.visitorName, relation: l.relation, purpose: l.purpose, checkInAt: l.checkInAt.toISOString(), checkOutAt: l.checkOutAt?.toISOString() ?? null }))}
+          />
+          <OutingRequestsPanel
+            requests={outingRequests.map((r) => ({ id: r.id, studentName: studentName(r.student), reason: r.reason, dateFrom: r.dateFrom.toISOString(), dateTo: r.dateTo.toISOString(), status: r.status }))}
+          />
+        </div>
+      )}
     </div>
   );
 }
@@ -257,6 +324,7 @@ async function ParentTransportView() {
             include: {
               transportAssignment: { include: { route: true, stop: true } },
               hostelAllocations: { include: { room: true }, orderBy: { dateFrom: "desc" }, take: 1 },
+              hostelOutingRequests: { orderBy: { requestedAt: "desc" }, take: 5 },
             },
           },
         },
@@ -264,6 +332,10 @@ async function ParentTransportView() {
     },
   });
   const students = parent?.studentLinks.map((l) => l.student) ?? [];
+  const [showLiveLocation, showHostelOps] = await Promise.all([
+    hasFeature(session!.user.schoolId, "transport.liveLocation"),
+    hasFeature(session!.user.schoolId, "hostel.operations"),
+  ]);
 
   return (
     <div style={{ padding: "26px 34px", display: "flex", flexDirection: "column", gap: 18 }}>
@@ -273,7 +345,7 @@ async function ParentTransportView() {
       {students.length === 0 && <div style={{ color: "var(--muted)" }}>No students linked to your account.</div>}
       {students.map((s) => (
         <div key={s.id} className="card" style={{ padding: 20 }}>
-          <div style={{ fontSize: 15.5, fontWeight: 700, marginBottom: 14 }}>{s.name}</div>
+          <div style={{ fontSize: 15.5, fontWeight: 700, marginBottom: 14 }}>{studentName(s)}</div>
           {s.transportAssignment ? (
             <div style={{ fontSize: 13.5, marginBottom: 10 }}>
               <div style={{ fontWeight: 600 }}>{s.transportAssignment.route.name}</div>
@@ -281,12 +353,49 @@ async function ParentTransportView() {
                 Pickup: {s.transportAssignment.stop.stopName}
                 {s.transportAssignment.stop.pickupTime && ` · ${s.transportAssignment.stop.pickupTime.toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit", hour12: true })}`}
               </div>
+              {showLiveLocation && s.transportAssignment.route.lastKnownLat != null && (
+                <div style={{ marginTop: 6 }}>
+                  <a
+                    href={`https://www.google.com/maps?q=${s.transportAssignment.route.lastKnownLat},${s.transportAssignment.route.lastKnownLng}`}
+                    target="_blank"
+                    rel="noreferrer"
+                    style={{ fontSize: 11.5, fontWeight: 700, color: "var(--marigold-deep)" }}
+                  >
+                    View bus's last known location ↗
+                  </a>
+                  <div style={{ fontSize: 10.5, color: "var(--faint)" }}>
+                    Updated {s.transportAssignment.route.lastLocationAt ? new Date(s.transportAssignment.route.lastLocationAt).toLocaleString("en-IN") : "—"}
+                  </div>
+                </div>
+              )}
             </div>
           ) : (
             <div style={{ color: "var(--muted)", fontSize: 13.5, marginBottom: 10 }}>Not assigned to a transport route.</div>
           )}
           {s.hostelAllocations[0] && (
-            <div style={{ fontSize: 13, color: "var(--muted)" }}>Hostel room: <b style={{ color: "var(--ink)" }}>{s.hostelAllocations[0].room.roomNo}</b></div>
+            <>
+              <div style={{ fontSize: 13, color: "var(--muted)" }}>Hostel room: <b style={{ color: "var(--ink)" }}>{s.hostelAllocations[0].room.roomNo}</b></div>
+              {showHostelOps && (
+                <>
+                  {s.hostelOutingRequests.length > 0 && (
+                    <div style={{ marginTop: 8, display: "flex", flexDirection: "column", gap: 4 }}>
+                      {s.hostelOutingRequests.map((r) => {
+                        const color = r.status === "APPROVED" ? "var(--good)" : r.status === "REJECTED" ? "var(--critical)" : "var(--warn)";
+                        return (
+                          <div key={r.id} style={{ fontSize: 11.5, display: "flex", justifyContent: "space-between" }}>
+                            <span style={{ color: "var(--muted)" }}>
+                              {r.reason} ({r.dateFrom.toLocaleDateString("en-IN", { day: "2-digit", month: "short" })}–{r.dateTo.toLocaleDateString("en-IN", { day: "2-digit", month: "short" })})
+                            </span>
+                            <span style={{ fontWeight: 700, color }}>{r.status}</span>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
+                  <ParentOutingRequestForm studentId={s.id} />
+                </>
+              )}
+            </>
           )}
         </div>
       ))}
