@@ -8,6 +8,7 @@ import RecordsPanel from "./RecordsPanel";
 import PersonDocumentsPanel, { type PersonDocumentRow } from "@/components/PersonDocumentsPanel";
 import { addStudentDocument } from "../depth-actions";
 import GuardianRow from "./GuardianRow";
+import StudentFeeAllocationPanel from "./StudentFeeAllocationPanel";
 
 type StudentDetail = {
   id: string;
@@ -41,6 +42,9 @@ type Props = {
   siblings: { id: string; name: string; className: string; admissionNo: string }[];
   documents: PersonDocumentRow[];
   admission: AdmissionDetail | null;
+  actualFee: number | null;
+  chargedFee: number | null;
+  isAdmin: boolean;
 };
 
 // Everything captured on the Admissions detailed application form — carried
@@ -101,6 +105,9 @@ export default function ProfileTabs({
   siblings,
   documents,
   admission,
+  actualFee,
+  chargedFee,
+  isAdmin,
 }: Props) {
   const showRecords = features.medicalInfo || features.priorSchool || features.siblings;
   const TABS = [
@@ -254,6 +261,7 @@ export default function ProfileTabs({
 
         {tab === "Fees" && (
           <>
+            <StudentFeeAllocationPanel studentId={student.id} actualFee={actualFee} chargedFee={chargedFee} isAdmin={isAdmin} />
             <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 10, marginBottom: 16 }}>
               <StatBox label="Total fee" value={`₹${totalDue.toLocaleString("en-IN")}`} />
               <StatBox label="Paid" value={`₹${totalPaid.toLocaleString("en-IN")}`} color="var(--good)" />

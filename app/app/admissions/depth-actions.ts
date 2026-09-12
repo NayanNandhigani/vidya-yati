@@ -75,7 +75,13 @@ export async function submitForAdmitApproval(enquiryId: string) {
  * one). Creates the Student exactly as the existing, untouched
  * admitEnquiry does for schools without this feature.
  */
-export async function approveAdmissionWithFee(enquiryId: string, classId: string, openingFeeDescription: string | null, openingFeeAmount: number | null) {
+export async function approveAdmissionWithFee(
+  enquiryId: string,
+  classId: string,
+  openingFeeDescription: string | null,
+  openingFeeAmount: number | null,
+  chargedFee: number | null
+) {
   await requireModuleAccess("Admissions", "EDIT");
   await requireFeature(await schoolId(), "admissions.detailedForm");
   const session = await auth();
@@ -84,6 +90,14 @@ export async function approveAdmissionWithFee(enquiryId: string, classId: string
 
   const enquiry = await sdb.admissionEnquiry.findUniqueOrThrow({ where: { id: enquiryId } });
   if (enquiry.approvalStatus !== "PENDING") throw new Error("This application isn't pending approval.");
+
+  if (chargedFee != null) {
+    const targetClass = await sdb.class.findUniqueOrThrow({ where: { id: classId }, select: { grade: true, yearId: true } });
+    const feeDefault = await sdb.classFeeDefault.findUnique({ where: { yearId_grade: { yearId: targetClass.yearId, grade: targetClass.grade } } });
+    if (feeDefault && chargedFee > Number(feeDefault.actualFee)) {
+      throw new Error("Charged fee can't be more than the actual fee.");
+    }
+  }
 
   const count = await sdb.student.count();
   const admissionNo = `AD-${2000 + count + 1}`;
@@ -100,6 +114,7 @@ export async function approveAdmissionWithFee(enquiryId: string, classId: string
       status: "ACTIVE",
       dob: enquiry.dob,
       gender: enquiry.gender,
+      chargedFee,
     }),
   });
 

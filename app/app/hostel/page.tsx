@@ -9,11 +9,12 @@ import { RoomTypeWardenEditor, MessMenuEditor, VisitorLogPanel, OutingRequestsPa
 import { NewRoomInlineForm, RoomDetailEditor } from "./RoomDetailsPanel";
 import { MealsServedLog } from "./MealsPanel";
 import { MaintenancePanel, type MaintenanceTarget, type MaintenanceLogRow } from "./MaintenancePanel";
+import LaundryPanel, { type LaundryStudentOption, type LaundryTicketRow } from "./LaundryPanel";
 import { removeAllocation } from "./actions";
 
-const TABS = ["rooms", "allocation", "visitors", "canteen", "maintenance"] as const;
+const TABS = ["rooms", "allocation", "visitors", "canteen", "maintenance", "laundry"] as const;
 type Tab = (typeof TABS)[number];
-const TAB_LABEL: Record<Tab, string> = { rooms: "Room Details", allocation: "Student Allocation", visitors: "Visitor Entry & Permit", canteen: "Canteen / Mess", maintenance: "Maintenance" };
+const TAB_LABEL: Record<Tab, string> = { rooms: "Room Details", allocation: "Student Allocation", visitors: "Visitor Entry & Permit", canteen: "Canteen / Mess", maintenance: "Maintenance", laundry: "Laundry Management" };
 
 type RoomsList = Prisma.HostelRoomGetPayload<{
   include: { allocations: { include: { student: { include: { class: true } } } }; warden: { include: { user: true } }; facilities: true };
@@ -77,8 +78,10 @@ export default async function HostelPage({ searchParams }: { searchParams: Promi
         await VisitorsTab({ rooms, sdb })
       ) : tab === "canteen" ? (
         await CanteenTab({ sdb })
-      ) : (
+      ) : tab === "maintenance" ? (
         await MaintenanceTab({ rooms, sdb })
+      ) : (
+        await LaundryTab({ sdb, canEdit })
       )}
     </div>
   );
@@ -287,6 +290,30 @@ async function MaintenanceTab({ rooms, sdb }: { rooms: RoomsList; sdb: Awaited<R
   }));
 
   return <MaintenancePanel targets={targets} logs={logs} />;
+}
+
+async function LaundryTab({ sdb, canEdit }: { sdb: Awaited<ReturnType<typeof getScopedDb>>; canEdit: boolean }) {
+  const [allocations, tickets] = await Promise.all([
+    sdb.hostelAllocation.findMany({ include: { student: true, room: true }, orderBy: { student: { firstName: "asc" } } }),
+    sdb.laundryTicket.findMany({ include: { student: true, items: true }, orderBy: { submittedAt: "desc" }, take: 60 }),
+  ]);
+
+  const students: LaundryStudentOption[] = allocations.map((a) => ({ id: a.studentId, name: `${a.student.firstName} ${a.student.surname}`, roomNo: a.room.roomNo }));
+
+  const roomByStudentId = new Map(allocations.map((a) => [a.studentId, a.room.roomNo]));
+  const ticketRows: LaundryTicketRow[] = tickets.map((t) => ({
+    id: t.id,
+    tokenNo: t.tokenNo,
+    studentName: `${t.student.firstName} ${t.student.surname}`,
+    roomNo: roomByStudentId.get(t.studentId) ?? "—",
+    submittedAt: t.submittedAt.toISOString(),
+    collectionDate: t.collectionDate?.toISOString() ?? null,
+    collectedAt: t.collectedAt?.toISOString() ?? null,
+    status: t.status,
+    items: t.items.map((i) => ({ itemType: i.itemType, quantity: i.quantity })),
+  }));
+
+  return <LaundryPanel students={students} tickets={ticketRows} canEdit={canEdit} />;
 }
 
 async function ParentHostelView() {

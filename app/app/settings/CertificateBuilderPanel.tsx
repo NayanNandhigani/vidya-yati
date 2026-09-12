@@ -33,7 +33,7 @@ export default function CertificateBuilderPanel({ templates }: { templates: Temp
     <div style={{ maxWidth: 720, width: "100%" }}>
       <div style={{ marginBottom: 16 }}>
         <div className="mono" style={{ fontSize: 10.5, letterSpacing: "0.06em", textTransform: "uppercase", color: "var(--faint)", marginBottom: 2 }}>
-          Certificate Builder
+          Document Editor
         </div>
         <div style={{ fontSize: 13, color: "var(--muted)" }}>
           Edit the wording and logo of every certificate — including the 4 built-in ones — or add an entirely

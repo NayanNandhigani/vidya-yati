@@ -38,6 +38,7 @@ export default function NewStaffDetailedForm({ staff }: { staff: { id: string; n
 
   return (
     <form action={formAction} style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+      <input type="hidden" name="staffCategory" value={staffType === "teaching" ? "TEACHING" : "NON_TEACHING"} />
       <div style={{ display: "flex", gap: 8 }}>
         <span
           onClick={() => setStaffType("teaching")}
@@ -201,7 +202,7 @@ export default function NewStaffDetailedForm({ staff }: { staff: { id: string; n
           </label>
         )}
         {staffType === "teaching" && (
-          <div style={{ fontSize: 11.5, color: "var(--faint)" }}>Subjects taught &amp; classes assigned are set from Classes and Sections → Subjects, once this staff member is added.</div>
+          <div style={{ fontSize: 11.5, color: "var(--faint)" }}>Subjects taught &amp; classes assigned are set from Academic Management → Subjects, once this staff member is added.</div>
         )}
       </Section>
 

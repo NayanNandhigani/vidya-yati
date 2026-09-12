@@ -49,7 +49,7 @@ export const NAV_GROUPS: NavGroup[] = [
   {
     label: "Academics",
     items: [
-      { label: "Classes and Sections", href: "/app/institute", icon: IconSchool, roles: ["SCHOOL_ADMIN"] },
+      { label: "Academic Management", href: "/app/institute", icon: IconSchool, roles: ["SCHOOL_ADMIN"] },
       { label: "Students", href: "/app/students", icon: IconUsers, module: "Students", roles: ["SCHOOL_ADMIN", "STAFF"] },
       { label: "Employees", href: "/app/employees", icon: IconBriefcase, module: "Employees", roles: ["SCHOOL_ADMIN", "STAFF"] },
       { label: "Attendance", href: "/app/attendance", icon: IconCheckSquare, module: "Attendance", roles: ["SCHOOL_ADMIN", "STAFF", "PARENT"] },

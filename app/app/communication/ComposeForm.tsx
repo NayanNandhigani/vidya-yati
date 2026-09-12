@@ -109,7 +109,7 @@ export default function ComposeForm({ classes, students }: { classes: { id: stri
         disabled={pending}
         style={{ background: "var(--marigold)", color: "#fff", border: "none", borderRadius: 8, padding: 10, fontSize: 13, fontWeight: 700, cursor: pending ? "default" : "pointer", opacity: pending ? 0.7 : 1 }}
       >
-        {pending ? "Publishing…" : scheduled ? "Schedule announcement" : "Publish announcement"}
+        {pending ? "Submitting…" : "Submit for approval"}
       </button>
     </form>
   );

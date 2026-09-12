@@ -5,10 +5,12 @@ import { getScopedDb } from "@/lib/tenant-db";
 import { hasFeature } from "@/lib/feature-flags";
 import InstituteClassesPanel from "./InstituteClassesPanel";
 import InstituteSubjectsPanel from "./InstituteSubjectsPanel";
+import FeeStructurePanel from "./FeeStructurePanel";
 
 const PANELS = [
   { key: "classes", label: "Classes & Sections" },
   { key: "subjects", label: "Subjects" },
+  { key: "fees", label: "Fee Structure" },
 ];
 
 export default async function InstitutePage({ searchParams }: { searchParams: Promise<{ panel?: string }> }) {
@@ -29,7 +31,7 @@ export default async function InstitutePage({ searchParams }: { searchParams: Pr
   return (
     <div style={{ padding: "26px 34px", display: "flex", flexDirection: "column", gap: 18, height: "100dvh", boxSizing: "border-box" }}>
       <div className="disp" style={{ fontSize: 21 }}>
-        Classes and Sections
+        Academic Management
       </div>
 
       <div style={{ display: "flex", gap: 20, flex: 1, minHeight: 0 }}>
@@ -53,7 +55,7 @@ export default async function InstitutePage({ searchParams }: { searchParams: Pr
           ))}
         </div>
 
-        {!currentYear && (panel === "classes" || panel === "subjects") ? (
+        {!currentYear ? (
           <div className="card" style={{ flex: 1, padding: 26, display: "flex", alignItems: "center", justifyContent: "center" }}>
             <div style={{ textAlign: "center", maxWidth: 360 }}>
               <div style={{ fontWeight: 700, fontSize: 15, marginBottom: 6 }}>No active academic year</div>
@@ -65,13 +67,17 @@ export default async function InstitutePage({ searchParams }: { searchParams: Pr
               </Link>
             </div>
           </div>
-        ) : panel === "classes" && currentYear ? (
+        ) : panel === "classes" ? (
           <div className="card" style={{ flex: 1, padding: 26, overflowY: "auto" }}>
             <ClassesPanelData sdb={sdb} yearId={currentYear.id} showCapacity={showCapacity} showCoTeacher={showCoTeacher} showRte={showRte} />
           </div>
+        ) : panel === "subjects" ? (
+          <div className="card" style={{ flex: 1, padding: 26, overflowY: "auto" }}>
+            <SubjectsPanelData sdb={sdb} yearId={currentYear.id} showCapacity={showCapacity} />
+          </div>
         ) : (
           <div className="card" style={{ flex: 1, padding: 26, overflowY: "auto" }}>
-            <SubjectsPanelData sdb={sdb} yearId={currentYear!.id} showCapacity={showCapacity} />
+            <FeeStructurePanelData sdb={sdb} yearId={currentYear.id} />
           </div>
         )}
       </div>
@@ -107,6 +113,29 @@ async function ClassesPanelData({ sdb, yearId, showCapacity, showCoTeacher, show
       showCapacity={showCapacity}
       showCoTeacher={showCoTeacher}
       showRte={showRte}
+    />
+  );
+}
+
+async function FeeStructurePanelData({ sdb, yearId }: { sdb: Awaited<ReturnType<typeof getScopedDb>>; yearId: string }) {
+  const [classes, feeDefaults] = await Promise.all([
+    sdb.class.findMany({ where: { yearId }, orderBy: [{ grade: "asc" }, { section: "asc" }] }),
+    sdb.classFeeDefault.findMany({ where: { yearId } }),
+  ]);
+
+  const feeByGrade = new Map(feeDefaults.map((f) => [f.grade, Number(f.actualFee)]));
+  const sectionCountByGrade = new Map<string, number>();
+  for (const c of classes) sectionCountByGrade.set(c.grade, (sectionCountByGrade.get(c.grade) ?? 0) + 1);
+
+  const grades = [...sectionCountByGrade.keys()].sort((a, b) => a.localeCompare(b, undefined, { numeric: true }));
+
+  return (
+    <FeeStructurePanel
+      grades={grades.map((grade) => ({
+        grade,
+        sectionCount: sectionCountByGrade.get(grade) ?? 0,
+        actualFee: feeByGrade.get(grade) ?? null,
+      }))}
     />
   );
 }

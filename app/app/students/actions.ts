@@ -61,3 +61,23 @@ export async function createStudent(_prevState: StudentFormState, formData: Form
   revalidatePath("/app/students");
   redirect(`/app/students/${student.id}`);
 }
+
+// The client already asks the admin to confirm before calling this — see
+// the confirm() gate in StudentFeeAllocationPanel — since it changes this
+// student's recorded scholarship (the class's actual fee, from Academic
+// Management → Fee Structure, minus this charged fee).
+export async function updateStudentChargedFee(studentId: string, chargedFee: number | null) {
+  const session = await auth();
+  if (session!.user.role !== "SCHOOL_ADMIN") throw new Error("Only a School Admin can change a student's charged fee.");
+  const sdb = await getScopedDb();
+
+  const student = await sdb.student.findUniqueOrThrow({ where: { id: studentId }, select: { classId: true } });
+  const cls = await sdb.class.findUniqueOrThrow({ where: { id: student.classId }, select: { grade: true, yearId: true } });
+  const feeDefault = await sdb.classFeeDefault.findUnique({ where: { yearId_grade: { yearId: cls.yearId, grade: cls.grade } } });
+  if (chargedFee != null && feeDefault && chargedFee > Number(feeDefault.actualFee)) {
+    throw new Error("Charged fee can't be more than the actual fee.");
+  }
+
+  await sdb.student.update({ where: { id: studentId }, data: { chargedFee } });
+  revalidatePath(`/app/students/${studentId}`);
+}

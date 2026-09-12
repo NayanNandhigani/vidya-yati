@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { auth } from "@/auth";
 import { getScopedDb } from "@/lib/tenant-db";
 import { requireFeature } from "@/lib/feature-flags";
+import { grantClassAttendanceAccess, revokeClassAttendanceAccess } from "./actions";
 
 async function requireAdmin() {
   const session = await auth();
@@ -36,6 +37,7 @@ export async function addCoTeacher(classId: string, staffId: string) {
     update: {},
     create: { classId, staffId, schoolId },
   });
+  await grantClassAttendanceAccess(sdb, staffId, classId);
   revalidatePath("/app/institute");
 }
 
@@ -43,6 +45,9 @@ export async function removeCoTeacher(classId: string, staffId: string) {
   await requireAdmin();
   const sdb = await getScopedDb();
   await sdb.classCoTeacher.delete({ where: { classId_staffId: { classId, staffId } } });
+
+  const cls = await sdb.class.findUnique({ where: { id: classId }, select: { classTeacherStaffId: true } });
+  if (cls?.classTeacherStaffId !== staffId) await revokeClassAttendanceAccess(sdb, staffId, classId);
   revalidatePath("/app/institute");
 }
 

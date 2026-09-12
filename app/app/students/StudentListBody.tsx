@@ -2,11 +2,10 @@
 
 import { useState, useTransition } from "react";
 import Link from "next/link";
-import { initials } from "@/lib/format";
-import { avatarColorFor } from "@/lib/academic";
+import Avatar from "@/components/Avatar";
 import { bulkReshuffleStudents } from "../institute/depth-actions";
 
-type StudentRow = { id: string; firstName: string; surname: string; admissionNo: string; class: { grade: string; section: string } };
+type StudentRow = { id: string; firstName: string; surname: string; admissionNo: string; photoPath: string | null; class: { grade: string; section: string } };
 type ClassOption = { id: string; grade: string; section: string };
 
 export default function StudentListBody({ students, classes, showReshuffle }: { students: StudentRow[]; classes: ClassOption[]; showReshuffle: boolean }) {
@@ -87,23 +86,7 @@ export default function StudentListBody({ students, classes, showReshuffle }: { 
               <input type="checkbox" checked={selected.has(s.id)} onChange={() => toggle(s.id)} style={{ marginRight: 8 }} />
             )}
             <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-              <div
-                style={{
-                  width: 32,
-                  height: 32,
-                  borderRadius: "50%",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  fontSize: 11.5,
-                  fontWeight: 700,
-                  color: "#fff",
-                  flex: "none",
-                  background: avatarColorFor(s.id),
-                }}
-              >
-                {initials(`${s.firstName} ${s.surname}`)}
-              </div>
+              <Avatar photoPath={s.photoPath} seed={s.id} name={`${s.firstName} ${s.surname}`} size={32} fontSize={11.5} />
               <div style={{ fontWeight: 600, fontSize: 13.5 }}>{s.firstName}</div>
             </div>
             <div style={{ fontSize: 13.5 }}>{s.surname}</div>

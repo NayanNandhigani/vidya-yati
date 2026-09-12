@@ -3,11 +3,12 @@ import Link from "next/link";
 import { auth } from "@/auth";
 import { getScopedDb } from "@/lib/tenant-db";
 import { requireModuleAccess } from "@/lib/permissions";
-import { initials } from "@/lib/format";
-import { avatarColorFor } from "@/lib/academic";
 import { hasFeature } from "@/lib/feature-flags";
 import { getStaffLeaveSummary } from "../hr-depth-actions";
 import StaffDetailTabs from "../StaffDetailTabs";
+import Avatar from "@/components/Avatar";
+import ProfilePhotoUpload from "@/components/ProfilePhotoUpload";
+import { setStaffPhoto } from "../../settings/id-card-actions";
 
 export default async function StaffProfilePage({ params }: { params: Promise<{ id: string }> }) {
   await requireModuleAccess("Employees", "VIEW");
@@ -66,8 +67,9 @@ export default async function StaffProfilePage({ params }: { params: Promise<{ i
       </div>
 
       <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
-        <div style={{ width: 56, height: 56, borderRadius: "50%", fontSize: 18, background: avatarColorFor(selected.id), display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 700, color: "#fff", flex: "none" }}>
-          {initials(selected.user.name)}
+        <div style={{ position: "relative" }}>
+          <Avatar photoPath={selected.photoPath} seed={selected.id} name={selected.user.name} size={56} fontSize={18} />
+          {isAdmin && <ProfilePhotoUpload onUpload={setStaffPhoto.bind(null, selected.id)} />}
         </div>
         <div>
           <div className="disp" style={{ fontSize: 20 }}>

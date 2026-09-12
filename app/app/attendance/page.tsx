@@ -27,11 +27,24 @@ export default async function AttendancePage({ searchParams }: { searchParams: P
   // A staffer scoped to specific classes (no school-wide row) still needs
   // to reach this page — requireModuleAccess() with no classId would
   // incorrectly reject them, since it only resolves the school-wide grant.
-  // Only fall back to the throwing, module-wide check when they truly have
-  // no permitted classes at all.
+  // Attendance access is tied to actually teaching a class (class teacher
+  // or co-teacher — see setClassTeacher/addCoTeacher in the Academic
+  // Management module), not a general permission toggle, so a Staff
+  // session with no class assignment at all is a normal, expected state
+  // now — show a plain explanation instead of throwing to the generic
+  // error boundary.
   const permittedClassIds = await getPermittedClassIds("Attendance", "VIEW");
-  if (permittedClassIds !== "ALL" && permittedClassIds.size === 0) {
-    await requireModuleAccess("Attendance", "VIEW");
+  if (session!.user.role === "STAFF" && permittedClassIds !== "ALL" && permittedClassIds.size === 0) {
+    return (
+      <div style={{ padding: "26px 34px" }}>
+        <div className="card" style={{ padding: 32, textAlign: "center", color: "var(--muted)", maxWidth: 460, margin: "0 auto" }}>
+          <div style={{ fontWeight: 700, fontSize: 15, color: "var(--ink)", marginBottom: 6 }}>No class assigned to you yet</div>
+          <div style={{ fontSize: 13 }}>
+            Attendance is only visible to a class's teacher or co-teacher. Ask your School Admin to assign you in Academic Management → Classes &amp; Sections.
+          </div>
+        </div>
+      </div>
+    );
   }
 
   const classesRaw = await sdb.class.findMany({ orderBy: [{ grade: "asc" }, { section: "asc" }] });

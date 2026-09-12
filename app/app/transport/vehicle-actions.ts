@@ -73,6 +73,7 @@ export async function updateVehicle(vehicleId: string, fields: VehicleFields) {
     },
   });
   revalidatePath("/app/transport");
+  revalidatePath(`/app/transport/vehicles/${vehicleId}`);
 }
 
 export async function toggleVehicleActive(vehicleId: string) {
@@ -81,6 +82,7 @@ export async function toggleVehicleActive(vehicleId: string) {
   const vehicle = await sdb.transportVehicle.findUniqueOrThrow({ where: { id: vehicleId } });
   await sdb.transportVehicle.update({ where: { id: vehicleId }, data: { isActive: !vehicle.isActive } });
   revalidatePath("/app/transport");
+  revalidatePath(`/app/transport/vehicles/${vehicleId}`);
 }
 
 export async function updateVehicleLocation(vehicleId: string, lat: number, lng: number) {
@@ -88,6 +90,7 @@ export async function updateVehicleLocation(vehicleId: string, lat: number, lng:
   const sdb = await getScopedDb();
   await sdb.transportVehicle.update({ where: { id: vehicleId }, data: { lastKnownLat: lat, lastKnownLng: lng, lastLocationAt: new Date() } });
   revalidatePath("/app/transport");
+  revalidatePath(`/app/transport/vehicles/${vehicleId}`);
 }
 
 // ------------------------------------------------------------- Service log
@@ -100,13 +103,15 @@ export async function addVehicleLog(vehicleId: string, type: VehicleLogType, dat
     data: scopedCreateData<Prisma.VehicleLogUncheckedCreateInput>({ vehicleId, type, date: new Date(date), description: description.trim(), cost, odometerReading }),
   });
   revalidatePath("/app/transport");
+  revalidatePath(`/app/transport/vehicles/${vehicleId}`);
 }
 
-export async function deleteVehicleLog(logId: string) {
+export async function deleteVehicleLog(logId: string, vehicleId: string) {
   await requireModuleAccess("Transport", "EDIT");
   const sdb = await getScopedDb();
   await sdb.vehicleLog.delete({ where: { id: logId } });
   revalidatePath("/app/transport");
+  revalidatePath(`/app/transport/vehicles/${vehicleId}`);
 }
 
 // -------------------------------------------------------------- Documents
@@ -134,14 +139,16 @@ export async function addVehicleDocument(vehicleId: string, category: string, fo
     }),
   });
   revalidatePath("/app/transport");
+  revalidatePath(`/app/transport/vehicles/${vehicleId}`);
 }
 
-/** Transport-scoped sibling of Students'/Employees' deletePersonDocument — that shared helper hardcodes a Students EDIT check, which would incorrectly gate vehicle-document deletion behind the wrong module. */
-export async function deleteVehicleDocument(_redirectPath: string, documentId: string) {
+/** Transport-scoped sibling of Students'/Employees' deletePersonDocument — that shared helper hardcodes a Students EDIT check, which would incorrectly gate vehicle-document deletion behind the wrong module. redirectPath is this vehicle's own detail page, passed in by the caller so this revalidates correctly regardless of where it's rendered from. */
+export async function deleteVehicleDocument(redirectPath: string, documentId: string) {
   await requireModuleAccess("Transport", "EDIT");
   const sdb = await getScopedDb();
   const doc = await sdb.personDocument.findUnique({ where: { id: documentId } });
   if (doc) await deleteUploadedFile(doc.filePath);
   await sdb.personDocument.delete({ where: { id: documentId } });
   revalidatePath("/app/transport");
+  revalidatePath(redirectPath);
 }

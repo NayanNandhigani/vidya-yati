@@ -14,11 +14,14 @@ export default async function ApplicationDetailPage({ params }: { params: Promis
 
   const { id } = await params;
   const sdb = await getScopedDb();
-  const [enquiry, classes] = await Promise.all([
+  const [enquiry, classes, feeDefaults] = await Promise.all([
     sdb.admissionEnquiry.findUnique({ where: { id } }),
     sdb.class.findMany({ orderBy: [{ grade: "asc" }, { section: "asc" }] }),
+    sdb.academicYear.findFirst({ where: { isCurrent: true } }).then((y) => (y ? sdb.classFeeDefault.findMany({ where: { yearId: y.id } }) : [])),
   ]);
   if (!enquiry) notFound();
+
+  const feeByGrade = new Map(feeDefaults.map((f) => [f.grade, Number(f.actualFee)]));
 
   return (
     <div style={{ padding: "26px 34px", display: "flex", flexDirection: "column", gap: 16 }}>
@@ -69,7 +72,12 @@ export default async function ApplicationDetailPage({ params }: { params: Promis
             udiseNumber: enquiry.udiseNumber,
             penNumber: enquiry.penNumber,
           }}
-          classes={classes.map((c) => ({ id: c.id, grade: c.grade, section: c.section }))}
+          classes={classes.map((c) => ({
+            id: c.id,
+            grade: c.grade,
+            section: c.section,
+            actualFee: feeByGrade.get(c.grade) ?? null,
+          }))}
           canEdit={canEdit}
           isAdmin={session!.user.role === "SCHOOL_ADMIN"}
         />

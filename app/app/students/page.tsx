@@ -137,7 +137,7 @@ export default async function StudentsPage({
         </div>
 
         <StudentListBody
-          students={students.map((s) => ({ id: s.id, firstName: s.firstName, surname: s.surname, admissionNo: s.admissionNo, class: { grade: s.class.grade, section: s.class.section } }))}
+          students={students.map((s) => ({ id: s.id, firstName: s.firstName, surname: s.surname, admissionNo: s.admissionNo, photoPath: s.photoPath, class: { grade: s.class.grade, section: s.class.section } }))}
           classes={classes.map((c) => ({ id: c.id, grade: c.grade, section: c.section }))}
           showReshuffle={showReshuffle}
         />

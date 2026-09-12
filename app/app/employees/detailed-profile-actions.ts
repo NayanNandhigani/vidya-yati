@@ -61,6 +61,7 @@ export async function createStaffDetailed(_prevState: StaffFormState, formData: 
       userId: user.id,
       designation: str(formData, "designation"),
       department: str(formData, "department"),
+      staffCategory: str(formData, "staffCategory") === "NON_TEACHING" ? "NON_TEACHING" : "TEACHING",
       dateJoined: new Date(),
       employeeId: str(formData, "employeeId"),
       dob: dob ? new Date(dob) : null,

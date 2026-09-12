@@ -37,7 +37,9 @@ const STATUS_STYLE: Record<string, { bg: string; fg: string }> = {
   REJECTED: { bg: "var(--critical-tint)", fg: "var(--critical)" },
 };
 
-export default function ApplicationDetailForm({ enquiry, classes, canEdit, isAdmin }: { enquiry: Enquiry; classes: { id: string; grade: string; section: string }[]; canEdit: boolean; isAdmin: boolean }) {
+type ClassOption = { id: string; grade: string; section: string; actualFee: number | null };
+
+export default function ApplicationDetailForm({ enquiry, classes, canEdit, isAdmin }: { enquiry: Enquiry; classes: ClassOption[]; canEdit: boolean; isAdmin: boolean }) {
   const [pending, startTransition] = useTransition();
   const [fields, setFields] = useState<ApplicationFields>({
     photoPath: enquiry.photoPath,
@@ -73,6 +75,11 @@ export default function ApplicationDetailForm({ enquiry, classes, canEdit, isAdm
   const [classId, setClassId] = useState(classes[0]?.id ?? "");
   const [feeDesc, setFeeDesc] = useState("Admission fee");
   const [feeAmount, setFeeAmount] = useState("");
+  const [chargedFee, setChargedFee] = useState("");
+
+  const selectedClass = classes.find((c) => c.id === classId);
+  const actualFee = selectedClass?.actualFee ?? null;
+  const scholarship = actualFee != null && chargedFee !== "" ? actualFee - Number(chargedFee) : null;
 
   function set<K extends keyof ApplicationFields>(key: K, value: ApplicationFields[K]) {
     setFields((f) => ({ ...f, [key]: value }));
@@ -91,8 +98,12 @@ export default function ApplicationDetailForm({ enquiry, classes, canEdit, isAdm
   }
   function approve() {
     if (!classId) return;
+    if (chargedFee !== "" && actualFee != null && Number(chargedFee) > actualFee) {
+      alert("Charged fee can't be more than the actual fee.");
+      return;
+    }
     startTransition(async () => {
-      await approveAdmissionWithFee(enquiry.id, classId, feeDesc, feeAmount ? Number(feeAmount) : null);
+      await approveAdmissionWithFee(enquiry.id, classId, feeDesc, feeAmount ? Number(feeAmount) : null, chargedFee ? Number(chargedFee) : null);
     });
   }
   function reject() {
@@ -316,6 +327,19 @@ export default function ApplicationDetailForm({ enquiry, classes, canEdit, isAdm
                   <input className="in mono" type="number" min={0} value={feeAmount} onChange={(e) => setFeeAmount(e.target.value)} placeholder="0" />
                 </label>
               </Row>
+              <Row>
+                <label className="field">
+                  Actual fee (₹) <span style={{ fontWeight: 400, color: "var(--muted)" }}>from Class {selectedClass?.grade}'s Fee Structure</span>
+                  <input className="in mono" value={actualFee != null ? `₹${actualFee.toLocaleString("en-IN")}` : "Not set"} disabled />
+                </label>
+                <label className="field">
+                  Charged fee (₹)
+                  <input className="in mono" type="number" min={0} value={chargedFee} onChange={(e) => setChargedFee(e.target.value)} placeholder="0" />
+                </label>
+              </Row>
+              <div style={{ fontSize: 12.5, color: "var(--muted)" }}>
+                Scholarship: <span className="mono" style={{ fontWeight: 700, color: scholarship ? "var(--good)" : "var(--faint)" }}>{scholarship !== null ? `₹${scholarship.toLocaleString("en-IN")}` : "—"}</span>
+              </div>
               <div style={{ display: "flex", gap: 8 }}>
                 <button type="button" onClick={approve} disabled={pending} style={{ background: "var(--good)", color: "#fff", border: "none", borderRadius: 8, padding: "9px 18px", fontSize: 13, fontWeight: 700, cursor: pending ? "default" : "pointer" }}>
                   {pending ? "Approving…" : "Approve & create student"}

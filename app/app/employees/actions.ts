@@ -23,6 +23,7 @@ export async function createStaff(_prevState: StaffFormState, formData: FormData
   const phone = formData.get("phone");
   const designation = formData.get("designation");
   const department = formData.get("department");
+  const staffCategory = formData.get("staffCategory");
 
   if (typeof name !== "string" || !name.trim() || typeof username !== "string" || !username.trim()) {
     return { error: "Name and username are required." };
@@ -57,6 +58,7 @@ export async function createStaff(_prevState: StaffFormState, formData: FormData
       userId: user.id,
       designation: typeof designation === "string" && designation ? designation : null,
       department: typeof department === "string" && department ? department : null,
+      staffCategory: staffCategory === "NON_TEACHING" ? "NON_TEACHING" : "TEACHING",
       dateJoined: new Date(),
     }),
   });

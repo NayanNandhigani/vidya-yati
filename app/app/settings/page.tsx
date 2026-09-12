@@ -17,7 +17,7 @@ const BASE_PANELS = [
   { key: "website", label: "Website Builder" },
   { key: "idcards", label: "ID Card Templates" },
   { key: "grading", label: "Grading" },
-  { key: "certificates", label: "Certificate Builder" },
+  { key: "certificates", label: "Document Editor" },
 ];
 
 export default async function SettingsPage({ searchParams }: { searchParams: Promise<{ panel?: string }> }) {

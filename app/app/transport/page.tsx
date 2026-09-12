@@ -7,7 +7,6 @@ import { studentName } from "@/lib/format";
 import { hasFeature } from "@/lib/feature-flags";
 import AddStopForm from "./AddStopForm";
 import RouteDetailForm from "./RouteDetailForm";
-import { VehicleForm, VehicleDetail, type VehicleRow } from "./VehiclesPanel";
 import { VehicleColumnCard, type VehicleColumn } from "./AssignmentsPanel";
 import { AttendanceRosterPanel } from "./AttendancePanel";
 
@@ -58,6 +57,11 @@ export default async function TransportPage({
             + Add route
           </Link>
         )}
+        {canEdit && tab === "vehicles" && (
+          <Link href="/app/transport/new-vehicle" style={{ background: "var(--marigold)", border: "none", borderRadius: 8, padding: "8px 15px", fontSize: 13, fontWeight: 700, textDecoration: "none", color: "#fff" }}>
+            + Add vehicle
+          </Link>
+        )}
       </div>
 
       <div style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 13 }}>
@@ -80,7 +84,7 @@ export default async function TransportPage({
       </div>
 
       {tab === "vehicles" ? (
-        <VehiclesTab vehicles={vehiclesRaw} selectedId={params.vehicle} sdb={sdb} canEdit={canEdit} />
+        <VehiclesTab vehicles={vehiclesRaw} />
       ) : tab === "routes" ? (
         <RoutesTab routes={routesRaw} vehicles={vehiclesRaw} selectedId={params.route} canEdit={canEdit} />
       ) : tab === "assignments" ? (
@@ -92,99 +96,39 @@ export default async function TransportPage({
   );
 }
 
-async function VehiclesTab({
-  vehicles,
-  selectedId,
-  sdb,
-  canEdit,
-}: {
-  vehicles: VehicleWithRoutes[];
-  selectedId?: string;
-  sdb: Awaited<ReturnType<typeof getScopedDb>>;
-  canEdit: boolean;
-}) {
-  const selected = vehicles.find((v) => v.id === selectedId) ?? vehicles[0];
-  const [logs, documents] = selected
-    ? await Promise.all([
-        sdb.vehicleLog.findMany({ where: { vehicleId: selected.id }, orderBy: { date: "desc" } }),
-        sdb.personDocument.findMany({ where: { vehicleId: selected.id, subjectType: "VEHICLE" }, orderBy: { uploadedAt: "desc" } }),
-      ])
-    : [[], []];
-
-  const toRow = (v: (typeof vehicles)[number]): VehicleRow => ({
-    id: v.id,
-    vehicleNo: v.vehicleNo,
-    vehicleType: v.vehicleType,
-    capacity: v.capacity,
-    make: v.make,
-    model: v.model,
-    driverName: v.driverName,
-    driverPhone: v.driverPhone,
-    driverLicenseNo: v.driverLicenseNo,
-    driverLicenseExpiry: v.driverLicenseExpiry?.toISOString() ?? null,
-    insurancePolicyNo: v.insurancePolicyNo,
-    insuranceExpiry: v.insuranceExpiry?.toISOString() ?? null,
-    fitnessExpiry: v.fitnessExpiry?.toISOString() ?? null,
-    pollutionCertExpiry: v.pollutionCertExpiry?.toISOString() ?? null,
-    notes: v.notes,
-    isActive: v.isActive,
-    lastKnownLat: v.lastKnownLat,
-    lastKnownLng: v.lastKnownLng,
-    lastLocationAt: v.lastLocationAt?.toISOString() ?? null,
-    routeNames: v.routes.map((r) => r.name),
-  });
-
+function VehiclesTab({ vehicles }: { vehicles: VehicleWithRoutes[] }) {
   return (
-    <div style={{ display: "grid", gridTemplateColumns: "1.6fr 1fr", gap: 16, flex: 1, minHeight: 0 }}>
-      <div className="card" style={{ padding: 0, display: "flex", flexDirection: "column", overflow: "hidden" }}>
-        <div style={{ display: "grid", gridTemplateColumns: "1.3fr 1fr 0.7fr 1.2fr 0.8fr", padding: "13px 20px", borderBottom: "1px solid var(--line)", fontSize: 10.5, color: "var(--faint)", textTransform: "uppercase", letterSpacing: "0.05em" }}>
-          <div>Vehicle no.</div>
-          <div>Type</div>
-          <div>Capacity</div>
-          <div>Driver</div>
-          <div>Status</div>
-        </div>
-        <div style={{ overflowY: "auto" }}>
-          {vehicles.length === 0 && <div style={{ padding: 32, textAlign: "center", color: "var(--muted)" }}>No vehicles added yet — add one on the right.</div>}
-          {vehicles.map((v) => {
-            const isSelected = v.id === selected?.id;
-            return (
-              <Link key={v.id} href={`/app/transport?tab=vehicles&vehicle=${v.id}`} style={{ display: "grid", gridTemplateColumns: "1.3fr 1fr 0.7fr 1.2fr 0.8fr", alignItems: "center", padding: "12px 20px", borderBottom: "1px solid var(--line)", fontSize: 13, background: isSelected ? "var(--marigold-tint)" : "transparent", textDecoration: "none", color: "inherit" }}>
-                <div className="mono" style={{ fontWeight: isSelected ? 700 : 600 }}>{v.vehicleNo}</div>
-                <div style={{ color: "var(--muted)" }}>{v.vehicleType ?? "—"}</div>
-                <div className="mono">{v.capacity ?? "—"}</div>
-                <div style={{ color: "var(--muted)" }}>{v.driverName ?? "—"}</div>
-                <div>
-                  <span className="pill" style={{ background: v.isActive ? "var(--good-tint)" : "var(--critical-tint)", color: v.isActive ? "var(--good)" : "var(--critical)" }}>
-                    {v.isActive ? "Active" : "Inactive"}
-                  </span>
-                </div>
-              </Link>
-            );
-          })}
-        </div>
+    <div className="card" style={{ padding: 0, display: "flex", flexDirection: "column", overflow: "hidden", flex: 1, minHeight: 0 }}>
+      <div style={{ display: "grid", gridTemplateColumns: "1.3fr 1fr 0.7fr 1.2fr 1.2fr 0.8fr auto", padding: "13px 20px", borderBottom: "1px solid var(--line)", fontSize: 10.5, color: "var(--faint)", textTransform: "uppercase", letterSpacing: "0.05em" }}>
+        <div>Vehicle no.</div>
+        <div>Type</div>
+        <div>Capacity</div>
+        <div>Driver</div>
+        <div>Routes</div>
+        <div>Status</div>
+        <div />
       </div>
-
-      <div className="card" style={{ padding: 22, overflowY: "auto" }}>
-        {canEdit ? (
-          selected ? (
-            <VehicleDetail vehicle={toRow(selected)} logs={logs.map((l) => ({ id: l.id, type: l.type, date: l.date.toISOString(), description: l.description, cost: l.cost ? Number(l.cost) : null, odometerReading: l.odometerReading }))} documents={documents.map((d) => ({ id: d.id, category: d.category, label: d.label, filePath: d.filePath, expiryDate: d.expiryDate?.toISOString() ?? null, uploadedAt: d.uploadedAt.toISOString() }))} />
-          ) : (
-            <VehicleForm vehicle={null} />
-          )
-        ) : selected ? (
-          <div style={{ color: "var(--muted)", fontSize: 13.5 }}>{selected.vehicleNo} · {selected.driverName ?? "No driver"}</div>
-        ) : (
-          <div style={{ color: "var(--muted)", fontSize: 13.5 }}>No vehicle selected.</div>
-        )}
-        {canEdit && selected && (
-          <details style={{ marginTop: 20, borderTop: "1px solid var(--line)", paddingTop: 14 }}>
-            <summary style={{ cursor: "pointer", fontSize: 12.5, fontWeight: 700, color: "var(--marigold-deep)" }}>+ Add another vehicle</summary>
-            <div style={{ marginTop: 14 }}>
-              <VehicleForm vehicle={null} />
+      <div style={{ overflowY: "auto" }}>
+        {vehicles.length === 0 && <div style={{ padding: 32, textAlign: "center", color: "var(--muted)" }}>No vehicles added yet — use "+ Add vehicle" above.</div>}
+        {vehicles.map((v) => (
+          <Link
+            key={v.id}
+            href={`/app/transport/vehicles/${v.id}`}
+            style={{ display: "grid", gridTemplateColumns: "1.3fr 1fr 0.7fr 1.2fr 1.2fr 0.8fr auto", alignItems: "center", padding: "12px 20px", borderBottom: "1px solid var(--line)", fontSize: 13, textDecoration: "none", color: "inherit" }}
+          >
+            <div className="mono" style={{ fontWeight: 600 }}>{v.vehicleNo}</div>
+            <div style={{ color: "var(--muted)" }}>{v.vehicleType ?? "—"}</div>
+            <div className="mono">{v.capacity ?? "—"}</div>
+            <div style={{ color: "var(--muted)" }}>{v.driverName ?? "—"}</div>
+            <div style={{ color: "var(--teal)", fontSize: 12 }}>{v.routes.map((r) => r.name).join(", ") || "—"}</div>
+            <div>
+              <span className="pill" style={{ background: v.isActive ? "var(--good-tint)" : "var(--critical-tint)", color: v.isActive ? "var(--good)" : "var(--critical)" }}>
+                {v.isActive ? "Active" : "Inactive"}
+              </span>
             </div>
-          </details>
-        )}
+            <div style={{ fontSize: 12, fontWeight: 700, color: "var(--marigold-deep)" }}>Open →</div>
+          </Link>
+        ))}
       </div>
     </div>
   );

@@ -10,6 +10,23 @@ async function requireAdmin() {
   if (session!.user.role !== "SCHOOL_ADMIN") throw new Error("Only a School Admin can manage the institute.");
 }
 
+// Attendance access for a class is tied to actually teaching it — being the
+// class teacher or a co-teacher — rather than a general school-wide toggle;
+// see setClassTeacher/createClass here and addCoTeacher/removeCoTeacher in
+// depth-actions.ts, all of which call these two to keep StaffPermission in
+// sync whenever a class's teachers change.
+export async function grantClassAttendanceAccess(sdb: Awaited<ReturnType<typeof getScopedDb>>, staffId: string, classId: string) {
+  await sdb.staffPermission.upsert({
+    where: { staffId_moduleName_classId: { staffId, moduleName: "Attendance", classId } },
+    update: { accessLevel: "EDIT" },
+    create: scopedCreateData<Prisma.StaffPermissionUncheckedCreateInput>({ staffId, moduleName: "Attendance", classId, accessLevel: "EDIT" }),
+  });
+}
+
+export async function revokeClassAttendanceAccess(sdb: Awaited<ReturnType<typeof getScopedDb>>, staffId: string, classId: string) {
+  await sdb.staffPermission.deleteMany({ where: { staffId, moduleName: "Attendance", classId } });
+}
+
 export type FormState = { error?: string; success?: boolean };
 
 export async function createClass(_prevState: FormState, formData: FormData): Promise<FormState> {
@@ -33,14 +50,16 @@ export async function createClass(_prevState: FormState, formData: FormData): Pr
   const existing = await sdb.class.findFirst({ where: { yearId: currentYear.id, grade: gradeTrim, section: sectionTrim } });
   if (existing) return { error: `Class ${gradeTrim}-${sectionTrim} already exists.` };
 
-  await sdb.class.create({
+  const newTeacherStaffId = typeof classTeacherStaffId === "string" && classTeacherStaffId ? classTeacherStaffId : null;
+  const newClass = await sdb.class.create({
     data: scopedCreateData<Prisma.ClassUncheckedCreateInput>({
       yearId: currentYear.id,
       grade: gradeTrim,
       section: sectionTrim,
-      classTeacherStaffId: typeof classTeacherStaffId === "string" && classTeacherStaffId ? classTeacherStaffId : null,
+      classTeacherStaffId: newTeacherStaffId,
     }),
   });
+  if (newTeacherStaffId) await grantClassAttendanceAccess(sdb, newTeacherStaffId, newClass.id);
 
   revalidatePath("/app/institute");
   return { success: true };
@@ -49,9 +68,18 @@ export async function createClass(_prevState: FormState, formData: FormData): Pr
 export async function setClassTeacher(classId: string, staffId: string | null) {
   await requireAdmin();
   const sdb = await getScopedDb();
+  const existing = await sdb.class.findUniqueOrThrow({ where: { id: classId }, select: { classTeacherStaffId: true } });
   await sdb.class.update({ where: { id: classId }, data: { classTeacherStaffId: staffId } });
+
+  if (existing.classTeacherStaffId && existing.classTeacherStaffId !== staffId) {
+    const stillCoTeacher = await sdb.classCoTeacher.findUnique({ where: { classId_staffId: { classId, staffId: existing.classTeacherStaffId } } });
+    if (!stillCoTeacher) await revokeClassAttendanceAccess(sdb, existing.classTeacherStaffId, classId);
+  }
+  if (staffId) await grantClassAttendanceAccess(sdb, staffId, classId);
+
   revalidatePath("/app/institute");
   revalidatePath("/app/timetable");
+  revalidatePath("/app/attendance");
 }
 
 export async function deleteClass(classId: string): Promise<{ error?: string }> {
@@ -132,6 +160,21 @@ export async function deleteSubject(subjectId: string): Promise<{ error?: string
   await sdb.subject.delete({ where: { id: subjectId } });
   revalidatePath("/app/institute");
   return {};
+}
+
+export async function setClassFeeDefault(grade: string, actualFee: number) {
+  await requireAdmin();
+  const sdb = await getScopedDb();
+  const currentYear = await sdb.academicYear.findFirst({ where: { isCurrent: true } });
+  if (!currentYear) throw new Error("Set an active academic year in Settings first.");
+  await sdb.classFeeDefault.upsert({
+    where: { yearId_grade: { yearId: currentYear.id, grade } },
+    update: { actualFee },
+    create: scopedCreateData<Prisma.ClassFeeDefaultUncheckedCreateInput>({ yearId: currentYear.id, grade, actualFee }),
+  });
+  revalidatePath("/app/institute");
+  revalidatePath("/app/admissions");
+  revalidatePath("/app/students");
 }
 
 export async function setClassSubjectTeacher(classId: string, subjectId: string, staffId: string | null) {

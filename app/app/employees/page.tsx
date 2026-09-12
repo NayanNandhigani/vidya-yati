@@ -2,8 +2,7 @@ import Link from "next/link";
 import { auth } from "@/auth";
 import { getScopedDb } from "@/lib/tenant-db";
 import { requireModuleAccess } from "@/lib/permissions";
-import { initials } from "@/lib/format";
-import { avatarColorFor } from "@/lib/academic";
+import Avatar from "@/components/Avatar";
 import { SortableHeader, resolveSort } from "@/components/SortableHeader";
 import type { Prisma } from "@prisma/client";
 import StatutoryRatesPanel from "./StatutoryRatesPanel";
@@ -102,9 +101,7 @@ export default async function EmployeesPage({ searchParams }: { searchParams: Pr
               style={{ display: "grid", gridTemplateColumns: "1.9fr 1.6fr 1.1fr 1.3fr 0.9fr 0.8fr", alignItems: "center", padding: "12px 20px", borderBottom: "1px solid var(--line)" }}
             >
               <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                <div style={{ width: 34, height: 34, borderRadius: "50%", background: avatarColorFor(s.id), display: "flex", alignItems: "center", justifyContent: "center", fontSize: 12, fontWeight: 700, color: "#fff", flex: "none" }}>
-                  {initials(s.user.name)}
-                </div>
+                <Avatar photoPath={s.photoPath} seed={s.id} name={s.user.name} size={34} fontSize={12} />
                 <div style={{ fontWeight: 600, fontSize: 13.5 }}>{s.user.name}</div>
               </div>
               <div style={{ fontSize: 12.5 }}>{s.designation ?? "—"}</div>

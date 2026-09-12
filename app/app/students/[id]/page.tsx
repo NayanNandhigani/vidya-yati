@@ -3,11 +3,14 @@ import Link from "next/link";
 import { auth } from "@/auth";
 import { getScopedDb } from "@/lib/tenant-db";
 import { requireModuleAccess, getPermittedClassIds } from "@/lib/permissions";
-import { initials, studentName } from "@/lib/format";
-import { avatarColorFor, feeStatusFor, FEE_STATUS_STYLE, gradeFor, gradeForScale } from "@/lib/academic";
+import { studentName } from "@/lib/format";
+import { feeStatusFor, FEE_STATUS_STYLE, gradeFor, gradeForScale } from "@/lib/academic";
 import { getSchoolFeatures } from "@/lib/feature-flags";
 import { getSiblings } from "../depth-actions";
 import ProfileTabs from "./ProfileTabs";
+import Avatar from "@/components/Avatar";
+import ProfilePhotoUpload from "@/components/ProfilePhotoUpload";
+import { setStudentPhoto } from "../../settings/id-card-actions";
 
 export default async function StudentProfilePage({ params }: { params: Promise<{ id: string }> }) {
   await requireModuleAccess("Students", "VIEW");
@@ -47,6 +50,10 @@ export default async function StudentProfilePage({ params }: { params: Promise<{
   const gradeForPct = (pct: number) => gradeForScale(pct, gradeBands) ?? gradeFor(pct);
 
   const feeStructures = currentYear ? await sdb.feeStructure.findMany({ where: { yearId: currentYear.id, classId: student.classId } }) : [];
+  const classFeeDefault = currentYear
+    ? await sdb.classFeeDefault.findUnique({ where: { yearId_grade: { yearId: currentYear.id, grade: student.class.grade } } })
+    : null;
+  const classActualFee = classFeeDefault ? Number(classFeeDefault.actualFee) : null;
 
   // Attendance stat totals (all recorded days, not just the last 15 shown)
   const allAttendance = await sdb.attendance.groupBy({ by: ["status"], where: { studentId: student.id }, _count: true });
@@ -82,22 +89,9 @@ export default async function StudentProfilePage({ params }: { params: Promise<{
       </div>
 
       <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
-        <div
-          style={{
-            width: 56,
-            height: 56,
-            borderRadius: "50%",
-            fontSize: 18,
-            background: avatarColorFor(student.id),
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            fontWeight: 700,
-            color: "#fff",
-            flex: "none",
-          }}
-        >
-          {initials(studentName(student))}
+        <div style={{ position: "relative" }}>
+          <Avatar photoPath={student.photoPath} seed={student.id} name={studentName(student)} size={56} fontSize={18} />
+          {session!.user.role === "SCHOOL_ADMIN" && <ProfilePhotoUpload onUpload={setStudentPhoto.bind(null, student.id)} />}
         </div>
         <div>
           <div className="disp" style={{ fontSize: 20 }}>
@@ -188,6 +182,9 @@ export default async function StudentProfilePage({ params }: { params: Promise<{
               }
             : null
         }
+        actualFee={classActualFee}
+        chargedFee={student.chargedFee != null ? Number(student.chargedFee) : null}
+        isAdmin={session!.user.role === "SCHOOL_ADMIN"}
       />
     </div>
   );

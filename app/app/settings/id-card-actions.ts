@@ -288,6 +288,8 @@ export async function setStudentPhoto(studentId: string, formData: FormData) {
   if (existing?.photoPath) await deleteUploadedFile(existing.photoPath);
 
   await sdb.student.update({ where: { id: studentId }, data: { photoPath: storagePath } });
+  revalidatePath("/app/students");
+  revalidatePath(`/app/students/${studentId}`);
 }
 
 export async function setStaffPhoto(staffId: string, formData: FormData) {
@@ -304,4 +306,6 @@ export async function setStaffPhoto(staffId: string, formData: FormData) {
   if (existing?.photoPath) await deleteUploadedFile(existing.photoPath);
 
   await sdb.staffProfile.update({ where: { id: staffId }, data: { photoPath: storagePath } });
+  revalidatePath("/app/employees");
+  revalidatePath(`/app/employees/${staffId}`);
 }

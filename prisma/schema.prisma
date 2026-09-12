@@ -131,6 +131,7 @@ model School {
   homeworkSubmissions  HomeworkSubmission[]
   timetableSlots       TimetableSlot[]
   feeStructures        FeeStructure[]
+  classFeeDefaults     ClassFeeDefault[]
   feePayments          FeePayment[]
   payrollRuns          PayrollRun[]
   transportRoutes      TransportRoute[]
@@ -175,6 +176,7 @@ model School {
   feeDiscounts             FeeDiscount[]
   feeAdjustments           FeeAdjustment[]
   dashboardReminders       DashboardReminder[]
+  dashboardNotes           DashboardNote[]
   schoolAccountHeads       SchoolAccountHead[]
   salaryComponents         SalaryComponent[]
   staffLeaveTypes          StaffLeaveType[]
@@ -194,6 +196,8 @@ model School {
   hostelFacilities         HostelFacility[]
   hostelMealsServed        HostelMealServed[]
   hostelMaintenanceLogs    HostelMaintenanceLog[]
+  laundryTickets           LaundryTicket[]
+  laundryItems             LaundryItem[]
   complianceDocuments      SchoolComplianceDocument[]
 
   @@map("schools")
@@ -722,6 +726,11 @@ enum EmploymentStatus {
   ON_LEAVE
 }
 
+enum StaffCategory {
+  TEACHING
+  NON_TEACHING
+}
+
 model StaffProfile {
   id               String           @id @default(cuid())
   schoolId         String           @map("school_id")
@@ -730,6 +739,7 @@ model StaffProfile {
   user             User             @relation(fields: [userId], references: [id], onDelete: Cascade)
   designation      String? // e.g. "Class Teacher — 6B"
   department       String? // e.g. "Accounts"
+  staffCategory    StaffCategory    @default(TEACHING) @map("staff_category") // drives the Teaching/Non-teaching attendance split on the Dashboard
   dateJoined       DateTime?        @map("date_joined")
   employmentStatus EmploymentStatus @default(ACTIVE) @map("employment_status")
   photoPath        String?          @map("photo_path") // set from the ID Card Templates preview screen — no dedicated upload UI elsewhere yet
@@ -910,9 +920,10 @@ model AcademicYear {
   gradeScaleId String?     @map("grade_scale_id") // nullable — schools without one configured fall back to lib/academic.ts's hardcoded gradeFor()
   gradeScale   GradeScale? @relation(fields: [gradeScaleId], references: [id])
 
-  classes       Class[]
-  exams         Exam[]
-  feeStructures FeeStructure[]
+  classes          Class[]
+  exams            Exam[]
+  feeStructures    FeeStructure[]
+  classFeeDefaults ClassFeeDefault[]
 
   @@index([schoolId])
   @@map("academic_years")
@@ -1067,6 +1078,16 @@ model Student {
   photoPath   String?       @map("photo_path") // set from the ID Card Templates preview screen — no dedicated upload UI elsewhere yet
   createdAt   DateTime      @default(now()) @map("created_at")
 
+  // What this student is actually charged, set at admission approval and
+  // editable afterward (with a confirm prompt, since it changes the
+  // student's scholarship). The "actual fee" side of the comparison is
+  // NOT stored per student — it lives once per grade on ClassFeeDefault
+  // (Academic Management → Fee Structure) and is looked up live via this
+  // student's class's grade, so a Fee Structure update reflects
+  // immediately for every student in that grade. Scholarship is never
+  // stored either: it's always that grade's actual fee minus this field.
+  chargedFee Decimal? @map("charged_fee") @db.Decimal(12, 2)
+
   // --- "SIS depth" fields — all optional/additive, gated behind the
   // students.medicalInfo / students.priorSchool feature flags in the UI;
   // storing them costs nothing for schools that don't use them. ---
@@ -1097,6 +1118,7 @@ model Student {
   feeAdjustments      FeeAdjustment[]
   hostelVisitorLogs   HostelVisitorLog[]
   hostelOutingRequests HostelOutingRequest[]
+  laundryTickets      LaundryTicket[]
 
   @@unique([admissionNo, classId])
   @@index([schoolId])
@@ -1459,6 +1481,26 @@ model ExamSeating {
 // FINANCE — School Admin
 // =========================================================================
 
+// Set from Academic Management → Fee Structure — one actual-fee default
+// per grade (per academic year), shared by every section of that grade;
+// fee allocation is by Class/grade, not by Section. Read live everywhere
+// a student's "actual fee" is needed (Student profile, admission
+// approval) — never copied onto the student, so updating it here
+// reflects immediately for every student already in that grade.
+model ClassFeeDefault {
+  id        String       @id @default(cuid())
+  schoolId  String       @map("school_id")
+  school    School       @relation(fields: [schoolId], references: [id], onDelete: Cascade)
+  yearId    String       @map("year_id")
+  year      AcademicYear @relation(fields: [yearId], references: [id], onDelete: Cascade)
+  grade     String
+  actualFee Decimal      @map("actual_fee") @db.Decimal(12, 2)
+
+  @@unique([yearId, grade])
+  @@index([schoolId])
+  @@map("class_fee_defaults")
+}
+
 model FeeStructure {
   id       String       @id @default(cuid())
   schoolId String       @map("school_id")
@@ -1557,17 +1599,33 @@ model FeeAdjustment {
 
 // A small sticky-note board on the School Admin dashboard — title +
 // content, admin-managed, no workflow attached (not a task/approval
-// system, just a reminder board).
+// system, just a reminder board). remindAt is the date the admin
+// scheduled it for; nullable so reminders created before this field
+// existed still render, sorted to the end.
 model DashboardReminder {
+  id        String    @id @default(cuid())
+  schoolId  String    @map("school_id")
+  school    School    @relation(fields: [schoolId], references: [id], onDelete: Cascade)
+  title     String
+  content   String    @db.Text
+  remindAt  DateTime? @map("remind_at") @db.Date
+  createdAt DateTime  @default(now()) @map("created_at")
+
+  @@index([schoolId])
+  @@map("dashboard_reminders")
+}
+
+// A free-form notes board on the Dashboard — no schedule, no title,
+// just a running list of things the admin jotted down.
+model DashboardNote {
   id        String   @id @default(cuid())
   schoolId  String   @map("school_id")
   school    School   @relation(fields: [schoolId], references: [id], onDelete: Cascade)
-  title     String
   content   String   @db.Text
   createdAt DateTime @default(now()) @map("created_at")
 
   @@index([schoolId])
-  @@map("dashboard_reminders")
+  @@map("dashboard_notes")
 }
 
 enum TxnSource {
@@ -2089,6 +2147,53 @@ model HostelMaintenanceLog {
   @@map("hostel_maintenance_logs")
 }
 
+enum LaundryStatus {
+  PENDING
+  COLLECTED
+}
+
+// A student's own laundry submission — distinct from HostelMaintenanceLog's
+// LAUNDRY type above (which tracks building-level "laundry day was done for
+// room X" housekeeping, not a per-student receipt). Each ticket gets an
+// auto-generated token number the student presents to collect their
+// clothes; the admin sets collectionDate when logging the submission.
+model LaundryTicket {
+  id             String        @id @default(cuid())
+  schoolId       String        @map("school_id")
+  school         School        @relation(fields: [schoolId], references: [id], onDelete: Cascade)
+  studentId      String        @map("student_id")
+  student        Student       @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  tokenNo        String        @map("token_no")
+  submittedAt    DateTime      @default(now()) @map("submitted_at")
+  collectionDate DateTime?     @map("collection_date") @db.Date
+  collectedAt    DateTime?     @map("collected_at")
+  status         LaundryStatus @default(PENDING)
+
+  items LaundryItem[]
+
+  @@unique([schoolId, tokenNo])
+  @@index([schoolId])
+  @@index([studentId])
+  @@map("laundry_tickets")
+}
+
+// One row per clothing type on a ticket (e.g. "Shirt" x3, "Pant" x2) — a
+// ticket usually covers several items, so this is its own table rather
+// than a fixed set of columns on LaundryTicket.
+model LaundryItem {
+  id       String        @id @default(cuid())
+  schoolId String        @map("school_id")
+  school   School        @relation(fields: [schoolId], references: [id], onDelete: Cascade)
+  ticketId String        @map("ticket_id")
+  ticket   LaundryTicket @relation(fields: [ticketId], references: [id], onDelete: Cascade)
+  itemType String        @map("item_type")
+  quantity Int
+
+  @@index([schoolId])
+  @@index([ticketId])
+  @@map("laundry_items")
+}
+
 model LibraryBook {
   id              String  @id @default(cuid())
   schoolId        String  @map("school_id")
@@ -2431,6 +2536,12 @@ enum AudienceType {
   SPECIFIC_STUDENT
 }
 
+enum AnnouncementApprovalStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
 model Announcement {
   id             String       @id @default(cuid())
   schoolId       String       @map("school_id")
@@ -2441,6 +2552,16 @@ model Announcement {
   audienceTarget String?      @map("audience_target") // e.g. a classId or studentId
   publishedOn    DateTime?    @map("published_on")
   scheduledFor   DateTime?    @map("scheduled_for")
+  createdAt      DateTime     @default(now()) @map("created_at")
+
+  // Every new announcement starts PENDING regardless of who composed it —
+  // School Admin included — and needs an explicit approveAnnouncement call
+  // before it's visible to any recipient; publishedOn is only ever set at
+  // that approval instant. Existing rows that were already live under the
+  // pre-approval-workflow behavior are grandfathered to APPROVED by the
+  // migration (they had a publishedOn already, nothing gets retroactively
+  // un-published).
+  approvalStatus AnnouncementApprovalStatus @default(PENDING) @map("approval_status")
 
   reads AnnouncementRead[]
 
