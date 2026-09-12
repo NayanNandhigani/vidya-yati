@@ -98,7 +98,7 @@ export async function createStaffDetailed(_prevState: StaffFormState, formData: 
   });
 
   revalidatePath("/app/employees");
-  redirect(`/app/employees?staff=${staff.id}`);
+  redirect(`/app/employees/${staff.id}`);
 }
 
 export async function suggestEmployeeId(): Promise<string> {
@@ -155,5 +155,5 @@ export async function updateStaffDetailedProfile(staffId: string, fields: Detail
       dob: fields.dob ? new Date(fields.dob) : null,
     },
   });
-  revalidatePath("/app/employees");
+  revalidatePath(`/app/employees/${staffId}`);
 }

@@ -18,14 +18,14 @@ export async function addSalaryComponent(staffId: string, name: string, amount: 
   await requireFeature(sid, "payroll.structuredSalary");
   const sdb = await getScopedDb();
   await sdb.salaryComponent.create({ data: scopedCreateData<Prisma.SalaryComponentUncheckedCreateInput>({ staffId, name: name.trim(), amount }) });
-  revalidatePath("/app/employees");
+  revalidatePath(`/app/employees/${staffId}`);
 }
 
 export async function removeSalaryComponent(id: string) {
   await requireModuleAccess("Employees", "EDIT");
   const sdb = await getScopedDb();
-  await sdb.salaryComponent.delete({ where: { id } });
-  revalidatePath("/app/employees");
+  const component = await sdb.salaryComponent.delete({ where: { id } });
+  revalidatePath(`/app/employees/${component.staffId}`);
 }
 
 export async function updateStatutoryRates(pfPercent: number | null, esiPercent: number | null, ptFixedAmount: number | null, tdsPercent: number | null) {
@@ -98,7 +98,7 @@ export async function runStructuredPayroll(staffId: string, month: string) {
     }),
   });
 
-  revalidatePath("/app/employees");
+  revalidatePath(`/app/employees/${staffId}`);
   revalidatePath("/app/accounts");
   revalidatePath("/app/dashboard");
   return { gross, pf, esi, tds, pt, lop, net };

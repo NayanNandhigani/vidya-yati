@@ -81,13 +81,14 @@ async function getStaffReportData(sdb: ScopedDb): Promise<ReportData> {
 }
 
 async function getTransportReportData(sdb: ScopedDb): Promise<ReportData> {
-  const rows = await sdb.transportRoute.findMany({ include: { assignments: true } });
+  const rows = await sdb.transportRoute.findMany({ include: { assignments: true, vehicle: true } });
   return {
     columns: ["Route", "Driver", "Vehicle No.", "Capacity", "Riders", "Utilization %"],
     rows: rows.map((r) => {
       const riders = r.assignments.length;
-      const util = r.capacity ? Math.round((riders / r.capacity) * 100) : 0;
-      return [r.name, r.driverName ?? "—", r.vehicleNo ?? "—", r.capacity ?? "—", riders, util];
+      const capacity = r.vehicle?.capacity ?? null;
+      const util = capacity ? Math.round((riders / capacity) * 100) : 0;
+      return [r.name, r.vehicle?.driverName ?? "—", r.vehicle?.vehicleNo ?? "—", capacity ?? "—", riders, util];
     }),
   };
 }

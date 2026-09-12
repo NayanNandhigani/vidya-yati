@@ -10,15 +10,18 @@ import {
   AssetRow,
   ConsumableForm,
   ConsumableRow,
+  StockItemForm,
+  StockItemRow,
+  BillingPanel,
   VendorForm,
   VendorRow,
   PurchaseOrderForm,
   PurchaseOrderRow,
 } from "./InventoryForms";
 
-const TABS = ["assets", "consumables", "vendors", "orders"] as const;
+const TABS = ["assets", "consumables", "stock", "billing", "vendors", "orders"] as const;
 type Tab = (typeof TABS)[number];
-const TAB_LABEL: Record<Tab, string> = { assets: "Assets", consumables: "Consumables", vendors: "Vendors", orders: "Purchase Orders" };
+const TAB_LABEL: Record<Tab, string> = { assets: "Assets", consumables: "Consumables", stock: "Stock", billing: "Billing", vendors: "Vendors", orders: "Purchase Orders" };
 
 export default async function InventoryPage({ searchParams }: { searchParams: Promise<{ tab?: string }> }) {
   const session = await auth();
@@ -29,9 +32,11 @@ export default async function InventoryPage({ searchParams }: { searchParams: Pr
   const params = await searchParams;
   const tab: Tab = TABS.includes(params.tab as Tab) ? (params.tab as Tab) : "assets";
 
-  const [assets, consumables, vendors, purchaseOrders] = await Promise.all([
+  const [assets, consumables, stockItems, sales, vendors, purchaseOrders] = await Promise.all([
     sdb.inventoryAsset.findMany({ orderBy: { purchaseDate: "desc" } }),
     sdb.inventoryConsumable.findMany({ orderBy: { name: "asc" } }),
+    sdb.inventoryStockItem.findMany({ orderBy: { name: "asc" } }),
+    sdb.inventorySale.findMany({ include: { items: true }, orderBy: { soldAt: "desc" }, take: 30 }),
     sdb.schoolVendor.findMany({ orderBy: { name: "asc" } }),
     sdb.purchaseOrder.findMany({ include: { vendor: true }, orderBy: { orderDate: "desc" } }),
   ]);
@@ -40,6 +45,9 @@ export default async function InventoryPage({ searchParams }: { searchParams: Pr
   const lowStockCount = consumables.filter((c) => c.reorderLevel != null && Number(c.quantityOnHand) <= Number(c.reorderLevel)).length;
   const activeVendorCount = vendors.filter((v) => v.isActive).length;
   const openPoCount = purchaseOrders.filter((p) => p.status === "DRAFT" || p.status === "ORDERED").length;
+  const stockValue = stockItems.reduce((s, i) => s + Number(i.costPrice) * Number(i.quantityOnHand), 0);
+  const todaysSales = sales.filter((s) => s.soldAt.toDateString() === new Date().toDateString());
+  const todaysSalesTotal = todaysSales.reduce((s, sale) => s + Number(sale.totalAmount), 0);
 
   return (
     <div style={{ padding: "26px 34px", display: "flex", flexDirection: "column", gap: 16 }}>
@@ -47,9 +55,11 @@ export default async function InventoryPage({ searchParams }: { searchParams: Pr
         Inventory &amp; Assets
       </div>
 
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 13 }}>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(6,1fr)", gap: 13 }}>
         <Stat label="Assets — current value" value={formatINR(totalAssetValue)} />
         <Stat label="Consumables to reorder" value={lowStockCount} color={lowStockCount > 0 ? "var(--critical)" : undefined} />
+        <Stat label="Stock value (at cost)" value={formatINR(stockValue)} color="var(--marigold-deep)" />
+        <Stat label="Today's sales" value={formatINR(todaysSalesTotal)} color="var(--good)" />
         <Stat label="Active vendors" value={activeVendorCount} color="var(--teal)" />
         <Stat label="Open purchase orders" value={openPoCount} color="var(--warn)" />
       </div>
@@ -109,6 +119,53 @@ export default async function InventoryPage({ searchParams }: { searchParams: Pr
             </div>
           </div>
           <ConsumableForm />
+        </div>
+      )}
+
+      {tab === "stock" && (
+        <div style={{ display: "grid", gridTemplateColumns: "2.6fr 1fr", gap: 16 }}>
+          <div className="card" style={{ padding: 0, display: "flex", flexDirection: "column", overflow: "hidden" }}>
+            <div style={{ display: "grid", gridTemplateColumns: "1.3fr 0.7fr 0.6fr 0.6fr 0.5fr 2.1fr", gap: 8, padding: "13px 20px", borderBottom: "1px solid var(--line)", fontSize: 10.5, color: "var(--faint)", textTransform: "uppercase", letterSpacing: "0.05em" }}>
+              <div>Item</div>
+              <div>Type</div>
+              <div>Cost (₹)</div>
+              <div>Sell (₹)</div>
+              <div>On hand</div>
+              <div>Add / remove stock</div>
+            </div>
+            <div>
+              {stockItems.length === 0 && <div style={{ padding: 32, textAlign: "center", color: "var(--muted)" }}>No stock items added yet.</div>}
+              {stockItems.map((i) => (
+                <StockItemRow key={i.id} item={{ id: i.id, name: i.name, itemType: i.itemType, itemCode: i.itemCode, costPrice: Number(i.costPrice), sellPrice: Number(i.sellPrice), quantityOnHand: Number(i.quantityOnHand) }} />
+              ))}
+            </div>
+          </div>
+          <StockItemForm />
+        </div>
+      )}
+
+      {tab === "billing" && (
+        <div style={{ display: "grid", gridTemplateColumns: "1.3fr 1fr", gap: 16 }}>
+          <div className="card" style={{ padding: 0, display: "flex", flexDirection: "column", overflow: "hidden" }}>
+            <div style={{ display: "grid", gridTemplateColumns: "1.3fr 1.7fr 1fr 1fr", padding: "13px 20px", borderBottom: "1px solid var(--line)", fontSize: 10.5, color: "var(--faint)", textTransform: "uppercase", letterSpacing: "0.05em" }}>
+              <div>Consumer</div>
+              <div>Items</div>
+              <div>Total</div>
+              <div>Date</div>
+            </div>
+            <div style={{ overflowY: "auto" }}>
+              {sales.length === 0 && <div style={{ padding: 32, textAlign: "center", color: "var(--muted)" }}>No sales recorded yet.</div>}
+              {sales.map((s) => (
+                <div key={s.id} style={{ display: "grid", gridTemplateColumns: "1.3fr 1.7fr 1fr 1fr", alignItems: "center", padding: "11px 20px", borderBottom: "1px solid var(--line)", fontSize: 13 }}>
+                  <div style={{ fontWeight: 600 }}>{s.consumerName}</div>
+                  <div style={{ fontSize: 11.5, color: "var(--muted)" }}>{s.items.length} item{s.items.length === 1 ? "" : "s"}</div>
+                  <div className="mono" style={{ fontWeight: 700 }}>{formatINR(Number(s.totalAmount))}</div>
+                  <div style={{ fontSize: 11, color: "var(--faint)" }}>{s.soldAt.toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" })}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+          <BillingPanel items={stockItems.map((i) => ({ id: i.id, name: i.name, sellPrice: Number(i.sellPrice), quantityOnHand: Number(i.quantityOnHand) }))} />
         </div>
       )}
 

@@ -5,7 +5,6 @@ import { Prisma, MealType, HostelOutingStatus } from "@prisma/client";
 import { auth } from "@/auth";
 import { getScopedDb, scopedCreateData } from "@/lib/tenant-db";
 import { requireModuleAccess } from "@/lib/permissions";
-import { requireFeature } from "@/lib/feature-flags";
 
 async function schoolId() {
   const session = await auth();
@@ -14,7 +13,6 @@ async function schoolId() {
 
 async function guard() {
   await requireModuleAccess("Hostel", "EDIT");
-  await requireFeature(await schoolId(), "hostel.operations");
 }
 
 export async function updateRoomTypeAndWarden(roomId: string, roomType: string | null, wardenStaffId: string | null) {
@@ -54,8 +52,6 @@ export async function checkOutVisitor(logId: string) {
 
 /** Parent requests an outing for their hostel-resident child — no module-access check, a parent isn't Staff/Admin. */
 export async function requestOuting(studentId: string, reason: string, dateFrom: string, dateTo: string) {
-  const sid = await schoolId();
-  await requireFeature(sid, "hostel.operations");
   const session = await auth();
   if (session!.user.role !== "PARENT") throw new Error("Only a parent can submit an outing request.");
 

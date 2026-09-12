@@ -24,7 +24,7 @@ export default async function StudentProfilePage({ params }: { params: Promise<{
     include: {
       class: true,
       parentLinks: { include: { parent: true } },
-      transportAssignment: { include: { route: true, stop: true } },
+      transportAssignment: { include: { route: { include: { vehicle: true } }, stop: true } },
       attendance: { orderBy: { date: "desc" }, take: 15 },
       feePayments: { include: { feeStructure: true }, orderBy: { paidOn: "desc" } },
       marks: {

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useTransition } from "react";
+import Link from "next/link";
 import { formatINR } from "@/lib/format";
 import { currentAssetValue } from "@/lib/inventory";
 import {
@@ -12,6 +13,11 @@ import {
   toggleVendorActive,
   createPurchaseOrder,
   updatePurchaseOrderStatus,
+  createStockItem,
+  adjustStockItem,
+  updateStockItemPricing,
+  createSale,
+  type SaleLine,
 } from "./actions";
 
 const ASSET_STATUSES = ["IN_USE", "IN_STORAGE", "UNDER_REPAIR", "DISPOSED"] as const;
@@ -211,6 +217,242 @@ export function ConsumableRow({ item }: { item: { id: string; name: string; cate
           − Out
         </button>
       </div>
+    </div>
+  );
+}
+
+// -------------------------------------------------------------- Stock items
+
+export function StockItemForm() {
+  const [pending, startTransition] = useTransition();
+  const [form, setForm] = useState({ name: "", itemType: "", itemCode: "", costPrice: "", sellPrice: "", openingQuantity: "" });
+  const [error, setError] = useState<string | null>(null);
+
+  function submit() {
+    if (!form.name.trim() || !form.costPrice || !form.sellPrice) {
+      setError("Name, cost price, and sell price are required.");
+      return;
+    }
+    setError(null);
+    startTransition(async () => {
+      await createStockItem({
+        name: form.name,
+        itemType: form.itemType || null,
+        itemCode: form.itemCode || null,
+        costPrice: Number(form.costPrice),
+        sellPrice: Number(form.sellPrice),
+        openingQuantity: form.openingQuantity ? Number(form.openingQuantity) : 0,
+      });
+      setForm({ name: "", itemType: "", itemCode: "", costPrice: "", sellPrice: "", openingQuantity: "" });
+    });
+  }
+
+  return (
+    <div className="card" style={{ padding: 20, display: "flex", flexDirection: "column", gap: 12 }}>
+      <div style={{ fontSize: 13.5, fontWeight: 700 }}>Add stock item</div>
+      <Field>
+        Name
+        <input className="in" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} placeholder="School diary" />
+      </Field>
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
+        <Field>
+          Item type
+          <input className="in" value={form.itemType} onChange={(e) => setForm({ ...form, itemType: e.target.value })} placeholder="Stationery" />
+        </Field>
+        <Field>
+          Item code
+          <input className="in mono" value={form.itemCode} onChange={(e) => setForm({ ...form, itemCode: e.target.value })} placeholder="SKU-1001" />
+        </Field>
+      </div>
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 10 }}>
+        <Field>
+          Cost price (₹)
+          <input className="in mono" type="number" min={0} value={form.costPrice} onChange={(e) => setForm({ ...form, costPrice: e.target.value })} placeholder="60" />
+        </Field>
+        <Field>
+          Sell price (₹)
+          <input className="in mono" type="number" min={0} value={form.sellPrice} onChange={(e) => setForm({ ...form, sellPrice: e.target.value })} placeholder="90" />
+        </Field>
+        <Field>
+          Opening qty
+          <input className="in mono" type="number" min={0} value={form.openingQuantity} onChange={(e) => setForm({ ...form, openingQuantity: e.target.value })} placeholder="100" />
+        </Field>
+      </div>
+      {error && <div style={{ color: "var(--critical)", fontSize: 12 }}>{error}</div>}
+      <button type="button" onClick={submit} disabled={pending} style={{ background: "var(--marigold)", color: "#fff", border: "none", borderRadius: 8, padding: "9px 0", fontSize: 13, fontWeight: 700, cursor: pending ? "default" : "pointer" }}>
+        {pending ? "Adding…" : "Add stock item"}
+      </button>
+      <Link href="/app/inventory/stock-bulk-import" style={{ fontSize: 12, fontWeight: 700, color: "var(--marigold-deep)", textDecoration: "none", textAlign: "center" }}>
+        Bulk import from Excel ↑
+      </Link>
+    </div>
+  );
+}
+
+export function StockItemRow({ item }: { item: { id: string; name: string; itemType: string | null; itemCode: string | null; costPrice: number; sellPrice: number; quantityOnHand: number } }) {
+  const [pending, startTransition] = useTransition();
+  const [qty, setQty] = useState("");
+  const [costPrice, setCostPrice] = useState(item.costPrice.toString());
+  const [sellPrice, setSellPrice] = useState(item.sellPrice.toString());
+  const [error, setError] = useState<string | null>(null);
+
+  function move(type: "IN" | "OUT") {
+    const n = Number(qty);
+    if (!n || n <= 0) return;
+    setError(null);
+    startTransition(async () => {
+      try {
+        await adjustStockItem(item.id, type, n, null);
+        setQty("");
+      } catch (e) {
+        setError(e instanceof Error ? e.message : "Could not adjust stock.");
+      }
+    });
+  }
+
+  function savePricing() {
+    const cost = Number(costPrice);
+    const sell = Number(sellPrice);
+    if (Number.isNaN(cost) || Number.isNaN(sell)) return;
+    startTransition(() => updateStockItemPricing(item.id, cost, sell));
+  }
+
+  return (
+    <div style={{ display: "grid", gridTemplateColumns: "1.3fr 0.7fr 0.6fr 0.6fr 0.5fr 2.1fr", gap: 8, alignItems: "center", padding: "11px 20px", borderBottom: "1px solid var(--line)", fontSize: 13 }}>
+      <div>
+        <div style={{ fontWeight: 600 }}>{item.name}</div>
+        <div className="mono" style={{ fontSize: 10.5, color: "var(--faint)" }}>{item.itemCode ?? "—"}</div>
+      </div>
+      <div style={{ color: "var(--muted)" }}>{item.itemType ?? "—"}</div>
+      <input className="in mono" type="number" min={0} value={costPrice} onChange={(e) => setCostPrice(e.target.value)} onBlur={savePricing} style={{ fontSize: 12, padding: "4px 6px" }} />
+      <input className="in mono" type="number" min={0} value={sellPrice} onChange={(e) => setSellPrice(e.target.value)} onBlur={savePricing} style={{ fontSize: 12, padding: "4px 6px", fontWeight: 700 }} />
+      <div className="mono" style={{ fontWeight: 700 }}>{item.quantityOnHand}</div>
+      <div>
+        <div style={{ display: "flex", gap: 4 }}>
+          <input className="in mono" type="number" min={0} value={qty} onChange={(e) => setQty(e.target.value)} placeholder="Qty" style={{ width: 42, flex: "none", fontSize: 11, padding: "4px 5px" }} />
+          <button type="button" disabled={pending} onClick={() => move("IN")} style={{ fontSize: 10.5, fontWeight: 700, background: "var(--good-tint)", color: "var(--good)", border: "none", borderRadius: 5, padding: "0 6px", whiteSpace: "nowrap", cursor: pending ? "default" : "pointer" }}>
+            + Add
+          </button>
+          <button type="button" disabled={pending} onClick={() => move("OUT")} style={{ fontSize: 10.5, fontWeight: 700, background: "var(--critical-tint)", color: "var(--critical)", border: "none", borderRadius: 5, padding: "0 6px", whiteSpace: "nowrap", cursor: pending ? "default" : "pointer" }}>
+            − Remove
+          </button>
+        </div>
+        {error && <div style={{ color: "var(--critical)", fontSize: 10.5, marginTop: 3 }}>{error}</div>}
+      </div>
+    </div>
+  );
+}
+
+// ------------------------------------------------------------------ Billing
+
+type BillableItem = { id: string; name: string; sellPrice: number; quantityOnHand: number };
+
+export function BillingPanel({ items }: { items: BillableItem[] }) {
+  const [pending, startTransition] = useTransition();
+  const [consumerName, setConsumerName] = useState("");
+  const [pickItemId, setPickItemId] = useState("");
+  const [pickQty, setPickQty] = useState("1");
+  const [cart, setCart] = useState<{ stockItemId: string; name: string; unitPrice: number; quantity: number }[]>([]);
+  const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<string | null>(null);
+
+  const total = cart.reduce((s, l) => s + l.unitPrice * l.quantity, 0);
+
+  function addToCart() {
+    const item = items.find((i) => i.id === pickItemId);
+    const n = Number(pickQty);
+    if (!item || !n || n <= 0) return;
+    setError(null);
+    setCart((prev) => {
+      const existing = prev.find((l) => l.stockItemId === item.id);
+      if (existing) return prev.map((l) => (l.stockItemId === item.id ? { ...l, quantity: l.quantity + n } : l));
+      return [...prev, { stockItemId: item.id, name: item.name, unitPrice: item.sellPrice, quantity: n }];
+    });
+    setPickItemId("");
+    setPickQty("1");
+  }
+
+  function removeLine(stockItemId: string) {
+    setCart((prev) => prev.filter((l) => l.stockItemId !== stockItemId));
+  }
+
+  function completeSale() {
+    if (!consumerName.trim() || cart.length === 0) {
+      setError("Enter a consumer name and add at least one item.");
+      return;
+    }
+    setError(null);
+    setSuccess(null);
+    const lines: SaleLine[] = cart.map((l) => ({ stockItemId: l.stockItemId, quantity: l.quantity }));
+    startTransition(async () => {
+      const res = await createSale(consumerName, lines);
+      if (res.error) {
+        setError(res.error);
+        return;
+      }
+      setSuccess(`Sold to ${consumerName} — ${formatINR(total)} total.`);
+      setConsumerName("");
+      setCart([]);
+    });
+  }
+
+  return (
+    <div className="card" style={{ padding: 20, display: "flex", flexDirection: "column", gap: 14 }}>
+      <div style={{ fontSize: 13.5, fontWeight: 700 }}>New sale</div>
+      <Field>
+        Consumer name
+        <input className="in" value={consumerName} onChange={(e) => setConsumerName(e.target.value)} placeholder="Parent / student / walk-in name" />
+      </Field>
+
+      <div style={{ display: "flex", gap: 8, alignItems: "flex-end" }}>
+        <label className="field" style={{ flex: 1.6 }}>
+          Item
+          <select className="in" value={pickItemId} onChange={(e) => setPickItemId(e.target.value)}>
+            <option value="">Select item…</option>
+            {items.map((i) => (
+              <option key={i.id} value={i.id} disabled={i.quantityOnHand <= 0}>
+                {i.name} — {formatINR(i.sellPrice)} {i.quantityOnHand <= 0 ? "(out of stock)" : `(${i.quantityOnHand} available)`}
+              </option>
+            ))}
+          </select>
+        </label>
+        <label className="field" style={{ flex: 0.6 }}>
+          Qty
+          <input className="in mono" type="number" min={1} value={pickQty} onChange={(e) => setPickQty(e.target.value)} />
+        </label>
+        <button type="button" onClick={addToCart} disabled={!pickItemId} style={{ background: "var(--card)", border: "1px solid var(--line)", borderRadius: 8, padding: "9px 14px", fontSize: 12.5, fontWeight: 700, cursor: "pointer", marginBottom: 2 }}>
+          Add
+        </button>
+      </div>
+
+      <div style={{ borderTop: "1px solid var(--line)", paddingTop: 10, display: "flex", flexDirection: "column", gap: 8, minHeight: 40 }}>
+        {cart.length === 0 && <div style={{ fontSize: 12.5, color: "var(--muted)" }}>No items added yet.</div>}
+        {cart.map((l) => (
+          <div key={l.stockItemId} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", fontSize: 12.5 }}>
+            <span>
+              {l.name} <span className="mono" style={{ color: "var(--faint)" }}>× {l.quantity}</span>
+            </span>
+            <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+              <span className="mono" style={{ fontWeight: 700 }}>{formatINR(l.unitPrice * l.quantity)}</span>
+              <span onClick={() => removeLine(l.stockItemId)} style={{ color: "var(--critical)", cursor: "pointer", fontWeight: 700 }}>
+                ×
+              </span>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", borderTop: "1px solid var(--line)", paddingTop: 12 }}>
+        <span style={{ fontSize: 13, fontWeight: 700 }}>Total</span>
+        <span className="mono" style={{ fontSize: 17, fontWeight: 700, color: "var(--marigold-deep)" }}>{formatINR(total)}</span>
+      </div>
+
+      {error && <div style={{ color: "var(--critical)", fontSize: 12.5 }}>{error}</div>}
+      {success && <div style={{ color: "var(--good)", fontSize: 12.5 }}>{success}</div>}
+
+      <button type="button" onClick={completeSale} disabled={pending || cart.length === 0} style={{ background: "var(--marigold)", color: "#fff", border: "none", borderRadius: 8, padding: "10px 0", fontSize: 13.5, fontWeight: 700, cursor: pending ? "default" : "pointer", opacity: cart.length === 0 ? 0.6 : 1 }}>
+        {pending ? "Completing sale…" : "Complete sale"}
+      </button>
     </div>
   );
 }

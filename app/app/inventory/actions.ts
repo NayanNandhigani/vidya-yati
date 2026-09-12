@@ -144,6 +144,136 @@ export async function createPurchaseOrder(data: {
   revalidatePath("/app/inventory");
 }
 
+// ------------------------------------------------------------- Stock items
+
+export async function createStockItem(data: { name: string; itemType: string | null; itemCode: string | null; costPrice: number; sellPrice: number; openingQuantity: number }) {
+  await guard();
+  const sdb = await getScopedDb();
+  const item = await sdb.inventoryStockItem.create({
+    data: scopedCreateData<Prisma.InventoryStockItemUncheckedCreateInput>({
+      name: data.name.trim(),
+      itemType: data.itemType,
+      itemCode: data.itemCode,
+      costPrice: data.costPrice,
+      sellPrice: data.sellPrice,
+      quantityOnHand: 0,
+    }),
+  });
+  if (data.openingQuantity > 0) {
+    await sdb.$transaction([
+      sdb.inventoryStockItemMovement.create({
+        data: scopedCreateData<Prisma.InventoryStockItemMovementUncheckedCreateInput>({ stockItemId: item.id, type: "IN", quantity: data.openingQuantity, note: "Opening stock" }),
+      }),
+      sdb.inventoryStockItem.update({ where: { id: item.id }, data: { quantityOnHand: data.openingQuantity } }),
+    ]);
+  }
+  revalidatePath("/app/inventory");
+}
+
+/** Add/remove stock for an existing item — same IN/OUT movement-log pattern as adjustStock for Consumables. */
+export async function adjustStockItem(stockItemId: string, type: "IN" | "OUT", quantity: number, note: string | null) {
+  await guard();
+  if (quantity <= 0) throw new Error("Quantity must be positive.");
+  const sdb = await getScopedDb();
+  const item = await sdb.inventoryStockItem.findUniqueOrThrow({ where: { id: stockItemId } });
+  if (type === "OUT" && Number(item.quantityOnHand) < quantity) {
+    throw new Error(`Only ${item.quantityOnHand} in stock.`);
+  }
+  await sdb.$transaction([
+    sdb.inventoryStockItemMovement.create({
+      data: scopedCreateData<Prisma.InventoryStockItemMovementUncheckedCreateInput>({ stockItemId, type, quantity, note }),
+    }),
+    sdb.inventoryStockItem.update({
+      where: { id: stockItemId },
+      data: { quantityOnHand: type === "IN" ? { increment: quantity } : { decrement: quantity } },
+    }),
+  ]);
+  revalidatePath("/app/inventory");
+}
+
+export async function updateStockItemPricing(stockItemId: string, costPrice: number, sellPrice: number) {
+  await guard();
+  if (costPrice < 0 || sellPrice < 0) throw new Error("Prices can't be negative.");
+  const sdb = await getScopedDb();
+  await sdb.inventoryStockItem.update({ where: { id: stockItemId }, data: { costPrice, sellPrice } });
+  revalidatePath("/app/inventory");
+}
+
+// ------------------------------------------------------------------ Billing
+
+export type SaleLine = { stockItemId: string; quantity: number };
+
+/**
+ * Completes a sale: validates every line's stock up front (all-or-nothing,
+ * same discipline as the exam bulk-marks import), writes one OUT movement
+ * per line at the item's *current* sellPrice (snapshotted onto the line so
+ * a later price edit never rewrites what a past sale actually charged),
+ * decrements quantityOnHand, and auto-posts one AccountsTransaction
+ * (source AUTO_INVENTORY_SALE, INCOME) for the sale total — same
+ * auto-posting pattern as AUTO_FEES/AUTO_PAYROLL/AUTO_INVENTORY_PURCHASE.
+ */
+export async function createSale(consumerName: string, lines: SaleLine[]): Promise<{ error?: string; saleId?: string }> {
+  await guard();
+  if (!consumerName.trim()) return { error: "Consumer name is required." };
+  if (lines.length === 0) return { error: "Add at least one item to the sale." };
+
+  const sdb = await getScopedDb();
+  const items = await sdb.inventoryStockItem.findMany({ where: { id: { in: lines.map((l) => l.stockItemId) } } });
+  const itemById = new Map(items.map((i) => [i.id, i]));
+
+  for (const line of lines) {
+    if (line.quantity <= 0) return { error: "Every line's quantity must be positive." };
+    const item = itemById.get(line.stockItemId);
+    if (!item) return { error: "One of the selected items no longer exists." };
+    if (Number(item.quantityOnHand) < line.quantity) {
+      return { error: `Only ${item.quantityOnHand} of "${item.name}" in stock.` };
+    }
+  }
+
+  const saleLines = lines.map((l) => {
+    const item = itemById.get(l.stockItemId)!;
+    const unitPrice = Number(item.sellPrice);
+    return { stockItemId: l.stockItemId, quantity: l.quantity, unitPrice, lineTotal: unitPrice * l.quantity, name: item.name };
+  });
+  const totalAmount = saleLines.reduce((s, l) => s + l.lineTotal, 0);
+  const soldAt = new Date();
+
+  const sale = await sdb.inventorySale.create({
+    data: scopedCreateData<Prisma.InventorySaleUncheckedCreateInput>({ consumerName: consumerName.trim(), totalAmount, soldAt }),
+  });
+
+  const ops: Prisma.PrismaPromise<unknown>[] = [
+    sdb.inventorySaleItem.createMany({
+      data: saleLines.map((l) =>
+        scopedCreateData<Prisma.InventorySaleItemUncheckedCreateInput>({ saleId: sale.id, stockItemId: l.stockItemId, quantity: l.quantity, unitPrice: l.unitPrice, lineTotal: l.lineTotal })
+      ),
+    }),
+    sdb.accountsTransaction.create({
+      data: scopedCreateData<Prisma.AccountsTransactionUncheckedCreateInput>({
+        date: soldAt,
+        description: `Sale to ${consumerName.trim()} — ${saleLines.map((l) => l.name).join(", ")}`,
+        category: "Inventory sale",
+        source: "AUTO_INVENTORY_SALE",
+        type: "INCOME",
+        amount: totalAmount,
+      }),
+    }),
+  ];
+  for (const l of saleLines) {
+    ops.push(
+      sdb.inventoryStockItemMovement.create({
+        data: scopedCreateData<Prisma.InventoryStockItemMovementUncheckedCreateInput>({ stockItemId: l.stockItemId, type: "OUT", quantity: l.quantity, note: `Sold to ${consumerName.trim()}` }),
+      }),
+      sdb.inventoryStockItem.update({ where: { id: l.stockItemId }, data: { quantityOnHand: { decrement: l.quantity } } })
+    );
+  }
+  await sdb.$transaction(ops);
+
+  revalidatePath("/app/inventory");
+  revalidatePath("/app/accounts");
+  return { saleId: sale.id };
+}
+
 export async function updatePurchaseOrderStatus(poId: string, status: PurchaseOrderStatus) {
   await guard();
   const sdb = await getScopedDb();

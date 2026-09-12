@@ -19,7 +19,7 @@ export async function updateStaffProfileDetails(staffId: string, qualifications:
     where: { id: staffId },
     data: { qualifications: qualifications.trim() || null, specialization: specialization.trim() || null, shiftStart: shiftStart || null },
   });
-  revalidatePath("/app/employees");
+  revalidatePath(`/app/employees/${staffId}`);
 }
 
 export async function createLeaveType(name: string, annualQuota: number) {
@@ -58,7 +58,7 @@ export async function applyForStaffLeave(staffId: string, leaveTypeId: string, d
   await sdb.staffLeaveRequest.create({
     data: scopedCreateData<Prisma.StaffLeaveRequestUncheckedCreateInput>({ staffId, leaveTypeId, dateFrom: new Date(dateFrom), dateTo: new Date(dateTo), reason: reason.trim() }),
   });
-  revalidatePath("/app/employees");
+  revalidatePath(`/app/employees/${staffId}`);
 }
 
 export async function actOnStaffLeave(requestId: string, approve: boolean) {
@@ -66,7 +66,12 @@ export async function actOnStaffLeave(requestId: string, approve: boolean) {
   if (session!.user.role !== "SCHOOL_ADMIN") throw new Error("Only a School Admin can approve staff leave.");
   await requireFeature(session!.user.schoolId!, "employees.leave");
   const sdb = await getScopedDb();
-  await sdb.staffLeaveRequest.update({ where: { id: requestId }, data: { status: approve ? "APPROVED" : "REJECTED", actionAt: new Date() } });
+  const request = await sdb.staffLeaveRequest.update({ where: { id: requestId }, data: { status: approve ? "APPROVED" : "REJECTED", actionAt: new Date() } });
+  revalidatePath(`/app/employees/${request.staffId}`);
+  // pendingLeaveRequests is a global admin inbox shown on every staff
+  // member's page, not just the affected one — revalidate the list too so
+  // an admin acting on it from a *different* staff member's page doesn't
+  // need a hard refresh to see it clear from view.
   revalidatePath("/app/employees");
 }
 

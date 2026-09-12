@@ -136,6 +136,9 @@ model School {
   transportRoutes      TransportRoute[]
   transportStops       TransportStop[]
   transportAssignments StudentTransportAssignment[]
+  transportVehicles    TransportVehicle[]
+  vehicleLogs          VehicleLog[]
+  transportAttendance  TransportAttendance[]
   hostelRooms          HostelRoom[]
   hostelAllocations    HostelAllocation[]
   libraryBooks         LibraryBook[]
@@ -179,11 +182,18 @@ model School {
   inventoryAssets          InventoryAsset[]
   inventoryConsumables     InventoryConsumable[]
   inventoryStockMovements  InventoryStockMovement[]
+  inventoryStockItems      InventoryStockItem[]
+  inventoryStockItemMovements InventoryStockItemMovement[]
+  inventorySales           InventorySale[]
+  inventorySaleItems       InventorySaleItem[]
   schoolVendors            SchoolVendor[]
   purchaseOrders           PurchaseOrder[]
   hostelMessMenus          HostelMessMenu[]
   hostelVisitorLogs        HostelVisitorLog[]
   hostelOutingRequests     HostelOutingRequest[]
+  hostelFacilities         HostelFacility[]
+  hostelMealsServed        HostelMealServed[]
+  hostelMaintenanceLogs    HostelMaintenanceLog[]
   complianceDocuments      SchoolComplianceDocument[]
 
   @@map("schools")
@@ -1074,6 +1084,7 @@ model Student {
   homeworkSubmissions HomeworkSubmission[]
   feePayments         FeePayment[]
   transportAssignment StudentTransportAssignment?
+  transportAttendance TransportAttendance[]
   hostelAllocations   HostelAllocation[]
   libraryCirculations LibraryCirculation[]
   certificatesIssued  CertificateIssued[]
@@ -1116,6 +1127,7 @@ model StudentEmergencyContact {
 enum DocumentSubjectType {
   STUDENT
   STAFF
+  VEHICLE
 }
 
 // One shared model for both the SIS "per-student document repository" and
@@ -1131,7 +1143,9 @@ model PersonDocument {
   student     Student?            @relation(fields: [studentId], references: [id], onDelete: Cascade)
   staffId     String?             @map("staff_id")
   staff       StaffProfile?       @relation(fields: [staffId], references: [id], onDelete: Cascade)
-  category    String // e.g. "ID Proof", "Certificate", "Medical"
+  vehicleId   String?             @map("vehicle_id")
+  vehicle     TransportVehicle?   @relation(fields: [vehicleId], references: [id], onDelete: Cascade)
+  category    String // e.g. "ID Proof", "Certificate", "Medical", "Insurance Policy", "RC"
   label       String // the file's display name
   filePath    String              @map("file_path")
   expiryDate  DateTime?           @map("expiry_date")
@@ -1140,6 +1154,7 @@ model PersonDocument {
   @@index([schoolId])
   @@index([studentId])
   @@index([staffId])
+  @@index([vehicleId])
   @@map("person_documents")
 }
 
@@ -1560,6 +1575,7 @@ enum TxnSource {
   AUTO_PAYROLL
   AUTO_LIBRARY_FINE
   AUTO_INVENTORY_PURCHASE
+  AUTO_INVENTORY_SALE
   MANUAL
 }
 
@@ -1750,26 +1766,17 @@ model AdmissionEnquiry {
 // =========================================================================
 
 model TransportRoute {
-  id         String  @id @default(cuid())
-  schoolId   String  @map("school_id")
-  school     School  @relation(fields: [schoolId], references: [id], onDelete: Cascade)
-  name       String
-  driverName String? @map("driver_name")
-  vehicleNo  String? @map("vehicle_no")
-  capacity   Int?
+  id       String @id @default(cuid())
+  schoolId String @map("school_id")
+  school   School @relation(fields: [schoolId], references: [id], onDelete: Cascade)
+  name     String
 
-  // Compliance — expiry dates the transport office needs to track per vehicle/driver.
-  driverLicenseNo      String?   @map("driver_license_no")
-  licenseExpiry        DateTime? @map("license_expiry")
-  insuranceExpiry      DateTime? @map("insurance_expiry")
-  fitnessExpiry         DateTime? @map("fitness_expiry")
-
-  // A manual "where is the bus right now" ping — there's no GPS device or
-  // mobile app in this system to push real telemetry, so this is
-  // deliberately a driver/admin-updated position, not live tracking.
-  lastKnownLat   Float?    @map("last_known_lat")
-  lastKnownLng   Float?    @map("last_known_lng")
-  lastLocationAt DateTime? @map("last_location_at")
+  // The vehicle serving this route — vehicle-inherent details (capacity,
+  // driver, insurance/fitness compliance, service log, live location) all
+  // live on TransportVehicle now, not here; a route can exist unassigned
+  // (vehicleId null) while it's still being planned.
+  vehicleId String?           @map("vehicle_id")
+  vehicle   TransportVehicle? @relation(fields: [vehicleId], references: [id], onDelete: SetNull)
 
   // A flat per-route transport fee — the "zone/distance-based fee slab"
   // ask, modeled simply as one fee per route rather than a separate
@@ -1778,9 +1785,97 @@ model TransportRoute {
 
   stops       TransportStop[]
   assignments StudentTransportAssignment[]
+  attendance  TransportAttendance[]
 
   @@index([schoolId])
+  @@index([vehicleId])
   @@map("transport_routes")
+}
+
+enum VehicleLogType {
+  SERVICE
+  INSURANCE_RENEWAL
+  OTHER
+}
+
+// A school's fleet — its own entity now (previously a handful of fields
+// bolted onto TransportRoute), since a vehicle's compliance/service
+// history exists independently of which route it's currently assigned to.
+model TransportVehicle {
+  id          String  @id @default(cuid())
+  schoolId    String  @map("school_id")
+  school      School  @relation(fields: [schoolId], references: [id], onDelete: Cascade)
+  vehicleNo   String  @map("vehicle_no") // registration number
+  vehicleType String? @map("vehicle_type") // e.g. "Bus", "Van", "Mini Bus"
+  capacity    Int?
+  make        String?
+  model       String?
+  isActive    Boolean @default(true) @map("is_active")
+  notes       String? @db.Text
+
+  driverName          String?   @map("driver_name")
+  driverPhone         String?   @map("driver_phone")
+  driverLicenseNo     String?   @map("driver_license_no")
+  driverLicenseExpiry DateTime? @map("driver_license_expiry")
+  insurancePolicyNo   String?   @map("insurance_policy_no")
+  insuranceExpiry     DateTime? @map("insurance_expiry")
+  fitnessExpiry       DateTime? @map("fitness_expiry")
+  pollutionCertExpiry DateTime? @map("pollution_cert_expiry")
+
+  // A manual "where is the bus right now" ping — there's no GPS device or
+  // mobile app in this system to push real telemetry, so this is
+  // deliberately a driver/admin-updated position, not live tracking.
+  lastKnownLat   Float?    @map("last_known_lat")
+  lastKnownLng   Float?    @map("last_known_lng")
+  lastLocationAt DateTime? @map("last_location_at")
+
+  routes      TransportRoute[]
+  serviceLogs VehicleLog[]
+  documents   PersonDocument[]
+
+  @@index([schoolId])
+  @@map("transport_vehicles")
+}
+
+model VehicleLog {
+  id              String           @id @default(cuid())
+  schoolId        String           @map("school_id")
+  school          School           @relation(fields: [schoolId], references: [id], onDelete: Cascade)
+  vehicleId       String           @map("vehicle_id")
+  vehicle         TransportVehicle @relation(fields: [vehicleId], references: [id], onDelete: Cascade)
+  type            VehicleLogType
+  date            DateTime         @db.Date
+  description     String           @db.Text
+  cost            Decimal?         @db.Decimal(10, 2)
+  odometerReading Int?             @map("odometer_reading")
+
+  @@index([schoolId])
+  @@index([vehicleId])
+  @@map("vehicle_logs")
+}
+
+// Bus pickup/drop marking, per student per day — separate from the
+// classroom Attendance model since a student can be present at school but
+// not a bus rider that day (walked, parent drop, etc.), and vice versa
+// isn't meaningful either; two independent records. Two independent
+// timestamps rather than a status enum, since pickup and drop are marked
+// at different points in the day by whoever is with the bus then.
+model TransportAttendance {
+  id        String         @id @default(cuid())
+  schoolId  String         @map("school_id")
+  school    School         @relation(fields: [schoolId], references: [id], onDelete: Cascade)
+  studentId String         @map("student_id")
+  student   Student        @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  routeId   String         @map("route_id")
+  route     TransportRoute @relation(fields: [routeId], references: [id], onDelete: Cascade)
+  date      DateTime       @db.Date
+  pickupAt  DateTime?      @map("pickup_at")
+  dropAt    DateTime?      @map("drop_at")
+
+  @@unique([studentId, date])
+  @@index([schoolId])
+  @@index([routeId])
+  @@map("transport_attendance")
 }
 
 model TransportStop {
@@ -1819,15 +1914,43 @@ model HostelRoom {
   schoolId       String        @map("school_id")
   school         School        @relation(fields: [schoolId], references: [id], onDelete: Cascade)
   roomNo         String        @map("room_no")
+  roomSize       String?       @map("room_size") // free text, e.g. "12ft x 10ft" or "150 sq ft" — schools describe this differently, not worth forcing a single unit
   capacity       Int
-  roomType       String?       @map("room_type") // e.g. "Dormitory", "Double", "Single" — see requireFeature("hostel.operations")
+  roomType       String?       @map("room_type") // e.g. "Dormitory", "Double", "Single"
   wardenStaffId  String?       @map("warden_staff_id")
   warden         StaffProfile? @relation(fields: [wardenStaffId], references: [id], onDelete: SetNull)
 
-  allocations HostelAllocation[]
+  allocations      HostelAllocation[]
+  facilities       HostelFacility[]
+  maintenanceLogs  HostelMaintenanceLog[]
 
   @@index([schoolId])
   @@map("hostel_rooms")
+}
+
+enum HostelFacilityType {
+  TOILET
+  SHOWER
+}
+
+// A room's attached toilets/showers, tracked individually (not just a
+// count on the room) so each one can carry its own maintenance history —
+// see HostelMaintenanceLog.
+model HostelFacility {
+  id        String             @id @default(cuid())
+  schoolId  String             @map("school_id")
+  school    School             @relation(fields: [schoolId], references: [id], onDelete: Cascade)
+  roomId    String             @map("room_id")
+  room      HostelRoom         @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  type      HostelFacilityType
+  label     String? // e.g. "Toilet 1" — optional, defaults to a generated "Toilet #N" in the UI when blank
+  condition String? // free text, e.g. "Good", "Needs repair"
+
+  maintenanceLogs HostelMaintenanceLog[]
+
+  @@index([schoolId])
+  @@index([roomId])
+  @@map("hostel_facilities")
 }
 
 model HostelAllocation {
@@ -1913,6 +2036,57 @@ model HostelOutingRequest {
   @@index([schoolId])
   @@index([studentId])
   @@map("hostel_outing_requests")
+}
+
+// One row per day+meal actually served — distinct from HostelMessMenu
+// (the recurring weekly plan): this is the day-of record of what went
+// out and roughly how many ate, for tracking against the plan.
+model HostelMealServed {
+  id          String   @id @default(cuid())
+  schoolId    String   @map("school_id")
+  school      School   @relation(fields: [schoolId], references: [id], onDelete: Cascade)
+  date        DateTime @db.Date
+  mealType    MealType @map("meal_type")
+  description String   @db.Text
+  headcount   Int?
+
+  @@unique([schoolId, date, mealType])
+  @@index([schoolId])
+  @@map("hostel_meals_served")
+}
+
+enum HostelLogType {
+  LAUNDRY
+  MAINTENANCE
+}
+
+enum HostelLogStatus {
+  PENDING
+  IN_PROGRESS
+  DONE
+}
+
+// Tracks laundry and maintenance work against either a room or one of its
+// facilities (toilet/shower) — exactly one of roomId/facilityId is set,
+// same "polymorphic optional FK" shape as PersonDocument's student/staff/
+// vehicle split.
+model HostelMaintenanceLog {
+  id          String           @id @default(cuid())
+  schoolId    String           @map("school_id")
+  school      School           @relation(fields: [schoolId], references: [id], onDelete: Cascade)
+  roomId      String?          @map("room_id")
+  room        HostelRoom?      @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  facilityId  String?          @map("facility_id")
+  facility    HostelFacility?  @relation(fields: [facilityId], references: [id], onDelete: Cascade)
+  type        HostelLogType
+  date        DateTime         @db.Date
+  description String           @db.Text
+  status      HostelLogStatus  @default(PENDING)
+
+  @@index([schoolId])
+  @@index([roomId])
+  @@index([facilityId])
+  @@map("hostel_maintenance_logs")
 }
 
 model LibraryBook {
@@ -2082,6 +2256,85 @@ model PurchaseOrder {
   @@index([schoolId])
   @@index([vendorId])
   @@map("purchase_orders")
+}
+
+// Sellable stock — the school-store/canteen side of Inventory, distinct
+// from InventoryConsumable (internal-use supplies, never sold, no cost/
+// price pair) and InventoryAsset (fixed capital items). Each item carries
+// both what the school paid (costPrice) and what it charges (sellPrice,
+// editable independently) — Billing sells against sellPrice and snapshots
+// it onto InventorySaleItem.unitPrice so a later price change never
+// rewrites the historical record of what a past sale actually charged.
+model InventoryStockItem {
+  id             String   @id @default(cuid())
+  schoolId       String   @map("school_id")
+  school         School   @relation(fields: [schoolId], references: [id], onDelete: Cascade)
+  name           String
+  itemType       String?  @map("item_type") // free text, e.g. "Stationery", "Uniform", "Book"
+  itemCode       String?  @map("item_code") // SKU / barcode text, optional
+  costPrice      Decimal  @db.Decimal(12, 2) @map("cost_price")
+  sellPrice      Decimal  @db.Decimal(12, 2) @map("sell_price")
+  quantityOnHand Decimal  @default(0) @db.Decimal(12, 2) @map("quantity_on_hand") // cached running total — see InventoryStockItemMovement for the audit trail, same pattern as InventoryConsumable.quantityOnHand
+
+  movements InventoryStockItemMovement[]
+  saleLines InventorySaleItem[]
+
+  @@index([schoolId])
+  @@map("inventory_stock_items")
+}
+
+// Same IN/OUT shape as InventoryStockMovement, just against a sellable
+// StockItem instead of a Consumable — a sale writes its own OUT rows here
+// (see createSale), so this doubles as the stock item's full audit trail.
+model InventoryStockItemMovement {
+  id          String              @id @default(cuid())
+  schoolId    String              @map("school_id")
+  school      School              @relation(fields: [schoolId], references: [id], onDelete: Cascade)
+  stockItemId String              @map("stock_item_id")
+  stockItem   InventoryStockItem  @relation(fields: [stockItemId], references: [id], onDelete: Cascade)
+  type        StockMovementType
+  quantity    Decimal             @db.Decimal(12, 2)
+  note        String?
+  date        DateTime            @default(now())
+
+  @@index([schoolId])
+  @@index([stockItemId])
+  @@map("inventory_stock_item_movements")
+}
+
+// Billing tab's record of a completed sale — one row per checkout,
+// however many items/lines it covered. Auto-posts one AccountsTransaction
+// (source AUTO_INVENTORY_SALE, type INCOME) for totalAmount, same
+// auto-posting pattern as AUTO_FEES/AUTO_PAYROLL/AUTO_INVENTORY_PURCHASE.
+model InventorySale {
+  id           String   @id @default(cuid())
+  schoolId     String   @map("school_id")
+  school       School   @relation(fields: [schoolId], references: [id], onDelete: Cascade)
+  consumerName String   @map("consumer_name")
+  totalAmount  Decimal  @db.Decimal(12, 2) @map("total_amount")
+  soldAt       DateTime @default(now()) @map("sold_at")
+
+  items InventorySaleItem[]
+
+  @@index([schoolId])
+  @@map("inventory_sales")
+}
+
+model InventorySaleItem {
+  id          String             @id @default(cuid())
+  schoolId    String             @map("school_id")
+  school      School             @relation(fields: [schoolId], references: [id], onDelete: Cascade)
+  saleId      String             @map("sale_id")
+  sale        InventorySale      @relation(fields: [saleId], references: [id], onDelete: Cascade)
+  stockItemId String             @map("stock_item_id")
+  stockItem   InventoryStockItem @relation(fields: [stockItemId], references: [id])
+  quantity    Decimal            @db.Decimal(12, 2)
+  unitPrice   Decimal            @db.Decimal(12, 2) @map("unit_price") // sellPrice at the moment of sale — a later price edit doesn't rewrite history
+  lineTotal   Decimal            @db.Decimal(12, 2) @map("line_total")
+
+  @@index([schoolId])
+  @@index([saleId])
+  @@map("inventory_sale_items")
 }
 
 // =========================================================================

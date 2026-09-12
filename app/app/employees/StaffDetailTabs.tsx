@@ -1,8 +1,6 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import { initials } from "@/lib/format";
-import { avatarColorFor } from "@/lib/academic";
 import type { AccessLevel } from "@prisma/client";
 import { cyclePermission, removeClassPermission, runPayroll } from "./actions";
 import { addStaffDocument } from "./depth-actions";
@@ -187,23 +185,6 @@ export default function StaffDetailTabs({
 
   return (
     <div className="card" style={{ padding: 22, display: "flex", flexDirection: "column", overflow: "hidden" }}>
-      <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 16 }}>
-        <div style={{ width: 52, height: 52, borderRadius: "50%", fontSize: 17, background: avatarColorFor(staff.id), display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 700, color: "#fff", flex: "none" }}>
-          {initials(staff.user.name)}
-        </div>
-        <div style={{ flex: 1 }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-            <div style={{ fontWeight: 700, fontSize: 16.5 }}>{staff.user.name}</div>
-            <span className="pill" style={{ background: staff.employmentStatus === "ACTIVE" ? "var(--good-tint)" : "var(--warn-tint)", color: staff.employmentStatus === "ACTIVE" ? "var(--good)" : "var(--warn)" }}>
-              {staff.employmentStatus === "ACTIVE" ? "Active" : "On Leave"}
-            </span>
-          </div>
-          <div style={{ fontSize: 12.5, color: "var(--muted)" }}>
-            {staff.designation ?? "—"} {staff.department && `· ${staff.department}`}
-          </div>
-        </div>
-      </div>
-
       <div style={{ display: "flex", gap: 4, background: "var(--paper)", borderRadius: 8, padding: 4, marginBottom: 16 }}>
         {TABS.map((t) => (
           <span
@@ -577,7 +558,7 @@ export default function StaffDetailTabs({
         {tab === "Documents" && (
           <PersonDocumentsPanel
             documents={documents}
-            redirectPath={`/app/employees?staff=${staff.id}`}
+            redirectPath={`/app/employees/${staff.id}`}
             onUpload={(category, formData) => addStaffDocument(staff.id, category, formData)}
             assetUrlBase="/api/person-documents"
           />

@@ -23,7 +23,7 @@ export default async function ReportsPage() {
     sdb.student.count({ where: { status: "ACTIVE" } }),
     sdb.exam.findMany({ include: { examSubjects: { include: { marks: true } } }, orderBy: { startDate: "desc" }, take: 5 }),
     sdb.staffAttendance.findMany({ where: { date: { gte: eightWeeksAgo } }, select: { status: true } }),
-    sdb.transportRoute.findMany({ include: { assignments: true } }),
+    sdb.transportRoute.findMany({ include: { assignments: true, vehicle: true } }),
     sdb.admissionEnquiry.findMany({ select: { stage: true, createdAt: true } }),
   ]);
 
@@ -63,7 +63,7 @@ export default async function ReportsPage() {
   const staffPresent = staffAttendance.filter((a) => a.status === "PRESENT").length;
   const staffAttPct = staffAttendance.length ? Math.round((staffPresent / staffAttendance.length) * 100) : 0;
 
-  const totalSeats = routes.reduce((s, r) => s + (r.capacity ?? 0), 0);
+  const totalSeats = routes.reduce((s, r) => s + (r.vehicle?.capacity ?? 0), 0);
   const totalRiders = routes.reduce((s, r) => s + r.assignments.length, 0);
   const transportUtil = totalSeats ? Math.round((totalRiders / totalSeats) * 100) : 0;
 

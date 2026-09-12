@@ -25,11 +25,14 @@ export default function PersonDocumentsPanel({
   documents,
   redirectPath,
   onUpload,
+  onDelete,
   assetUrlBase,
 }: {
   documents: PersonDocumentRow[];
   redirectPath: string;
   onUpload: (category: string, formData: FormData) => Promise<void>;
+  /** Defaults to the Students/Staff deletePersonDocument (checks Students EDIT) — pass a subject-scoped one (e.g. Transport's deleteVehicleDocument) for any other subject type, so deletion is gated by the right module. */
+  onDelete?: (redirectPath: string, id: string) => Promise<void>;
   assetUrlBase: string;
 }) {
   const [, startTransition] = useTransition();
@@ -53,7 +56,7 @@ export default function PersonDocumentsPanel({
   }
 
   function remove(id: string) {
-    startTransition(() => deletePersonDocument(redirectPath, id));
+    startTransition(() => (onDelete ?? deletePersonDocument)(redirectPath, id));
   }
 
   const isExpiringSoon = (d: string | null) => {

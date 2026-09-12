@@ -62,7 +62,7 @@ export async function createStaff(_prevState: StaffFormState, formData: FormData
   });
 
   revalidatePath("/app/employees");
-  redirect(`/app/employees?staff=${staff.id}`);
+  redirect(`/app/employees/${staff.id}`);
 }
 
 export async function cyclePermission(staffId: string, moduleName: string, classId: string | null = null) {
@@ -85,7 +85,7 @@ export async function cyclePermission(staffId: string, moduleName: string, class
     } else {
       await sdb.staffPermission.create({ data: scopedCreateData<Prisma.StaffPermissionUncheckedCreateInput>({ staffId, moduleName, classId: null, accessLevel: next }) });
     }
-    revalidatePath("/app/employees");
+    revalidatePath(`/app/employees/${staffId}`);
     return { accessLevel: next };
   }
 
@@ -98,7 +98,7 @@ export async function cyclePermission(staffId: string, moduleName: string, class
     create: scopedCreateData<Prisma.StaffPermissionUncheckedCreateInput>({ staffId, moduleName, classId, accessLevel: next }),
   });
 
-  revalidatePath("/app/employees");
+  revalidatePath(`/app/employees/${staffId}`);
   return { accessLevel: next };
 }
 
@@ -108,7 +108,7 @@ export async function removeClassPermission(staffId: string, moduleName: string,
   const sdb = await getScopedDb();
 
   await sdb.staffPermission.delete({ where: { staffId_moduleName_classId: { staffId, moduleName, classId } } }).catch(() => {});
-  revalidatePath("/app/employees");
+  revalidatePath(`/app/employees/${staffId}`);
 }
 
 export async function runPayroll(staffId: string, month: string, amount: number) {
@@ -134,7 +134,7 @@ export async function runPayroll(staffId: string, month: string, amount: number)
     }),
   });
 
-  revalidatePath("/app/employees");
+  revalidatePath(`/app/employees/${staffId}`);
   revalidatePath("/app/accounts");
   revalidatePath("/app/dashboard");
   return { runId: run.id };

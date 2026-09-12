@@ -17,7 +17,7 @@ type StudentDetail = {
   class: { grade: string; section: string };
   parentLinks: { id: string; relation: string; isPrimary: boolean; parent: { id: string; name: string; phone: string | null; preferredContactMethod: string | null } }[];
   transportAssignment: {
-    route: { name: string; driverName: string | null; vehicleNo: string | null };
+    route: { name: string; vehicle: { driverName: string | null; vehicleNo: string | null } | null };
     stop: { stopName: string; pickupTime: Date | null };
   } | null;
   attendance: { date: Date; status: AttendanceStatus }[];
@@ -307,8 +307,8 @@ export default function ProfileTabs({
           (student.transportAssignment ? (
             <div style={{ display: "flex", flexDirection: "column", gap: 13, fontSize: 13.5, maxWidth: 480 }}>
               <Row label="Route" value={student.transportAssignment.route.name} />
-              <Row label="Driver" value={student.transportAssignment.route.driverName ?? "—"} />
-              <Row label="Vehicle number" value={student.transportAssignment.route.vehicleNo ?? "—"} mono />
+              <Row label="Driver" value={student.transportAssignment.route.vehicle?.driverName ?? "—"} />
+              <Row label="Vehicle number" value={student.transportAssignment.route.vehicle?.vehicleNo ?? "—"} mono />
               <Row label="Pickup stop" value={student.transportAssignment.stop.stopName} />
               <Row
                 label="Pickup time"
